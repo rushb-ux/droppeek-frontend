@@ -21,7 +21,7 @@ const Navbar = () => {
   return (
     <Box as="nav" bg="gray.800" color="white" px={4} py={3}>
       <Flex justify="space-between" align="center" maxW="container.lg" mx="auto">
-        {/* 网站 Logo */}
+        {/* Logo */}
         <Link href="/" fontSize="xl" fontWeight="bold">
           MysteryBox
         </Link>
