@@ -1,29 +1,38 @@
-import { Box, Heading, Text, Link, VStack } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack, Link, Icon, Center } from "@chakra-ui/react";
+import { FaXTwitter } from "react-icons/fa6";
 
 export default function ContactPage() {
   return (
-    <Box maxW="600px" mx="auto" py={10} px={4} textAlign="center">
-      <Heading as="h1" size="xl" mb={6}>
-        Contact Us
-      </Heading>
-
-      <VStack spacing={6}>
-        <Text fontSize="lg">
-          Have questions, feedback, or suggestions? Reach out to us anytime.
+    <Center py={16}>
+      <Box
+        borderWidth="1px"
+        borderRadius="md"
+        p={8}
+        maxW="400px"
+        w="full"
+        textAlign="center"
+        boxShadow="md"
+      >
+        <Heading as="h1" size="lg" mb={4}>
+          Contact Us
+        </Heading>
+        <Text fontSize="md" color="gray.600" mb={6}>
+          If you'd like to reach out, feel free to connect with us on X.
         </Text>
-
-        <Text fontSize="lg">
-          🐦 Connect on X (Twitter):{" "}
-          <Link
-            href="https://x.com/aaron_key5303"
-            color="teal.500"
-            isExternal
-            fontWeight="bold"
-          >
-            @aaron_key5303
-          </Link>
-        </Text>
-      </VStack>
-    </Box>
+        <Link
+          href="https://x.com/aaron_key5303"
+          isExternal
+          display="inline-flex"
+          alignItems="center"
+          justifyContent="center"
+          fontWeight="medium"
+          color="blue.500"
+          fontSize="lg"
+        >
+          <Icon as={FaXTwitter} boxSize={5} mr={2} />
+          droppeek
+        </Link>
+      </Box>
+    </Center>
   );
 }
