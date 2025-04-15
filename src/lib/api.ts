@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 type Review = {
   id: number;
@@ -36,8 +36,8 @@ export async function getReviews(): Promise<{ data: Review[] }> {
 export async function getTopReviews(): Promise<{ data: Review[] }> {
   try {
     const res = await fetch(
-      `${API_BASE_URL}/reviews?sort[0]=rating:desc&populate=image`
-    );
+      `${API_BASE_URL}/reviews?sort[0]=createdAt:desc&populate=Image`
+    );       
     if (!res.ok) throw new Error(`API 请求失败: ${res.status}`);
 
     const data = await res.json();
