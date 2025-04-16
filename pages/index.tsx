@@ -18,6 +18,7 @@ import { Link as ChakraLink } from "@chakra-ui/next-js";
 
 const websites = [
   {
+    id: "hypedrop",
     name: "HypeDrop",
     description: "Popular mystery box platform with gaming focus.",
     url: "https://hypedrop.com/r/droppeek", //opencases05
@@ -25,6 +26,7 @@ const websites = [
     rating: 3.5,
   },
   {
+    id: "hypeloot",
     name: "HypeLoot",
     description: "Luxury-themed mystery box unboxings.",
     url: "https://hypeloot.com/r/droppekk", //opencases05
@@ -32,6 +34,7 @@ const websites = [
     rating: 3,
   },
   {
+    id: "lootie",
     name: "Lootie",
     description: "Gaming and hypebeast mystery boxes.",
     url: "https://lootie.com/r/droppeek", //tgvoice70
@@ -68,14 +71,87 @@ export default function HomePage() {
   }, []);
 
   return (
-    <Box maxW="1000px" mx="auto" p={4}>
-      {/* Hero Section */}
-      <Box textAlign="center" py={10}>
-        <Heading size="2xl">Best Mystery Box Sites in 2025</Heading>
-        <Text mt={2}>
-          Discover the top unboxing platforms and get honest reviews
-        </Text>
-      </Box>
+<Box position="relative" minH="100vh" overflow="hidden">
+  {/* 最底层模糊背景图层 */}
+  <Box
+    position="absolute"
+    top={0}
+    left={0}
+    right={0}
+    bottom={0}
+    zIndex={-1}
+    backgroundImage="url('/images/hero-bg.png')"
+    backgroundSize="cover"
+    backgroundPosition="center"
+    backgroundRepeat="no-repeat"
+    filter="blur(30px)"
+    _after={{
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      bgGradient: 'linear(to-b, rgba(255,255,255,0.1) 30%, white 100%)',
+    }}
+  />
+
+  <Box position="relative" zIndex={1}>
+
+  {/* Hero 框 */}
+  <Box
+  maxW="1200px"
+  mx="auto"
+  mt={40}
+  px={60}
+  py={60}
+  borderRadius="xl"
+  backgroundImage="url('/images/hero-bg.png')"
+  backgroundSize="cover"
+  backgroundPosition="center"
+  position="relative"
+  boxShadow="lg"
+  overflow="hidden"
+  zIndex={1}
+  _before={{
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    bgGradient: 'linear(to-b, rgba(0,0,0,0.85), rgba(0,0,0,0.1))',  // hero背景颜色修改
+    zIndex: 1,
+  }}
+>
+  {/* 记录 zIndex > 遮罩 */}
+  <Box position="relative" zIndex={2} textAlign="left" color="white">
+    <Text fontSize="sm" fontWeight="bold" mb={2}>
+      MYSTERY BOXES
+    </Text>
+    <Heading size="2xl" mb={2}>
+      Top Mystery Box Sites Reviewed in 2025
+    </Heading>
+    <Text textAlign="center">
+      We test and review the most popular unboxing platforms to help you avoid scams and get the best experience.
+    </Text>
+  </Box>
+</Box>
+
+  </Box>
+
+  {/* Card区容器 */}
+  <Box
+    maxW="1000px"
+    mx="auto"
+    mt={-20}
+    bg="white"
+    p={6}
+    borderRadius="xl"
+    boxShadow="0px 10px 30px #5d995d"
+    position="relative"
+    zIndex={2}
+  >
 
       {/* Website Card Grid */}
       <Box mt={10}>
@@ -85,8 +161,7 @@ export default function HomePage() {
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
           {websites.map((site, index) => (
             <Link
-              href={site.url}
-              isExternal={site.url.startsWith("http")}
+              href={`/site/${site.id}`} 
               target={site.url.startsWith("http") ? "_blank" : undefined}
               rel={site.url.startsWith("http") ? "noopener noreferrer" : undefined}
               key={index}
@@ -133,7 +208,6 @@ export default function HomePage() {
             </Link>
           ))}
         </SimpleGrid>
-
       </Box>
 
       {/* Divider */}
@@ -205,5 +279,7 @@ export default function HomePage() {
         </HStack>
       </Box>
     </Box>
+    </Box>
+    
   );
 }
