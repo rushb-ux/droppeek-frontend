@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import RatingStars from "../../src/components/ui/RatingStars";
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 
 import {
   Box,
@@ -59,7 +60,16 @@ export default function SiteReviewPage() {
             zIndex={1}
           />
           {/* 内容 */}
-          <Box position="relative" zIndex={2} color="white">
+          <Box 
+            position="relative" 
+            zIndex={2} 
+            color="white" 
+            px={14} 
+            py={19}
+            pt={20}
+            maxW="1000px" 
+            mx="auto">
+
             <HStack spacing={4} mb={4}>
                 <Image src={site.logo} alt={site.name} boxSize="60px" />
                 <Heading size="2xl">{site.name}</Heading>
@@ -68,22 +78,42 @@ export default function SiteReviewPage() {
                 </HStack>
             </HStack>
 
-  
+
             <Text fontSize="md" maxW="800px" mb={4}>
               {site.description}
             </Text>
-  
+
+          <Box mb={4}>
+            <HStack mb={2} mt={6}>
+            <CheckIcon color="green.400" boxSize={5} />
+            </HStack>
             <HStack spacing={3} wrap="wrap">
-              {site.tags?.map((tag, index) => (
+            {site.pros?.map((item, index) => (
                 <Tag key={index} colorScheme="green" variant="solid">
-                  {tag}
+                {item}
                 </Tag>
-              ))}
+            ))}
             </HStack>
           </Box>
+
+          <Box mb={4}>
+          <HStack mb={2} mt={6}>
+            <CloseIcon color="red.400" boxSize={5} />
+            </HStack>
+
+            <HStack spacing={3} wrap="wrap">
+            {site.cons?.map((item, index) => (
+                <Tag key={index} colorScheme="red" variant="subtle">
+                {item}
+                </Tag>
+            ))}
+            </HStack>
+          </Box>
+          </Box>
+
         </Box>
   
-        {/* 👉 按钮区域 */}
+        {/* 按钮区域 */}
         <HStack spacing={4} justify="center" mt={10} mb={8}>
           <Button
             colorScheme="green"
@@ -92,6 +122,8 @@ export default function SiteReviewPage() {
           >
             Expert Review
           </Button>
+
+          {site.promoCodes?.length > 0 && (
           <Button
             colorScheme="green"
             variant={activeTab === "promo" ? "solid" : "outline"}
@@ -99,6 +131,7 @@ export default function SiteReviewPage() {
           >
             Promo Codes
           </Button>
+        )}
           <Button
             colorScheme="green"
             variant={activeTab === "alt" ? "solid" : "outline"}
@@ -107,6 +140,47 @@ export default function SiteReviewPage() {
             Alternatives
           </Button>
         </HStack>
+        {/* ✅ 内容区容器 */}
+        <Box
+        maxW="1000px"
+        mx="auto"
+        px={6}
+        py={8}
+        bg="gray.700"
+        borderRadius="xl"
+        boxShadow="md"
+        backdropFilter="blur(4px)"
+        mt={6}
+        >
+        {activeTab === "review" && (
+            <Text fontSize="md" color="white">
+                {site.review}
+            </Text>
+        )}
+
+        {activeTab === "promo" && (
+            site.promoCodes?.length > 0 ? (
+            <VStack spacing={3} align="start">
+                {site.promoCodes.map((code, idx) => (
+                <Tag key={idx} colorScheme="teal" variant="solid">
+                    {code}
+                </Tag>
+                ))}
+            </VStack>
+            ) : (
+            <Text color="gray.400" fontStyle="italic">
+                This site currently does not offer promo codes.
+            </Text>
+            )
+        )}
+
+        {activeTab === "alt" && (
+            <Text fontSize="md" color="white">
+            {site.alternatives}
+            </Text>
+        )}
+        </Box>
+
       </>
     );
   }
