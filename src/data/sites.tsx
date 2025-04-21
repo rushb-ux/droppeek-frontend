@@ -1,3 +1,5 @@
+import { Content } from "@radix-ui/react-accordion";
+
 const sites = [
   {
     id: "hypedrop",
@@ -19,11 +21,11 @@ const sites = [
       "Low odds of winning high-value items",
       "No refund policy, even in case of dissatisfaction",
     ],
-    review: "1111111111111111",
+    Content: "1111111111111111",
     alternatives: "22222222",
     url: "https://hypedrop.com/r/droppeek",
     description: "In April 2025, we conducted a full review of HypeDrop's newly launched V2 system, covering everything from legitimacy concerns and pricing structure to the overall user experience. Don't risk wasting your money before reading this — get all the key insights here.",
-    content: `
+    review: `
 HypeDrop is a popular unboxing platform offering mystery boxes with gaming-related prizes.
 It's known for flashy animations and high-stakes boxes. Users can win items or cash them out instantly.
 While fun and exciting, the odds of profit are relatively low, so casual users should be cautious.
@@ -81,7 +83,7 @@ Be sure to review odds before opening. The site regularly offers cashback and bo
     description: "Lootie has faced growing criticism in the mystery box community. Many users have reported issues such as undelivered items and poor customer service. The controversy involving the Ace Family in April 2025 has further raised doubts about the platform's overall legitimacy.",
     rating: 2.5,
     rank: 3,
-    category: "HypeLoot Mystery Boxes",
+    category: "Lootie Mystery Boxes",
     image: "/images/hero-bg.png",
     promoCodes: ["droppeek22"], 
     promoText: "40% DEPOSIT BONUS",
@@ -96,7 +98,15 @@ Be sure to review odds before opening. The site regularly offers cashback and bo
       "Occasional failure to deliver purchased items",
       "Possibly manipulated or inflated positive ratings",
     ],
-    review: "1111111111111111",
+    review: `<h2>Lootie Review: A Cautious Look at the Controversial Mystery Box Platform</h2>
+    Having followed Lootie since its early days as a CS:GO case-opening site, I've seen it evolve into a well-known mystery box platform boasting over 3,000 designer products. While the site has certainly grown in popularity, especially among hypebeast and luxury enthusiasts, it hasn't been without controversy.
+
+In recent years, Lootie has come under scrutiny for questionable business practices and delivery issues. Numerous users have reported not receiving their winnings, casting doubt over the platform's reliability and transparency.
+
+To its credit, Lootie has introduced features like Mystery Battles, which add a competitive twist to the unboxing experience. However, these innovations are often overshadowed by poor customer support and a growing number of negative reviews within the community.
+
+While I've spoken with users who stand by Lootie and enjoy using the site, I've also encountered many others who see it as a risky venture — one that may not be worth the gamble.
+`,
     alternatives: "22222222",
     recommendation: "Lootie is one of our top picks thanks to its strong community presence, regular giveaways, and consistent shipping. Great for both beginners and box veterans.",
     url: "https://lootie.com/r/droppeek"
