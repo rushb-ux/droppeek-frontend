@@ -4,7 +4,12 @@ const sites = [
     name: "HypeDrop",
     logo: "https://www.google.com/s2/favicons?sz=64&domain=hypedrop.com",
     rating: 3.5,
-    promoCodes: ["DROPPEEK10", "WELCOME5"],
+    rank: 1,
+    category: "HypeDrop Mystery Boxes",
+    image: "/images/hero-bg.png",
+    promoCodes: ["DROPPEEK"], 
+    promoText: "20% DEPOSIT BONUS",
+    promoDescription: "Click to copy the promo code and use it on the website.",
     pros: [
       "Wide variety of themed mystery boxes",
       "Fast and responsive customer support",
@@ -29,7 +34,13 @@ While fun and exciting, the odds of profit are relatively low, so casual users s
     name: "HypeLoot",
     logo: "https://www.google.com/s2/favicons?sz=64&domain=hypeloot.com",
     rating: 3,
-    promoCodes: ["DROPPEEK10", "WELCOME5"],
+    rank: 2,
+    category: "HypeLoot Mystery Boxes",
+    image: "/images/hero-bg.png",
+    promoCodes: ["Droppeek"], 
+    promoText: "5% DEPOSIT BONUS",
+    promoDescription: "Click to copy the promo code and use it on the website.",
+    
     pros: [
       "Customizable mystery boxes",
       "Multiple interactive game modes",
@@ -54,6 +65,7 @@ The $HPLT presale token has reportedly remained at around 97% distribution for o
 ,
     alternatives: "22222222",
     url: "https://hypeloot.com/r/droppekk",
+    
     description: 
     "We reviewed HypeLoot in April 2025 and found widespread concerns about its legitimacy. Many users have reported sudden account bans and suspect the platform's fairness, raising serious trust issues within the community.",
     content: `
@@ -68,7 +80,13 @@ Be sure to review odds before opening. The site regularly offers cashback and bo
     logo: "https://www.google.com/s2/favicons?domain=lootie.com",
     description: "Lootie has faced growing criticism in the mystery box community. Many users have reported issues such as undelivered items and poor customer service. The controversy involving the Ace Family in April 2025 has further raised doubts about the platform's overall legitimacy.",
     rating: 2.5,
-    promoCodes: [],
+    rank: 3,
+    category: "HypeLoot Mystery Boxes",
+    image: "/images/hero-bg.png",
+    promoCodes: ["droppeek22"], 
+    promoText: "40% DEPOSIT BONUS",
+    promoDescription: "Click to copy the promo code and use it on the website.",
+    
     pros: [
       "Accepts credit cards, PayPal, and cryptocurrency"
     ],
