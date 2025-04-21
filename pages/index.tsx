@@ -127,12 +127,12 @@ export default function HomePage() {
   {/* 记录 zIndex > 遮罩 */}
   <Box position="relative" zIndex={2} textAlign="left" color="white">
     <Text fontSize="sm" fontWeight="bold" mb={2}>
-      MYSTERY BOXES
+      DROPPEEK
     </Text>
-    <Heading size="2xl" mb={2}>
+    <h1 className="font-poetsen text-6xl mb=2">
       Top Mystery Box Sites Reviewed in 2025
-    </Heading>
-    <Text textAlign="center">
+    </h1>
+    <Text className="text-3xl" textAlign="center">
       We test and review the most popular unboxing platforms to help you avoid scams and get the best experience.
     </Text>
   </Box>
