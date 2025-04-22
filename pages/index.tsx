@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getTopReviews } from "../src/lib/api";
 import { FaStar, FaRegStar } from "react-icons/fa";
 
+
 import {
   Box,
   Heading,
@@ -72,6 +73,8 @@ export default function HomePage() {
 
   return (
 <Box position="relative" minH="100vh" overflow="hidden">
+ 
+
   {/* 最底层模糊背景图层 */}
   <Box
     position="absolute"
@@ -104,7 +107,7 @@ export default function HomePage() {
   mx="auto"
   mt={40}
   px={60}
-  py={60}
+  py={40}
   borderRadius="xl"
   backgroundImage="url('/images/hero-bg.png')"
   backgroundSize="cover"

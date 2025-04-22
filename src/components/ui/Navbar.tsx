@@ -23,12 +23,11 @@ const Navbar = () => {
       <Flex justify="space-between" align="center" maxW="container.lg" mx="auto">
         {/* Logo */}
         <Link href="/" fontSize="xl" fontWeight="bold">
-          MysteryBox
+          DropPeek
         </Link>
 
         {/* 桌面端导航菜单 */}
         <HStack spacing={6} display={{ base: "none", md: "flex" }}>
-          <Link href="/">Home</Link>
           <Link href="/mystery-boxes">Mystery Boxes</Link>
           <Link href="/reviews">Reviews</Link>
           <Link href="/blog">Blog</Link>
@@ -47,11 +46,8 @@ const Navbar = () => {
           <DrawerOverlay />
           <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader>导航菜单</DrawerHeader>
+            <DrawerHeader>Menu</DrawerHeader>
             <DrawerBody>
-              <Link href="/" onClick={onClose} display="block" mb={2}>
-                Home
-              </Link>
               <Link href="/mystery-boxes" onClick={onClose} display="block" mb={2}>
                 Mystery Boxes
               </Link>

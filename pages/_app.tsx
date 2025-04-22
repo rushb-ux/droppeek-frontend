@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       {/* 默认 SEO 配置 */}
       <DefaultSeo
-        title="Best Mystery Boxes in 2024 | Mystery Box Rankings"
+        title="Best Mystery Boxes Websites in 2025 | Mystery Box Rankings"
         description="Find the best mystery box websites with verified reviews and exclusive bonuses."
         openGraph={{
           type: "website",
