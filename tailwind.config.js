@@ -80,4 +80,7 @@ module.exports = {
     }
   },
   plugins: [require("tailwindcss-animate"), textShadow],
+  textShadow,
+  plugins: [require('@tailwindcss/typography')],
+
 }
