@@ -8,7 +8,7 @@ export function getAllPostSlugs() {
   const folders = fs.readdirSync(POSTS_DIR).filter((name) => {
     const fullPath = path.join(POSTS_DIR, name);
     return fs.statSync(fullPath).isDirectory() &&
-           fs.existsSync(path.join(fullPath, "index.md")); // ✅ 目录存在且包含 index.md
+           fs.existsSync(path.join(fullPath, "index.md")); // 目录存在且包含 index.md
   });
 
   return folders.map((folder) => {
