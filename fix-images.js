@@ -4,11 +4,11 @@ const path = require("path");
 const POSTS_DIR = path.join(__dirname, "content", "posts");
 const MEDIA_DIR = path.join(__dirname, "media");
 
-// 获取所有 media 子文件夹中的文件路径（如 media/01/xxx.png）
+// 获取所有 media 子文件夹中的文件路径（media/xxx.png）
 function findMediaFile(filename) {
   const folders = fs.readdirSync(MEDIA_DIR);
 
-    // ✅ 只处理真正的文件夹
+    // 只处理真正的文件夹
     for (const folder of folders) {
       const folderPath = path.join(MEDIA_DIR, folder);
       const stat = fs.statSync(folderPath);

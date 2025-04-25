@@ -1,7 +1,8 @@
+// index.tsx
+
 import { useEffect, useState } from "react";
 import { getTopReviews } from "../src/lib/api";
 import { FaStar, FaRegStar } from "react-icons/fa";
-
 
 import {
   Box,
@@ -22,7 +23,7 @@ const websites = [
     id: "hypedrop",
     name: "HypeDrop",
     description: "Popular mystery box platform with gaming focus.",
-    url: "https://hypedrop.com/r/droppeek", //opencases05
+    url: "https://hypedrop.com/r/droppeek",
     domain: "hypedrop.com",
     rating: 3.5,
   },
@@ -30,7 +31,7 @@ const websites = [
     id: "hypeloot",
     name: "HypeLoot",
     description: "Luxury-themed mystery box unboxings.",
-    url: "https://hypeloot.com/r/droppekk", //opencases05
+    url: "https://hypeloot.com/r/droppekk",
     domain: "hypeloot.com",
     rating: 3,
   },
@@ -38,7 +39,7 @@ const websites = [
     id: "lootie",
     name: "Lootie",
     description: "Gaming and hypebeast mystery boxes.",
-    url: "https://lootie.com/r/droppeek", //tgvoice70
+    url: "https://lootie.com/r/droppeek",
     domain: "lootie.com",
     rating: 2.5,
   },
@@ -72,99 +73,92 @@ export default function HomePage() {
   }, []);
 
   return (
-<Box position="relative" minH="100vh" overflow="hidden">
- 
+    <Box position="relative" minH="100vh" overflow="hidden">
+      {/* 最底层模糊背景图层 */}
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        zIndex={-1}
+        backgroundImage="url('/images/hero-bg.png')"
+        backgroundSize="cover"
+        backgroundPosition="center"
+        backgroundRepeat="no-repeat"
+        filter="blur(30px)"
+        _after={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bgGradient: 'linear(to-b, rgba(255,255,255,0.1) 30%, white 100%)',
+        }}
+      />
 
-  {/* 最底层模糊背景图层 */}
-  <Box
-    position="absolute"
-    top={0}
-    left={0}
-    right={0}
-    bottom={0}
-    zIndex={-1}
-    backgroundImage="url('/images/hero-bg.png')"
-    backgroundSize="cover"
-    backgroundPosition="center"
-    backgroundRepeat="no-repeat"
-    filter="blur(30px)"
-    _after={{
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      bgGradient: 'linear(to-b, rgba(255,255,255,0.1) 30%, white 100%)',
-    }}
-  />
+      {/* Hero 框 */}
+      <Box position="relative" zIndex={1}>
+        <Box
+          maxW="1200px"
+          mx="auto"
+          mt={40}
+          px={60}
+          py={40}
+          borderRadius="xl"
+          backgroundImage="url('/images/hero-bg.png')"
+          backgroundSize="cover"
+          backgroundPosition="center"
+          position="relative"
+          boxShadow="lg"
+          overflow="hidden"
+          zIndex={1}
+          _before={{
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            bgGradient: 'linear(to-b, rgba(0,0,0,0.85), rgba(0,0,0,0.1))',
+            zIndex: 1,
+          }}
+        >
+          <Box position="relative" zIndex={2} textAlign="left" color="white">
+            <Text fontSize="sm" fontWeight="bold" mb={2}>
+              DROPPEEK
+            </Text>
+            <h1 className="font-poetsen text-6xl mb-2">
+              Top Mystery Box Sites Reviewed in 2025
+            </h1>
+            <Text className="text-3xl" textAlign="center">
+              We test and review the most popular unboxing platforms to help you avoid scams and get the best experience.
+            </Text>
+          </Box>
+        </Box>
+      </Box>
 
-  <Box position="relative" zIndex={1}>
-
-  {/* Hero 框 */}
-  <Box
-  maxW="1200px"
-  mx="auto"
-  mt={40}
-  px={60}
-  py={40}
-  borderRadius="xl"
-  backgroundImage="url('/images/hero-bg.png')"
-  backgroundSize="cover"
-  backgroundPosition="center"
-  position="relative"
-  boxShadow="lg"
-  overflow="hidden"
-  zIndex={1}
-  _before={{
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    bgGradient: 'linear(to-b, rgba(0,0,0,0.85), rgba(0,0,0,0.1))',  // hero背景颜色修改
-    zIndex: 1,
-  }}
->
-  {/* 记录 zIndex > 遮罩 */}
-  <Box position="relative" zIndex={2} textAlign="left" color="white">
-    <Text fontSize="sm" fontWeight="bold" mb={2}>
-      DROPPEEK
-    </Text>
-    <h1 className="font-poetsen text-6xl mb=2">
-      Top Mystery Box Sites Reviewed in 2025
-    </h1>
-    <Text className="text-3xl" textAlign="center">
-      We test and review the most popular unboxing platforms to help you avoid scams and get the best experience.
-    </Text>
-  </Box>
-</Box>
-
-  </Box>
-
-  {/* Card区容器 */}
-  <Box
-    maxW="1000px"
-    mx="auto"
-    mt={-20}
-    bg="white"
-    p={6}
-    borderRadius="xl"
-    boxShadow="0px 10px 30px #5d995d"
-    position="relative"
-    zIndex={2}
-  >
-
-      {/* Website Card Grid */}
-      <Box mt={10}>
+      {/* 推荐卡片卡片区块 */}
+      <Box
+        maxW="1000px"
+        mx="auto"
+        mt={-20}
+        mb={12}
+        p={6}
+        bg="white"
+        borderRadius="xl"
+        boxShadow="md"
+        zIndex={2}
+        position="relative"
+      >
         <Heading size="lg" mb={4}>
           Recommended Mystery Box Sites
         </Heading>
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
           {websites.map((site, index) => (
             <Link
-              href={`/site/${site.id}`} 
+              href={`/site/${site.id}`}
               target={site.url.startsWith("http") ? "_blank" : undefined}
               rel={site.url.startsWith("http") ? "noopener noreferrer" : undefined}
               key={index}
@@ -186,11 +180,11 @@ export default function HomePage() {
               >
                 <HStack justify="space-between" align="center" mb={2}>
                   <Image
-                    src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`} 
+                    src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`}
                     alt={`${site.name} logo`}
                     boxSize="48px"
                   />
-                  <HStack spacing={1}>  
+                  <HStack spacing={1}>
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Icon
                         as={i < Math.floor(site.rating) ? FaStar : FaRegStar}
@@ -199,8 +193,6 @@ export default function HomePage() {
                         boxSize={5}
                       />
                     ))}
-                    <Text fontSize="sm" color="gray.600" ml={1}>
-                    </Text>
                   </HStack>
                 </HStack>
                 <VStack align="start" spacing={1}>
@@ -213,41 +205,97 @@ export default function HomePage() {
         </SimpleGrid>
       </Box>
 
-      {/* Divider */}
-      <Divider my={10} />
+      {/* Latest Reviews + Ranking 分栏区域 */}
+      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} maxW="1000px" mx="auto" mb={12}>
+        {/* Latest Reviews */}
+        <Box
+          gridColumn={{ md: "span 2" }}
+          bg="transparent"
+          p={6}
+          borderRadius="xl"
+          boxShadow="md"
+          border="1px solid"
+          borderColor="gray.200"
+        >
 
-      {/* Latest Reviews */}
-      <Box>
-        <Heading size="lg">Latest Reviews</Heading>
-        <VStack spacing={4} align="stretch" mt={4}>
-          {reviews.map((review) => {
-            const imageUrl =
-              review?.attributes?.Image?.data?.attributes?.url;
+          <Heading size="lg" mb={4}>Latest Reviews</Heading>
+          <VStack spacing={4} align="stretch">
+            {reviews.map((review) => {
+              const imageUrl = review?.attributes?.Image?.data?.attributes?.url;
+              return (
+                <Box
+                  key={review.id}
+                  borderWidth={1}
+                  borderRadius="md"
+                  p={4}
+                  display="flex"
+                  gap={4}
+                  alignItems="center"
+                >
+                  {imageUrl && (
+                    <Image
+                      src={`${process.env.NEXT_PUBLIC_API_URL}${imageUrl}`}
+                      alt={review.attributes?.title || "Image"}
+                      boxSize="100px"
+                      borderRadius="md"
+                      objectFit="cover"
+                    />
+                  )}
+                  <Box>
+                    <Text fontWeight="bold">
+                      {review.attributes?.title || "Untitled"}
+                    </Text>
+                    <Text fontSize="sm" color="gray.500">
+                      {review.attributes?.publishedAt?.split("T")[0] || "Unknown date"}
+                    </Text>
+                  </Box>
+                </Box>
+              );
+            })}
+          </VStack>
+        </Box>
 
-            return (
-              <Box key={review.id} borderWidth={1} p={4} borderRadius="md">
-                {imageUrl && (
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_API_URL}${imageUrl}`}
-                    alt={review.attributes?.title || "Image"}
-                    boxSize="100px"
-                    mr={4}
-                  />
-                )}
-                <Text fontWeight="bold">
-                  {review.attributes?.title || "Untitled"}
-                </Text>
-                <Text fontSize="sm" color="gray.500">
-                  {review.attributes?.publishedAt || "Unknown date"}
-                </Text>
+        {/* Top Sites Ranking（Alternatives 风格） */}
+        <Box
+          bg="transparent"
+          p={6}
+          borderRadius="xl"
+          boxShadow="md"
+          border="1px solid"
+          borderColor="gray.200"
+        >
+
+          <Heading size="lg" mb={4}>Top Sites Ranking</Heading>
+          <VStack spacing={4} align="stretch">
+            {websites.map((site, i) => (
+              <Box
+                key={site.id}
+                position="relative"
+                overflow="hidden"
+                borderRadius="lg"
+                height="100px"
+                backgroundImage="url('/images/hero-bg.png')"
+                backgroundSize="cover"
+                backgroundPosition="center"
+              >
+                <Box position="absolute" inset={0} bg="blackAlpha.700" />
+                <Box position="relative" p={4} color="white">
+                  <Text fontSize="sm" color="gray.300">
+                    {site.name} Mystery Boxes
+                  </Text>
+                  <Text fontSize="sm" color="gray.400">
+                    Ranked #{i + 1}
+                  </Text>
+                  <Text fontSize="lg" fontWeight="bold">{site.name}</Text>
+                </Box>
               </Box>
-            );
-          })}
-        </VStack>
-      </Box>
+            ))}
+          </VStack>
+        </Box>
+      </SimpleGrid>
 
-      {/* FAQ Section */}
-      <Box mt={16}>
+      {/* FAQ Section（保留原样） */}
+      <Box maxW="1000px" mx="auto">
         <Heading size="lg">FAQ</Heading>
         <Box mt={4}>
           <Text fontWeight="bold">What is a mystery box platform?</Text>
@@ -265,6 +313,7 @@ export default function HomePage() {
         </Box>
       </Box>
 
+      {/* Footer */}
       <Divider mt={16} />
       <Box
         as="footer"
@@ -282,7 +331,5 @@ export default function HomePage() {
         </HStack>
       </Box>
     </Box>
-    </Box>
-    
   );
 }

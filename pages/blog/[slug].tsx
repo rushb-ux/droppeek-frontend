@@ -60,8 +60,8 @@ export default function PostPage({ frontmatter, content }: Props) {
             img: ({ node, ...props }) => (
             <img
                 {...props}
-                src={`/media/${props.src}`} // 确保路径正确
-                className="rounded-lg my-4 max-w-full"
+                src={props.src} 
+                className="rounded-lg my-4 max-w-full mx-auto"
                 alt={props.alt || ""}
             />
             ),

@@ -1,23 +1,32 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-
-const POSTS_DIR = path.join(process.cwd(), "content", "posts");
+import fs from "fs"
+import path from "path"
+import matter from "gray-matter"
 
 export function getAllPostSlugs() {
-  const folders = fs.readdirSync(POSTS_DIR).filter((name) => {
-    const fullPath = path.join(POSTS_DIR, name);
-    return fs.statSync(fullPath).isDirectory() &&
-           fs.existsSync(path.join(fullPath, "index.md")); // 目录存在且包含 index.md
-  });
+  const postsDir = path.join(process.cwd(), "content/posts")
+  const folders = fs.readdirSync(postsDir)
 
-  return folders.map((folder) => {
-    const fullPath = path.join(POSTS_DIR, folder, "index.md");
-    const fileContent = fs.readFileSync(fullPath, "utf-8");
-    const { data } = matter(fileContent);
+  return folders
+  .filter((folder) => {
+    const fullPath = path.join(postsDir, folder)
+    return fs.statSync(fullPath).isDirectory()
+  })
+  .map((folder) => {
+    const filePath = path.join(postsDir, folder, "index.md")
+    const fileContent = fs.readFileSync(filePath, "utf-8")
+    const { data, content } = matter(fileContent)
+
+    const imageMatch = content.match(/!\[[^\]]*\]\((.*?)\)/)
+    const thumbnail = imageMatch ? imageMatch[1] : null
+
+    console.log(`[POST] ${folder}`);
+    console.log(`  → thumbnail = ${thumbnail}`);
+    
     return {
       slug: folder,
-      title: data.title || folder,
-    };
-  });
+      title: data.title || "Untitled",
+      thumbnail,
+    }
+  })
+
 }
