@@ -1,8 +1,10 @@
-// index.tsx
-
 import { useEffect, useState } from "react";
 import { getTopReviews } from "../src/lib/api";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import { getAllPostSlugs } from "../utils/posts";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
 
 import {
   Box,
@@ -10,7 +12,6 @@ import {
   VStack,
   Image,
   Text,
-  Link,
   SimpleGrid,
   Divider,
   HStack,
@@ -61,16 +62,17 @@ type Review = {
   };
 };
 
-export default function HomePage() {
-  const [reviews, setReviews] = useState<Review[]>([]);
+export async function getStaticProps() {
+  const posts = getAllPostSlugs(); // 本地文章
+  return { props: { posts } };
+}
 
-  useEffect(() => {
-    async function fetchData() {
-      const latestReviews = await getTopReviews();
-      setReviews(latestReviews.data ?? []);
-    }
-    fetchData();
-  }, []);
+
+export default function HomePage({ posts }: { posts: { slug: string; title: string; thumbnail?: string | null }[] }) {
+
+  const [showAll, setShowAll] = useState(false);
+  const displayedPosts = showAll ? posts : posts.slice(0, 10);
+    
 
   return (
     <Box position="relative" minH="100vh" overflow="hidden">
@@ -162,7 +164,7 @@ export default function HomePage() {
               target={site.url.startsWith("http") ? "_blank" : undefined}
               rel={site.url.startsWith("http") ? "noopener noreferrer" : undefined}
               key={index}
-              _hover={{ textDecoration: "none" }}
+              style={{ textDecoration: "none" }}
             >
               <Box
                 borderWidth={1}
@@ -206,7 +208,7 @@ export default function HomePage() {
       </Box>
 
       {/* Latest Reviews + Ranking 分栏区域 */}
-      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} maxW="1000px" mx="auto" mb={12}>
+      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} maxW="1000px" mx="auto" mb={12} alignItems="start" >
         {/* Latest Reviews */}
         <Box
           gridColumn={{ md: "span 2" }}
@@ -217,45 +219,42 @@ export default function HomePage() {
           border="1px solid"
           borderColor="gray.200"
         >
-
           <Heading size="lg" mb={4}>Latest Reviews</Heading>
           <VStack spacing={4} align="stretch">
-            {reviews.map((review) => {
-              const imageUrl = review?.attributes?.Image?.data?.attributes?.url;
-              return (
-                <Box
-                  key={review.id}
-                  borderWidth={1}
-                  borderRadius="md"
-                  p={4}
-                  display="flex"
-                  gap={4}
-                  alignItems="center"
-                >
-                  {imageUrl && (
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_API_URL}${imageUrl}`}
-                      alt={review.attributes?.title || "Image"}
-                      boxSize="100px"
-                      borderRadius="md"
-                      objectFit="cover"
+
+          {displayedPosts.map((post) => (
+            <Link key={post.slug} href={`/blog/${post.slug}`} className="block">
+              <div className="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-100 transition">
+                <div className="w-20 h-20 flex-shrink-0 overflow-hidden rounded-md bg-gray-200">
+                  {post.thumbnail ? (
+                    <img
+                      src={post.thumbnail}
+                      alt={post.title}
+                      className="w-full h-full object-cover"
                     />
+                  ) : (
+                    <div className="w-full h-full bg-gray-300" />
                   )}
-                  <Box>
-                    <Text fontWeight="bold">
-                      {review.attributes?.title || "Untitled"}
-                    </Text>
-                    <Text fontSize="sm" color="gray.500">
-                      {review.attributes?.publishedAt?.split("T")[0] || "Unknown date"}
-                    </Text>
-                  </Box>
-                </Box>
-              );
-            })}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg">{post.title}</h3>
+                  <p className="text-gray-500 text-sm">Lastest Reviews</p>
+                </div>
+              </div>
+            </Link>
+          ))}
+          {!showAll && posts.length > 10 && (
+            <Button onClick={() => setShowAll(true)}>Show More</Button>
+          )}
+          {showAll && (
+            <Button onClick={() => setShowAll(false)}>Show Less</Button>
+          )}
+
           </VStack>
         </Box>
 
-        {/* Top Sites Ranking（Alternatives 风格） */}
+
+        {/* Top Sites Ranking */}
         <Box
           bg="transparent"
           p={6}
@@ -294,7 +293,7 @@ export default function HomePage() {
         </Box>
       </SimpleGrid>
 
-      {/* FAQ Section（保留原样） */}
+      {/* FAQ Section */}
       <Box maxW="1000px" mx="auto">
         <Heading size="lg">FAQ</Heading>
         <Box mt={4}>
@@ -312,6 +311,28 @@ export default function HomePage() {
           </Text>
         </Box>
       </Box>
+      <Box
+        maxW="1000px" // 
+        mx="auto"
+        mt={8}
+        p={6}
+        borderWidth={1}
+        borderRadius="lg"
+        borderColor="gray.200"
+        bg="transparent"
+      >
+        <div className="mt-10 border-t pt-6">
+          <h2 className="text-2xl font-bold mb-4">Leave a Comment</h2>
+          <form onSubmit={(e) => { e.preventDefault(); alert('Comment submitted!'); }}>
+            <textarea
+              placeholder="Write your comment here..."
+              className="w-full border rounded p-2 mb-4"
+              rows={4}
+            ></textarea>
+            <Button type="submit">Submit</Button>
+          </form>
+        </div>
+      </Box>  
 
       {/* Footer */}
       <Divider mt={16} />
