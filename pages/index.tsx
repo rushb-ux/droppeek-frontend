@@ -266,29 +266,41 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
 
           <Heading size="lg" mb={4}>Top Sites Ranking</Heading>
           <VStack spacing={4} align="stretch">
-            {websites.map((site, i) => (
-              <Box
+          {websites.map((site, i) => (
+              <Link
                 key={site.id}
-                position="relative"
-                overflow="hidden"
-                borderRadius="lg"
-                height="100px"
-                backgroundImage="url('/images/hero-bg.png')"
-                backgroundSize="cover"
-                backgroundPosition="center"
+                href={`/site/${site.id}`}  // ✅ 这里生成链接
+                style={{ textDecoration: "none" }}
               >
-                <Box position="absolute" inset={0} bg="blackAlpha.700" />
-                <Box position="relative" p={4} color="white">
-                  <Text fontSize="sm" color="gray.300">
-                    {site.name} Mystery Boxes
-                  </Text>
-                  <Text fontSize="sm" color="gray.400">
-                    Ranked #{i + 1}
-                  </Text>
-                  <Text fontSize="lg" fontWeight="bold">{site.name}</Text>
+                <Box
+                  position="relative"
+                  overflow="hidden"
+                  borderRadius="lg"
+                  height="100px"
+                  backgroundImage="url('/images/hero-bg.png')"
+                  backgroundSize="cover"
+                  backgroundPosition="center"
+                  transition="all 0.3s ease"
+                  _hover={{
+                    transform: "scale(1.02)",
+                    boxShadow: "lg",
+                  }}
+                >
+                  <Box position="absolute" inset={0} bg="blackAlpha.700" />
+                  <Box position="relative" p={4} color="white">
+                    <Text fontSize="sm" color="gray.300">
+                      {site.name} Mystery Boxes
+                    </Text>
+                    <Text fontSize="sm" color="gray.400">
+                      Ranked #{i + 1}
+                    </Text>
+                    <Text fontSize="lg" fontWeight="bold">{site.name}</Text>
+                  </Box>
                 </Box>
-              </Box>
+              </Link>
             ))}
+
+
           </VStack>
         </Box>
       </SimpleGrid>
