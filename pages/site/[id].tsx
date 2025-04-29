@@ -1,6 +1,8 @@
 'use client'
 import { useRouter } from "next/router"
 import RatingStars from "../../src/components/ui/RatingStars"
+import { useEffect, useState } from "react";
+
 import {
   Box,
   Heading,
@@ -16,12 +18,37 @@ import sites from "../../src/data/sites"
 
 import PromoCode from "@/components/ui/promoCode"
 import { AlternativesList } from "@/components/ui/AlternativesList" 
+type Box = {
+  node: {
+    name: string;
+    price: number;
+    iconUrl: string;
+  };
+};
+
+
+
 
 
 export default function SiteReviewPage() {
   const router = useRouter()
   const { id } = router.query
   const site = sites.find((s) => s.id === id)
+  const [salesData, setSalesData] = useState<Box[]>([]);
+
+  useEffect(() => {
+      async function fetchBoxes() {
+        try {
+          const res = await fetch("/api/fetchBoxes");
+          const data = await res.json();
+          setSalesData(data.data.boxes.edges.slice(0, 5)); // 这里注意是 edges
+        } catch (error) {
+          console.error("Failed to fetch boxes", error);
+        }
+      }
+      fetchBoxes();
+    }, []);
+      
 
   if (!site) {
     return (
@@ -115,21 +142,66 @@ export default function SiteReviewPage() {
       {/* Expert Review & Alternatives */}
         <Box maxW="1200px" mx="auto" mt={20} mb={16} px={6}>
         <HStack spacing={6} align="flex-start">
-            {/* Expert Review */}
-            <Box
-            flex="2"
-            p={6}
-            bg="white"
-            borderRadius="xl"
-            borderWidth={1}
-            boxShadow="md"
-            >
-            <Text fontSize="xl" fontWeight="bold" mb={4}>Expert Review</Text>
-            <Text whiteSpace="pre-line" className="font-dm-serif">
-                {site.review}
-            </Text>
-            </Box>
+            {/* Top 5 Sales + Expert Review） */}
+              <Box flex="2">
+                {/* Top 5 Sales (24H) */}
+                <Box mb={8}>
+                  <Text fontSize="xl" fontWeight="bold" mb={4}>
+                    Top 5 Mystery Boxes (24H)
+                  </Text>
 
+                  <Box overflowX="auto" pb={2}>
+                    <HStack spacing={4} minW="max-content">
+                      {salesData.map((item, index) => (
+                        <Box
+                          key={index}
+                          minW="140px"
+                          bg="white"
+                          borderRadius="xl"
+                          boxShadow="md"
+                          p={3}
+                          textAlign="center"
+                          flexShrink={0}
+                          _hover={{ transform: "scale(1.05)", transition: "0.3s" }}
+                        >
+                          <Image
+                            src={item.node.iconUrl}
+                            alt={item.node.name}
+                            width="100%"
+                            height="100px"
+                            objectFit="cover"
+                            borderRadius="md"
+                            mb={2}
+                          />
+                          <Text fontWeight="bold" fontSize="sm" noOfLines={1}>
+                            {item.node.name}
+                          </Text>
+                          <Text fontSize="sm" color="gray.500">
+                            ${item.node.price}
+                          </Text>
+                        </Box>
+                      ))}
+                    </HStack>
+                  </Box>
+                </Box>
+
+
+                {/* Expert Review */}
+                <Box
+                  p={6}
+                  bg="white"
+                  borderRadius="xl"
+                  borderWidth={1}
+                  boxShadow="md"
+                >
+                  <Text fontSize="xl" fontWeight="bold" mb={4}>
+                    Expert Review
+                  </Text>
+                  <Text whiteSpace="pre-line" className="font-dm-serif">
+                    {site.review}
+                  </Text>
+                </Box>
+              </Box>
             {/* Alternatives - */}
             <Box
             flex="1"

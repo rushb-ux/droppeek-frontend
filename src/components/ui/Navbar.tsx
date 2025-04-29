@@ -28,7 +28,6 @@ const Navbar = () => {
 
         {/* 桌面端导航菜单 */}
         <HStack spacing={6} display={{ base: "none", md: "flex" }}>
-          <Link href="/mystery-boxes">Mystery Boxes</Link>
           <Link href="/reviews">Reviews</Link>
           <Link href="/blog">Blog</Link>
         </HStack>
@@ -48,9 +47,7 @@ const Navbar = () => {
             <DrawerCloseButton />
             <DrawerHeader>Menu</DrawerHeader>
             <DrawerBody>
-              <Link href="/mystery-boxes" onClick={onClose} display="block" mb={2}>
-                Mystery Boxes
-              </Link>
+          
               <Link href="/reviews" onClick={onClose} display="block" mb={2}>
                 Reviews
               </Link>
