@@ -18,13 +18,13 @@ import sites from "../../src/data/sites"
 
 import PromoCode from "@/components/ui/promoCode"
 import { AlternativesList } from "@/components/ui/AlternativesList" 
-type Box = {
-  node: {
+type SalesBox = {
     name: string;
     price: number;
     iconUrl: string;
-  };
+    slug: string;
 };
+
 
 
 
@@ -34,20 +34,28 @@ export default function SiteReviewPage() {
   const router = useRouter()
   const { id } = router.query
   const site = sites.find((s) => s.id === id)
-  const [salesData, setSalesData] = useState<Box[]>([]);
+  const [salesData, setSalesData] = useState<SalesBox[]>([]);
+
 
   useEffect(() => {
-      async function fetchBoxes() {
-        try {
-          const res = await fetch("/api/fetchBoxes");
-          const data = await res.json();
-          setSalesData(data.data.boxes.edges.slice(0, 5)); // 这里注意是 edges
-        } catch (error) {
-          console.error("Failed to fetch boxes", error);
+    if (!id) return;
+    fetch(`/api/fetchBoxes?siteId=${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setSalesData(data);
+        } else {
+          console.error("Invalid data format", data);
+          setSalesData([]);
         }
-      }
-      fetchBoxes();
-    }, []);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch sales boxes", err);
+        setSalesData([]);
+      });
+  }, [id]);
+  
+  
       
 
   if (!site) {
@@ -145,42 +153,42 @@ export default function SiteReviewPage() {
             {/* Top 5 Sales + Expert Review） */}
               <Box flex="2">
                 {/* Top 5 Sales (24H) */}
-                <Box mb={8}>
+                <Box p={6} borderWidth={1} borderRadius="xl" bg="white" boxShadow="md" mb={6}>
                   <Text fontSize="xl" fontWeight="bold" mb={4}>
-                    Top 5 Mystery Boxes (24H)
+                    Top 5 Sales (24H)
                   </Text>
-
                   <Box overflowX="auto" pb={2}>
                     <HStack spacing={4} minW="max-content">
-                      {salesData.map((item, index) => (
-                        <Box
-                          key={index}
-                          minW="140px"
-                          bg="white"
-                          borderRadius="xl"
-                          boxShadow="md"
-                          p={3}
-                          textAlign="center"
-                          flexShrink={0}
-                          _hover={{ transform: "scale(1.05)", transition: "0.3s" }}
-                        >
-                          <Image
-                            src={item.node.iconUrl}
-                            alt={item.node.name}
-                            width="100%"
-                            height="100px"
-                            objectFit="cover"
-                            borderRadius="md"
-                            mb={2}
-                          />
-                          <Text fontWeight="bold" fontSize="sm" noOfLines={1}>
-                            {item.node.name}
-                          </Text>
-                          <Text fontSize="sm" color="gray.500">
-                            ${item.node.price}
-                          </Text>
-                        </Box>
-                      ))}
+                    {salesData.map((item, index) => (
+                      <Box
+                        key={index}
+                        minW="140px"
+                        bg="white"
+                        borderRadius="xl"
+                        boxShadow="md"
+                        p={3}
+                        textAlign="center"
+                        flexShrink={0}
+                        _hover={{ transform: "scale(1.05)", transition: "0.3s" }}
+                      >
+                        <Image
+                          src={item.iconUrl}
+                          alt={item.name}
+                          width="100%"
+                          height="100px"
+                          objectFit="cover"
+                          borderRadius="md"
+                          mb={2}
+                        />
+                        <Text fontWeight="bold" fontSize="sm" noOfLines={1}>
+                          {item.name}
+                        </Text>
+                        <Text fontSize="sm" color="gray.500">
+                          ${item.price}
+                        </Text>
+                      </Box>
+                    ))}
+
                     </HStack>
                   </Box>
                 </Box>
