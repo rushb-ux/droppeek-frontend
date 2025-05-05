@@ -2,6 +2,11 @@
 import { useRouter } from "next/router"
 import RatingStars from "../../src/components/ui/RatingStars"
 import { useEffect, useState } from "react";
+import { Separator } from "@/components/ui/separator";
+import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Flame, Laugh, Angry, Heart, Frown, Smile, Zap } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 import {
   Box,
@@ -35,6 +40,20 @@ export default function SiteReviewPage() {
   const { id } = router.query
   const site = sites.find((s) => s.id === id)
   const [salesData, setSalesData] = useState<SalesBox[]>([]);
+  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
+  
+  
+  const [selected, setSelected] = useState<string | null>(null);
+  const [emojis, setEmojis] = useState([
+    { label: "superb", icon: <Flame className="w-5 h-5" />, color: "text-orange-500", count: 16 },
+    { label: "love", icon: <Heart className="w-5 h-5" />, color: "text-pink-500", count: 2 },
+    { label: "wow", icon: <Zap className="w-5 h-5" />, color: "text-yellow-500", count: 3 },
+    { label: "sad", icon: <Frown className="w-5 h-5" />, color: "text-blue-400", count: 2 },
+    { label: "laugh", icon: <Laugh className="w-5 h-5" />, color: "text-green-500", count: 10 },
+    { label: "angry", icon: <Angry className="w-5 h-5" />, color: "text-red-600", count: 3 },
+  ]);
+  
+  
 
 
   useEffect(() => {
@@ -146,6 +165,7 @@ export default function SiteReviewPage() {
           )}
         </Box>
       </Box>
+      
 
       {/* Expert Review & Alternatives */}
         <Box maxW="1200px" mx="auto" mt={20} mb={16} px={6}>
@@ -205,11 +225,57 @@ export default function SiteReviewPage() {
                   <Text fontSize="xl" fontWeight="bold" mb={4}>
                     Expert Review
                   </Text>
-                  <Text whiteSpace="pre-line" className="font-dm-serif">
-                    {site.review}
-                  </Text>
+
+                  {Array.isArray(site.reviewPoints) && site.reviewPoints.length > 0 ? (
+                    <VStack align="start" spacing={4}>
+                      {site.reviewPoints.map((point, index) => (
+                        <Box key={index}>
+                          <Text fontWeight="bold" fontSize="md" mb={1}>
+                            {index + 1}. {point.highlights}
+                          </Text>
+                          <Text color="gray.700" fontSize="sm">
+                            {point.text}
+                          </Text>
+                        </Box>
+                      ))}
+                    </VStack>
+                  ) : (
+                    <Text whiteSpace="pre-line" className="font-dm-serif">
+                      {site.review}
+                    </Text>
+                  )}
                 </Box>
-              </Box>
+                {/* Emoji Reaction Feedback */}
+                <Box className="rounded-xl border p-4 shadow bg-white w-full">
+                  <h2 className="text-lg font-semibold text-center mb-4">What's your reaction?</h2>
+                  <div className="flex flex-wrap justify-center gap-4">
+                    {emojis.map(({ label, icon, color, count }) => {
+                      const isActive = selected === label
+                      return (
+                        <button
+                          key={label}
+                          onClick={() => {
+                            setSelected(label);
+                            setEmojis((prev) =>
+                              prev.map((item) =>
+                                item.label === label ? { ...item, count: item.count + 1 } : item
+                              )
+                            );
+                          }}                          
+                          className={`flex flex-col items-center px-3 py-2 rounded-xl transition-all duration-200 border 
+                            ${isActive ? "bg-neutral-900 text-white" : "hover:bg-neutral-100"}`}
+                        >
+                          <span className={isActive ? "text-white" : color}>{icon}</span>
+                          <span className="text-xs font-medium mt-1 capitalize">{label}</span>
+                          <span className="text-sm font-bold">{count}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </Box>
+
+              </Box>  
+
             {/* Alternatives - */}
             <Box
             flex="1"
@@ -225,6 +291,34 @@ export default function SiteReviewPage() {
             />
             </Box>
         </HStack>
+        <Box className="mt-10 text-center">
+          <Separator className="my-4" />
+          <Text className="text-lg font-medium mb-3">Was this page helpful?</Text>
+          <div className="flex justify-center gap-6">
+            <Button
+              variant="ghost"
+              size="icon"
+              className={`transition-colors ${feedback === "up" ? "text-green-600" : "hover:text-green-500"}`}
+              onClick={() => setFeedback("up")}
+            >
+              <ThumbsUp className="h-6 w-6" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className={`transition-colors ${feedback === "down" ? "text-red-600" : "hover:text-red-500"}`}
+              onClick={() => setFeedback("down")}
+            >
+              <ThumbsDown className="h-6 w-6" />
+            </Button>
+          </div>
+          {feedback && (
+            <Text className="mt-2 text-sm text-gray-500">
+              {feedback === "up" ? "Thanks for your feedback!" : "Thanks, we’ll try to improve this page."}
+            </Text>
+          )}
+        </Box>
+
         </Box>
 
     </>
