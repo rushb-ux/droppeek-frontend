@@ -82,7 +82,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         top={0}
         left={0}
         right={0}
-        bottom={0}
+        height="1100px" 
         zIndex={-1}
         backgroundImage="url('/images/hero-bg.png')"
         backgroundSize="cover"
@@ -96,7 +96,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           left: 0,
           right: 0,
           bottom: 0,
-          bgGradient: 'linear(to-b, rgba(255,255,255,0.1) 30%, white 100%)',
+          bgGradient: 'linear(to-b, rgba(0,0,0,0.7) 0%, white 100%)',
         }}
       />
 
@@ -105,9 +105,9 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         <Box
           maxW="1200px"
           mx="auto"
-          mt={40}
-          px={60}
-          py={40}
+          mt={{ base: 20, md: 40 }}
+          px={{ base: 6, md: 60 }}
+          py={{ base: 10, md: 40 }}
           borderRadius="xl"
           backgroundImage="url('/images/hero-bg.png')"
           backgroundSize="cover"
@@ -131,12 +131,14 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
             <Text fontSize="sm" fontWeight="bold" mb={2}>
               DROPPEEK
             </Text>
-            <h1 className="font-poetsen text-6xl mb-2">
-              Top Mystery Box Sites Reviewed in 2025
-            </h1>
-            <Text className="text-3xl" textAlign="center">
-              We test and review the most popular unboxing platforms to help you avoid scams and get the best experience.
-            </Text>
+            <div className="text-left px-6 max-w-screen-md">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-poetsen text-left break-words whitespace-normal w-full max-w-screen-md">
+                Top Mystery Box Sites Reviewed in 2025
+              </h1>
+              <Text fontSize={{ base: "md", md: "2xl" }} textAlign={{ base: "left", md: "center" }}>
+                We test and review the most popular unboxing platforms to help you avoid scams and get the best experience.
+              </Text>
+            </div>
           </Box>
         </Box>
       </Box>
@@ -145,9 +147,10 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
       <Box
         maxW="1000px"
         mx="auto"
-        mt={-20}
+        mt={{ base: -10, md: -20 }}
         mb={12}
-        p={6}
+        px={{ base: 4, md: 6 }}   
+        py={6}
         bg="white"
         borderRadius="xl"
         boxShadow="md"
@@ -157,7 +160,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         <Heading size="lg" mb={4}>
           Recommended Mystery Box Sites
         </Heading>
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
+        <SimpleGrid columns={{ base: 1, sm: 1, md: 3 }} spacing={6}>
           {websites.map((site, index) => (
             <Link
               href={`/site/${site.id}`}
@@ -171,7 +174,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                 borderColor="gray.200"
                 borderRadius="lg"
                 p={4}
-                minH="200px"
+                minH={{ base: "auto", md: "200px" }}
                 transition="all 0.3s ease"
                 boxShadow="sm"
                 _hover={{
@@ -184,7 +187,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                   <Image
                     src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`}
                     alt={`${site.name} logo`}
-                    boxSize="48px"
+                    boxSize={{ base: "36px", md: "48px" }}
                   />
                   <HStack spacing={1}>
                     {Array.from({ length: 5 }).map((_, i) => (
@@ -192,20 +195,25 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                         as={i < Math.floor(site.rating) ? FaStar : FaRegStar}
                         key={i}
                         color={i < site.rating ? "yellow.400" : "gray.300"}
-                        boxSize={5}
+                        boxSize={{ base: 4, md: 5 }}
                       />
                     ))}
                   </HStack>
                 </HStack>
                 <VStack align="start" spacing={1}>
-                  <Text fontSize="xl" fontWeight="bold">{site.name}</Text>
-                  <Text fontSize="sm" color="gray.600">{site.description}</Text>
+                  <Text fontSize={{ base: "md", md: "xl" }} fontWeight="bold">
+                    {site.name}
+                  </Text>
+                  <Text fontSize={{ base: "sm", md: "sm" }} color="gray.600" noOfLines={3}>
+                    {site.description}
+                  </Text>
                 </VStack>
               </Box>
             </Link>
           ))}
         </SimpleGrid>
       </Box>
+
 
       {/* Latest Reviews + Ranking 分栏区域 */}
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} maxW="1000px" mx="auto" mb={12} alignItems="start" >
