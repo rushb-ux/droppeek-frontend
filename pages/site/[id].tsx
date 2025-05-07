@@ -16,6 +16,7 @@ import {
   Tag,
   Image,
   HStack,
+  Flex,
 } from "@chakra-ui/react"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons"
@@ -87,6 +88,38 @@ export default function SiteReviewPage() {
 
   return (
     <>
+    {/* 最底层模糊背景图层 */}
+    <Box
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        height="1100px" 
+        zIndex={-2}
+        backgroundImage="url('/images/hero-bg.png')"
+        backgroundSize="cover"
+        backgroundPosition="center"
+        backgroundRepeat="no-repeat"
+        filter="blur(30px)"
+        _after={{
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bgGradient: 'linear(to-b, rgba(0,0,0,0.7) 0%, white 100%)',
+        }}
+      />
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        height="1100px"
+        zIndex={-1}
+        bgGradient="linear(to-b, rgba(0,0,0,0.7), rgba(255,255,255,0))"
+      />
       {/* Hero 区域 */}
       <Box
         position="relative"
@@ -95,13 +128,14 @@ export default function SiteReviewPage() {
         mt={40}
         minH="500px"
         borderRadius="xl"
-        backgroundImage="url('/images/hero-bg.png')"
+        backgroundImage={`url('${site.image || "/images/hero-bg.png"}')`}
         backgroundSize="cover"
         backgroundPosition="center"
         boxShadow="lg"
         overflow="hidden"
-        px={10} 
-        py={12}
+        px={{ base: 4, md: 10 }}
+        py={{ base: 8, md: 12 }}
+
       >
         {/* 遮罩 */}
         <Box
@@ -110,45 +144,53 @@ export default function SiteReviewPage() {
           left={0}
           right={0}
           bottom={0}
-          bgGradient="linear(to-b, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1))"
+          bgGradient="linear(to-b, rgba(0, 0, 0, 1.15), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8))"
 
           zIndex={1}
         />
 
         {/* 内容 */}
-        <Box maxW="1000px" mx="auto" px={12} position="relative" zIndex={2} color="white">
-          <HStack spacing={4} mb={4}>
-            <Image src={site.logo} alt={site.name} boxSize="60px" />
-            <h2 className="font-poetsen text-5xl text-shadow-lg">{site.name}</h2>
-            <RatingStars rating={site.rating} />
-            
-          </HStack>
+        <Box maxW="full" px={{ base: 4, md: 12 }} position="relative" zIndex={2} color="white">
+        <HStack
+          spacing={4}
+          mb={4}
+          align="start"
+          flexDirection={{ base: "column", md: "row" }}
+        >
+          <Image src={site.logo} alt={site.name} boxSize="60px" />
+          <h2 className="font-poetsen text-2xl sm:text-4xl md:text-5xl text-shadow-lg">
+            {site.name}
+          </h2>
+          <RatingStars rating={site.rating} />
+        </HStack>
 
-          <Text className="text-2xl max-w-[800px] mb-4">
+
+          <Text className="text-base sm:text-lg md:text-2xl max-w-[800px] mb-4">
             {site.description}
           </Text>
 
           {/* Pros */}
-          <Box mb={4}>
-            <HStack spacing={3} wrap="wrap">
-              {site.pros?.map((item, index) => (
-                <Tag key={index} colorScheme="green" variant="solid">
-                  <CheckIcon mr={1} /> {item}
-                </Tag>
-              ))}
-            </HStack>
-          </Box>
+            <Box mb={4}>
+              <Flex wrap="wrap" gap={3}>
+                {site.pros?.map((item, index) => (
+                  <Tag key={index} colorScheme="green" variant="solid">
+                    <CheckIcon mr={1} /> {item}
+                  </Tag>
+                ))}
+              </Flex>
+            </Box>
 
-          {/* Cons */}
-          <Box mb={4}>
-            <HStack spacing={3} wrap="wrap">
-              {site.cons?.map((item, index) => (
-                <Tag key={index} colorScheme="red" variant="subtle">
-                  <CloseIcon mr={1} /> {item}
-                </Tag>
-              ))}
-            </HStack>
-          </Box>
+            {/* Cons */}
+            <Box mb={4}>
+              <Flex wrap="wrap" gap={3}>
+                {site.cons?.map((item, index) => (
+                  <Tag key={index} colorScheme="red" variant="subtle">
+                    <CloseIcon mr={1} /> {item}
+                  </Tag>
+                ))}
+              </Flex>
+            </Box>
+
 
           {/* Promo Codes */}
           {site.promoCodes?.length > 0 && (
@@ -169,8 +211,11 @@ export default function SiteReviewPage() {
 
       {/* Expert Review & Alternatives */}
         <Box maxW="1200px" mx="auto" mt={20} mb={16} px={6}>
-        <HStack spacing={6} align="flex-start">
-            {/* Top 5 Sales + Expert Review） */}
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          gap={6}
+          align="flex-start"
+        >            {/* Top 5 Sales + Expert Review） */}
               <Box flex="2">
                 {/* Top 5 Sales (24H) */}
                 <Box p={6} borderWidth={1} borderRadius="xl" bg="white" boxShadow="md" mb={6}>
@@ -290,7 +335,7 @@ export default function SiteReviewPage() {
                 alternatives={sites.filter((s) => s.id !== id)}
             />
             </Box>
-        </HStack>
+        </Flex>
         <Box className="mt-10 text-center">
           <Separator className="my-4" />
           <Text className="text-lg font-medium mb-3">Was this page helpful?</Text>

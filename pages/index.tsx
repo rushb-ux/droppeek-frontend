@@ -27,6 +27,7 @@ const websites = [
     url: "https://hypedrop.com/r/droppeek",
     domain: "hypedrop.com",
     rating: 3.5,
+    image: "/images/hypedrop.png",
   },
   {
     id: "hypeloot",
@@ -35,6 +36,7 @@ const websites = [
     url: "https://hypeloot.com/r/droppekk",
     domain: "hypeloot.com",
     rating: 3,
+    image: "/images/hypeloot.png",
   },
   {
     id: "lootie",
@@ -43,6 +45,7 @@ const websites = [
     url: "https://lootie.com/r/droppeek",
     domain: "lootie.com",
     rating: 2.5,
+    image: "/images/lootie.png",
   },
 ];
 
@@ -83,7 +86,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         left={0}
         right={0}
         height="1100px" 
-        zIndex={-1}
+        zIndex={-2}
         backgroundImage="url('/images/hero-bg.png')"
         backgroundSize="cover"
         backgroundPosition="center"
@@ -99,6 +102,17 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           bgGradient: 'linear(to-b, rgba(0,0,0,0.7) 0%, white 100%)',
         }}
       />
+      <Box
+        position="fixed"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        zIndex={-1}
+        pointerEvents="none"
+        bgGradient="linear(to-b, rgba(0,0,0,0.4), rgba(255,255,255,0.1))"
+      />
+      
 
       {/* Hero 框 */}
       <Box position="relative" zIndex={1}>
@@ -109,7 +123,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           px={{ base: 6, md: 60 }}
           py={{ base: 10, md: 40 }}
           borderRadius="xl"
-          backgroundImage="url('/images/hero-bg.png')"
+          backgroundImage="linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.25)),url('/images/hero-bg.png')"
           backgroundSize="cover"
           backgroundPosition="center"
           position="relative"
@@ -161,12 +175,10 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           Recommended Mystery Box Sites
         </Heading>
         <SimpleGrid columns={{ base: 1, sm: 1, md: 3 }} spacing={6}>
-          {websites.map((site, index) => (
+          {websites.map((site) => (
             <Link
               href={`/site/${site.id}`}
-              target={site.url.startsWith("http") ? "_blank" : undefined}
-              rel={site.url.startsWith("http") ? "noopener noreferrer" : undefined}
-              key={index}
+              key={site.id}
               style={{ textDecoration: "none" }}
             >
               <Box
@@ -277,7 +289,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           {websites.map((site, i) => (
               <Link
                 key={site.id}
-                href={`/site/${site.id}`}  // ✅ 这里生成链接
+                href={`/site/${site.id}`}  //生成链接
                 style={{ textDecoration: "none" }}
               >
                 <Box
@@ -285,7 +297,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                   overflow="hidden"
                   borderRadius="lg"
                   height="100px"
-                  backgroundImage="url('/images/hero-bg.png')"
+                  backgroundImage={`url('${site.image}')`}
                   backgroundSize="cover"
                   backgroundPosition="center"
                   transition="all 0.3s ease"
