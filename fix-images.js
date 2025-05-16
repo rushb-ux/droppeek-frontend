@@ -4,7 +4,7 @@ const path = require("path");
 const POSTS_DIR = path.join(__dirname, "content", "posts");
 const MEDIA_DIR = path.join(__dirname, "media");
 
-// 获取所有 media 子文件夹中的文件路径（media/xxx.png）
+// 获取所有media子文件夹中的文件路径（media/xxx.png）
 function findMediaFile(filename) {
   const folders = fs.readdirSync(MEDIA_DIR);
 
@@ -13,7 +13,7 @@ function findMediaFile(filename) {
       const folderPath = path.join(MEDIA_DIR, folder);
       const stat = fs.statSync(folderPath);
 
-      if (!stat.isDirectory()) continue; // 跳过 .DS_Store 等文件
+      if (!stat.isDirectory()) continue; // 跳过 .DS_Store等文件
 
       const files = fs.readdirSync(folderPath);
       for (const file of files) {
@@ -27,7 +27,7 @@ function findMediaFile(filename) {
   return null;
 }
 
-// 遍历所有 post 文件夹
+// 遍历所有post文件夹
 fs.readdirSync(POSTS_DIR).forEach((folder) => {
   const postPath = path.join(POSTS_DIR, folder, "index.md");
 
@@ -35,7 +35,7 @@ fs.readdirSync(POSTS_DIR).forEach((folder) => {
 
   let content = fs.readFileSync(postPath, "utf8");
 
-  // 查找 markdown 中所有图片
+  // 查找markdown中所有图片
   const imageMatches = [...content.matchAll(/!\[[^\]]*\]\((.*?)\)/g)];
 
   imageMatches.forEach((match) => {

@@ -1,6 +1,39 @@
-import fs from "fs"
-import path from "path"
-import matter from "gray-matter"
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { fixImagePath } from "@/lib/utils";
+
+export function getBlogPosts() {
+  const blogDir = path.join(process.cwd(), "content/blog");
+  const files = fs.readdirSync(blogDir);
+
+  return files
+    .filter((file) => file.endsWith(".md"))
+    .map((file) => {
+      const filePath = path.join(blogDir, file);
+      const fileContent = fs.readFileSync(filePath, "utf-8");
+      const { data, content } = matter(fileContent);
+      const slug = file.replace(/\.md$/, "");
+
+      return {
+        title: data.title,
+        description: data.description || "",
+        date: data.date ? new Date(data.date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }) : "",
+        category: data.category || "Uncategorized",
+        readTime: data.readTime || "3 min read",
+        imageUrl: fixImagePath(data.image || "/images/default-blog.png"),
+        slug,
+        content,
+      };      
+    });
+}
+
+
+
 
 export function getAllPostSlugs() {
   const postsDir = path.join(process.cwd(), "content/posts")
