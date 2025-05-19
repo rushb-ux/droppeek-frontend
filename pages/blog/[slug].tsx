@@ -99,15 +99,15 @@ export default function ArticlePage({ frontmatter, content }: Props) {
 
       {/* 正文内容 */}
       <Box maxW="800px" mx="auto" py={10} px={{ base: 4, md: 6 }}>
-      <Box
+        <Box
         maxW="800px"
         mx="auto"
         py={10}
         px={{ base: 4, md: 6 }}
         className="prose prose-neutral dark:prose-invert max-w-none"
       >
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </Box>
+      <ReactMarkdown>{content}</ReactMarkdown>
+    </Box>
       </Box>
     </div>
   );

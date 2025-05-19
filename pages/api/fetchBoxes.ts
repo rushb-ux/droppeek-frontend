@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const json = await response.json();
           boxes = json.data.boxes.edges.map((e: any) => e.node);
         } catch (e) {
-          // 🟡 fallback 静态数据
+          //  fallback 静态数据
           boxes = [
             {
               name: "Starbucks",
@@ -63,6 +63,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
           ];
         }
+      }
+      
+      else if (siteId === "JemLit") {
+        return res.status(200).json([
+          {
+            name: "Apple Selection",
+            slug: "apple-ebox-boosted",
+            price: 66.51,
+            iconUrl: "https://d3ht839xyrpcqw.cloudfront.net/195304/conversions/2c3e88c7b1270c44662aeefcd65b236e-default.png"
+          },
+          {
+            name: "Samsung Galaxy",
+            slug: "galaxy",
+            price: 30.0,
+            iconUrl: "https://d3ht839xyrpcqw.cloudfront.net/195316/conversions/7e283b9cd91fd947eeb3c545d7b99a10-default.png"
+          },
+          {
+            name: "Apple Finds",
+            slug: "apple-ebox",
+            price: 4.07,
+            iconUrl: "https://d3ht839xyrpcqw.cloudfront.net/195302/conversions/ee5be33bfc42d68e6b821eb862a65395-default.png"
+          },
+          {
+            name: "Electronics",
+            slug: "electronics",
+            price: 13.29,
+            iconUrl: "https://d3ht839xyrpcqw.cloudfront.net/195855/conversions/4c926bb83a7db2a6daee628ad8e300d4-default.png"
+          },
+          {
+            name: "iPhone 16 Box",
+            slug: "iphone-16-pro",
+            price: 23.94,
+            iconUrl: "https://d3ht839xyrpcqw.cloudfront.net/196046/conversions/d9e046ebdfbf168d17b800f0a7f45a2c-default.png"
+          }
+        ]);
       }
       
 

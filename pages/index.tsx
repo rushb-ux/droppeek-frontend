@@ -39,14 +39,24 @@ const websites = [
     image: "/images/hypeloot.png",
   },
   {
+    id: "JemLit",
+    name: "JemLit",
+    description: "JemLit offers daily mystery box drops with hypebeast, gaming, and tech prizes.",
+    url: "https://jemlit.com/en/a/droppeek",
+    domain: "jemlit.com",
+    rating: 3,
+    image: "/images/lootie.png",
+  },
+  {
     id: "lootie",
     name: "Lootie",
     description: "Gaming and hypebeast mystery boxes.",
     url: "https://lootie.com/r/droppeek",
     domain: "lootie.com",
     rating: 2.5,
-    image: "/images/lootie.png",
+    image: "/images/jemlit.png",
   },
+
 ];
 
 type Review = {
@@ -174,56 +184,60 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         <Heading size="lg" mb={4}>
           Recommended Mystery Box Sites
         </Heading>
-        <SimpleGrid columns={{ base: 1, sm: 1, md: 3 }} spacing={6}>
-          {websites.map((site) => (
-            <Link
-              href={`/site/${site.id}`}
-              key={site.id}
-              style={{ textDecoration: "none" }}
-            >
-              <Box
-                borderWidth={1}
-                borderColor="gray.200"
-                borderRadius="lg"
-                p={4}
-                minH={{ base: "auto", md: "200px" }}
-                transition="all 0.3s ease"
-                boxShadow="sm"
-                _hover={{
-                  boxShadow: "lg",
-                  borderColor: "blue.400",
-                  transform: "translateY(-5px)",
-                }}
-              >
-                <HStack justify="space-between" align="center" mb={2}>
-                  <Image
-                    src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`}
-                    alt={`${site.name} logo`}
-                    boxSize={{ base: "36px", md: "48px" }}
-                  />
-                  <HStack spacing={1}>
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Icon
-                        as={i < Math.floor(site.rating) ? FaStar : FaRegStar}
-                        key={i}
-                        color={i < site.rating ? "yellow.400" : "gray.300"}
-                        boxSize={{ base: 4, md: 5 }}
-                      />
-                    ))}
-                  </HStack>
-                </HStack>
-                <VStack align="start" spacing={1}>
-                  <Text fontSize={{ base: "md", md: "xl" }} fontWeight="bold">
-                    {site.name}
-                  </Text>
-                  <Text fontSize={{ base: "sm", md: "sm" }} color="gray.600" noOfLines={3}>
-                    {site.description}
-                  </Text>
-                </VStack>
-              </Box>
-            </Link>
-          ))}
-        </SimpleGrid>
+        <Box overflowX="auto">
+  <HStack spacing={4} minW="max-content" pb={2}>
+    {websites.map((site) => (
+      <Link
+        href={`/site/${site.id}`}
+        key={site.id}
+        style={{ textDecoration: "none" }}
+      >
+        <Box
+          w="250px"
+          borderWidth={1}
+          borderColor="gray.200"
+          borderRadius="lg"
+          p={4}
+          minH="200px"
+          transition="all 0.3s ease"
+          boxShadow="sm"
+          _hover={{
+            boxShadow: "lg",
+            borderColor: "blue.400",
+            transform: "translateY(-5px)",
+          }}
+        >
+          <HStack justify="space-between" align="center" mb={2}>
+            <Image
+              src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`}
+              alt={`${site.name} logo`}
+              boxSize={{ base: "36px", md: "48px" }}
+            />
+            <HStack spacing={1}>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Icon
+                  as={i < Math.floor(site.rating) ? FaStar : FaRegStar}
+                  key={i}
+                  color={i < site.rating ? "yellow.400" : "gray.300"}
+                  boxSize={{ base: 4, md: 5 }}
+                />
+              ))}
+            </HStack>
+          </HStack>
+          <VStack align="start" spacing={1}>
+            <Text fontSize={{ base: "md", md: "xl" }} fontWeight="bold">
+              {site.name}
+            </Text>
+            <Text fontSize={{ base: "sm", md: "sm" }} color="gray.600" noOfLines={3}>
+              {site.description}
+            </Text>
+          </VStack>
+        </Box>
+      </Link>
+    ))}
+  </HStack>
+</Box>
+
       </Box>
 
 
