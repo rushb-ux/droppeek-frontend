@@ -64,6 +64,78 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           ];
         }
       }
+      else if (siteId === "hapabox") {
+        return res.status(200).json([
+          {
+            name: "Apple M4 Chip",
+            slug: "apple-m4-chip",
+            price: 3.33,
+            iconUrl: "https://static.hapabox.com/upload/79a5c2d6377447ecacd1330138f116c2_source.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_400,h_400/format,webp"
+          },
+          {
+            name: "Pokemon Treasure",
+            slug: "pokemon-treasure",
+            price: 15.79,
+            iconUrl: "https://static.hapabox.com/upload/271c1d19794a4a4fb59c49ea958abe71_source.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_400,h_400/format,webp"
+          },
+          {
+            name: "Gold Coin",
+            slug: "gold-coin",
+            price: 299.77,
+            iconUrl: "https://static.hapabox.com/upload/0650bcc52f904b06a10e28023fe61b18_source.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_400,h_400/format,webp"
+          },
+          {
+            name: "50% Lucky Tackle",
+            slug: "lucky-tackle",
+            price: 19.55,
+            iconUrl: "https://static.hapabox.com/upload/092cb2b71fdb4888b5997eb4a6f5b1af_source.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_400,h_400/format,webp"
+          },
+          {
+            name: "La Perla Mystery Box",
+            slug: "la-perla",
+            price: 5.81,
+            iconUrl: "https://static.hapabox.com/upload/3455e1a9749c48cdb04db2795aa5164c_source.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_400,h_400/format,webp"
+          }
+        ]);
+      }
+      
+
+      else if (siteId === "rillabox") {
+        return res.status(200).json([
+          {
+            name: "Adidas x BAPE",
+            slug: "adidas-bape",
+            price: 18.79,
+            iconUrl: "https://cdn.rillabox.com/media/boxes/BAPE_X_ADIDAS-mock_box_1.png"
+          },
+          {
+            name: "Adidas x Gucci",
+            slug: "adidas-gucci",
+            price: 69.99,
+            iconUrl: "https://cdn.rillabox.com/media/boxes/GUCCI_X_ADIDAS-mock_box_9ZpKWQf.png"
+          },
+          {
+            name: "Adin Ross",
+            slug: "adin-ross",
+            price: 12.89,
+            iconUrl: "https://cdn.rillabox.com/media/boxes/Adin-Ross_1BsHVRx.png"
+          },
+          {
+            name: "Alienware",
+            slug: "alienware",
+            price: 14.49,
+            iconUrl: "https://cdn.rillabox.com/media/boxes/19-ALIENWARE-Box-mock_box_CQzoSjY.png"
+          },
+          {
+            name: "Amazon",
+            slug: "amazon",
+            price: 8.89,
+            iconUrl: "https://cdn.rillabox.com/media/boxes/Amazon_I2y4LL8.png"
+          }
+        ]);
+      }
+      
+      
       
       else if (siteId === "JemLit") {
         return res.status(200).json([

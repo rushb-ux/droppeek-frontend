@@ -6,7 +6,7 @@ const sites = [
     name: "HypeDrop",
     logo: "https:/www.google.com/s2/favicons?sz=64&domain=hypedrop.com",
     rating: 3.5,
-    rank: 1,
+    rank: 2,
     category: "HypeDrop Mystery Boxes",
     image: "/images/hypedrop.png",
     promoCodes: ["DROPPEEK"], 
@@ -59,7 +59,7 @@ const sites = [
     name: "HypeLoot",
     logo: "https://www.google.com/s2/favicons?sz=64&domain=hypeloot.com",
     rating: 2.5,
-    rank: 2,
+    rank: 3,
     category: "HypeLoot Mystery Boxes",
     image: "/images/HypeLoot.png",
     promoCodes: ["droppekk"], 
@@ -99,7 +99,7 @@ const sites = [
     name: "JemLit",
     logo: "https://www.google.com/s2/favicons?sz=64&domain=jemlit.com",
     rating: 3,
-    rank: 3,
+    rank: 4,
     category: "JemLit Mystery Boxes",
     image: "/images/jemlit.png",
     promoCodes: ["droppeek"], 
@@ -136,12 +136,41 @@ const sites = [
     "Launched in April 2020, Jemlit offers themed mystery boxes featuring brands like Apple, Nike, and Samsung. Users deposit funds to acquire Gems, which can be used to open boxes or purchase items directly. While the platform boasts a user-friendly interface and transparent odds, some users have raised concerns about customer support and the fairness of game mechanics.",
   },
   {
+    id: "rillabox",
+    name: "RillaBox",
+    logo: "https://www.google.com/s2/favicons?sz=64&domain=rillabox.com",
+    rating: 3,
+    rank: 5,
+    category: "RillaBox Mystery Boxes",
+    image: "/images/rillabox.png",
+    promoCodes: ["droppeek"],
+    promoText: "FREE BOX + BONUS",
+    promoDescription: "Register to claim your free mystery box and bonus.",
+    pros: [
+      "Supports crypto payments",
+      "Provably fair system",
+      "150+ themed boxes",
+      "Live chat support"
+    ],
+    cons: [
+      "No PayPal or credit cards",
+      "Limited game features"
+    ],
+    url: "https://rillabox.com/",
+    description:
+      "RillaBox is a fast-growing mystery box site offering 150+ themed boxes and provably fair results. With crypto-only deposits and instant resale options, it’s become a top pick for blockchain-savvy users.",
+    review: `RillaBox, launched in 2024, has rapidly gained popularity in the mystery box space due to its wide selection, provably fair system, and cryptocurrency support. The platform allows users to deposit via BTC, ETH, or USDT, and provides over 150 boxes themed around fashion, electronics, gaming, and collectibles.
+  
+  Users praise RillaBox for its transparency and resale mechanics, which let them cash out unwanted items instantly. Though still new, RillaBox already boasts over 2.3 million openings and 700,000 users. Free boxes are available to new users, and a leaderboard with weekly rewards keeps the community engaged.`,
+    alternatives: "jemlit,hypedrop,hypeloot"
+  },  
+  {
     id: "lootie",
     name: "Lootie",
     logo: "https://www.google.com/s2/favicons?domain=lootie.com",
     description: "Lootie has faced growing criticism in the mystery box community. Many users have reported issues such as undelivered items and poor customer service. The controversy involving the Ace Family in April 2025 has further raised doubts about the platform's overall legitimacy.",
     rating: 2.5,
-    rank: 3,
+    rank: 6,
     category: "Lootie Mystery Boxes",
     image: "/images/lootie.png",
     promoCodes: ["droppeek22"], 
@@ -169,8 +198,38 @@ const sites = [
     alternatives: "22222222",
     recommendation: "Lootie is one of our top picks thanks to its strong community presence, regular giveaways, and consistent shipping. Great for both beginners and box veterans.",
     url: "https://lootie.com/r/droppeek"
-  }
-  ,
+  },
+  {
+    id: "hapabox",
+    name: "HapaBox",
+    logo: "https://www.google.com/s2/favicons?sz=64&domain=hapabox.com",
+    rating: 4,
+    rank: 1,
+    category: "HapaBox Mystery Boxes",
+    image: "/images/hapabox.png",
+    promoCodes: ["droppeek"],
+    promoText: "FREE $50 BOX",
+    promoDescription: "Sign up and claim a free $50 mystery box.",
+    pros: [
+      "Multiple game modes: Battle, Treasure Hunt, Bingo King",
+      "Provably fair algorithm",
+      "Authentic products with verified partners",
+      "Daily free boxes for VIP members"
+    ],
+    cons: [
+      "Occasional top-up delays",
+      "Confusing interface for new users",
+      "Slow return process",
+      "Hidden fees in some boxes"
+    ],
+    url: "https://www.hapabox.com/",
+    description:
+      "HapaBox offers diverse mystery box games with authentic items and a provably fair system, making unboxing both fun and trustworthy.",
+    review: `HapaBox stands out with its variety of engaging game modes, including Battle Mode, Treasure Hunt, Bingo King, and Lucky Wheel. Each mode offers a unique unboxing experience, combining luck and strategy. The platform ensures fairness through a provably fair algorithm and guarantees authentic products by collaborating with verified partners.
+  
+  However, users have reported occasional delays in account top-ups and a somewhat confusing interface, especially for newcomers. The return process can also be slow, and some boxes may have hidden fees. Despite these issues, HapaBox remains a popular choice for mystery box enthusiasts seeking diverse gameplay and genuine rewards.`,
+    alternatives: "jemlit,hypedrop,hypeloot"
+  },  
 ];
 
 export default sites;
