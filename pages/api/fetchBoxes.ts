@@ -100,6 +100,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
       
 
+      else if (siteId === "mysteryboxbrand") {
+        return res.status(200).json([
+          {
+            name: "Free Mystery Box",
+            slug: "free-mystery-box",
+            price: 0.01,
+            iconUrl: "https://mysteryboxbrand.com/storage/box/mu3JfoeWmexKQ8CmKjrQ2JplPA4aIt0eCRwQclY0.webp"
+          },
+          {
+            name: "Apple Box",
+            slug: "apple-box",
+            price: 9.99,
+            iconUrl: "https://mysteryboxbrand.com/storage/box/QEjhcv5ANMeA0TzblkfxmcQBgvP6kDRq4k7oD8CB.png"
+          },
+          {
+            name: "Xbox VS PlayStation",
+            slug: "xbox-vs-playstation",
+            price: 9.99,
+            iconUrl: "https://mysteryboxbrand.com/storage/box/oZdIaCep6L747Dly1GgFMDYU5nBXvPl6kBzDDVmB.png"
+          },
+          {
+            name: "PC Premium",
+            slug: "pc-premium",
+            price: 34.99,
+            iconUrl: "https://mysteryboxbrand.com/storage/box/XAtp0ckyy8qZO1dZVeNrU6s8anaaSr78yuczm2hg.webp"
+          },
+          {
+            name: "Yeezy",
+            slug: "yeezy",
+            price: 6.99,
+            iconUrl: "https://mysteryboxbrand.com/storage/box/PKzFcxopW3xVg8jthbXM6OGucwBK3TiajTZQLaT0.webp"
+          }
+        ]);
+      }
+      
+
       else if (siteId === "rillabox") {
         return res.status(200).json([
           {

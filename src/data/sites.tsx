@@ -54,6 +54,40 @@ const sites = [
     ]
     
   },
+  
+  {
+    id: "metadraw",
+    name: "MetaDraw",
+    logo: "https://www.google.com/s2/favicons?sz=64&domain=metadraw.com",
+    rating: 4,
+    rank: 5,
+    category: "MetaDraw Mystery Boxes",
+    image: "/images/metadraw.png",
+    promoCodes: ["droppeek"],
+    promoText: "Try for Free",
+    promoDescription: "Experience unboxing without any commitment.",
+    pros: [
+      "Wide variety of mystery boxes across categories",
+      "Provably fair algorithm ensuring transparency",
+      "Flexible payment options including crypto and traditional methods",
+      "Unique 'Try for Free' feature for new users"
+    ],
+    cons: [
+      "Shipping fees may apply for certain items",
+      "Some boxes may contain low-value filler items",
+    ],
+    url: "https://www.metadraw.com/r/oegnrbab",
+    description:
+      "MetaDraw offers a diverse range of mystery boxes with transparent odds and a provably fair system, providing an exciting unboxing experience.",
+      review: `MetaDraw stands out in the mystery box market by offering a vast selection of boxes catering to various interests, including tech, gaming, fashion, and luxury items. Each box clearly displays potential prizes and their odds, ensuring users make informed choices. The platform's provably fair algorithm guarantees transparency in every unboxing experience.
+
+      One of MetaDraw's unique features is the 'Try for Free' option, allowing users to experience the unboxing process without any financial commitment. Additionally, the platform supports multiple payment methods, including cryptocurrencies and traditional options like Mastercard and Google Pay.
+      
+      Users should be aware that high-value items often have low drop rates, and shipping fees may apply for certain products. However, customer service has received positive feedback for its prompt responses and efficiency. Despite some minor concerns about prize variance, MetaDraw remains a trusted platform for those seeking a transparent and exciting mystery box experience.`,
+      
+    alternatives: "jemlit,rillabox,hapabox"
+  },
+  
   {
     id: "hypeloot",
     name: "HypeLoot",
@@ -164,6 +198,38 @@ const sites = [
   Users praise RillaBox for its transparency and resale mechanics, which let them cash out unwanted items instantly. Though still new, RillaBox already boasts over 2.3 million openings and 700,000 users. Free boxes are available to new users, and a leaderboard with weekly rewards keeps the community engaged.`,
     alternatives: "jemlit,hypedrop,hypeloot"
   },  
+
+  {
+    id: "mysteryboxbrand",
+    name: "MysteryBoxBrand",
+    logo: "https://www.google.com/s2/favicons?sz=64&domain=mysteryboxbrand.com",
+    rating: 3,
+    rank: 9,
+    category: "MysteryBoxBrand Mystery Boxes",
+    image: "/images/mysteryboxbrand.png",
+    promoCodes: ["droppeek"],
+    promoText: "Daily Free Mystery Box",
+    promoDescription: "Sign up and get access to daily free mystery boxes.",
+    pros: [
+      "No duplicate items in boxes",
+      "High-quality products from trusted suppliers",
+      "Fast shipping and delivery",
+      "User-friendly website interface"
+    ],
+    cons: [
+      "Occasional defective items reported",
+      "Limited payment options",
+      "Strict no returns policy"
+    ],
+    url: "https://www.mysteryboxbrand.com/",
+    description:
+      "MysteryBoxBrand offers unique mystery boxes with high-quality, non-duplicate items for a premium unboxing experience.",
+    review: `MysteryBoxBrand stands out by ensuring that each box contains unique, non-repeating items. Products are sourced from trusted suppliers such as StockX and GOAT, emphasizing new, authentic merchandise over recycled goods.
+  
+  The site features a clean and intuitive interface, and most orders ship promptly. However, some users have reported issues with limited payment methods, a strict no-return policy, and rare defective items. Still, it's a top pick for users looking for originality and premium quality.`,
+    alternatives: "luxdrop,rillabox,hapabox"
+  },
+
   {
     id: "lootie",
     name: "Lootie",
@@ -230,6 +296,13 @@ const sites = [
   However, users have reported occasional delays in account top-ups and a somewhat confusing interface, especially for newcomers. The return process can also be slow, and some boxes may have hidden fees. Despite these issues, HapaBox remains a popular choice for mystery box enthusiasts seeking diverse gameplay and genuine rewards.`,
     alternatives: "jemlit,hypedrop,hypeloot"
   },  
+
+  
+  
+
+
+
+
 ];
 
 export default sites;

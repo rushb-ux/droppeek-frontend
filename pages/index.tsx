@@ -26,16 +26,25 @@ const websites = [
     description: "Popular mystery box platform with gaming focus.",
     url: "https://hypedrop.com/r/droppeek",
     domain: "hypedrop.com",
-    rating: 3.5,
+    rating: 4,
     image: "/images/hypedrop.png",
   },
+  {
+    id: "metadraw",
+    name: "MetaDraw",
+    description: "Diverse mystery boxes with transparent odds and provably fair draws.",
+    url: "https://www.metadraw.com/r/droppeek",
+    domain: "metadraw.com",
+    rating: 4,
+    image: "/images/metadraw.png"
+  },  
   {
     id: "hypeloot",
     name: "HypeLoot",
     description: "Luxury-themed mystery box unboxings.",
     url: "https://hypeloot.com/r/droppekk",
     domain: "hypeloot.com",
-    rating: 3,
+    rating: 3.5,
     image: "/images/hypeloot.png",
   },
   {
@@ -47,6 +56,17 @@ const websites = [
     rating: 3,
     image: "/images/lootie.png",
   },
+
+  {
+    id: "mysteryboxbrand",
+    name: "MysteryBoxBrand",
+    description: "Premium mystery boxes with high-quality, non-duplicate items.",
+    url: "https://mysteryboxbrand.com/r/droppeek",
+    domain: "mysteryboxbrand.com",
+    rating: 3,
+    image: "/images/mysteryboxbrand.png"
+  },
+  
   {
     id: "rillabox",
     name: "RillaBox",
