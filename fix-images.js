@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const POSTS_DIR = path.join(__dirname, "content", "posts");
+const POSTS_DIR = path.join(__dirname, "content", "blog");
 const MEDIA_DIR = path.join(__dirname, "media");
 
 // 获取所有media子文件夹中的文件路径（media/xxx.png）

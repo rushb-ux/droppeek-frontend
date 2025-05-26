@@ -98,6 +98,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           }
         ]);
       }
+
+      else if (siteId === "metadraw") {
+        return res.status(200).json([
+          {
+            name: "Tight Budget",
+            slug: "tight-budget",
+            price: 0.16,
+            iconUrl: "/images/Tight Budget.png",
+          },
+          {
+            name: "Play The Card Right",
+            slug: "play-the-card-right",
+            price: 0.28,
+            iconUrl: "/images/Play The Card Right.png",
+          },
+          {
+            name: "Budget Shoes",
+            slug: "budget-shoes",
+            price: 0.51,
+            iconUrl: "/images/Budget Shoes.png",
+          },
+          {
+            name: "Cheap Dream",
+            slug: "cheap-dream",
+            price: 0.52,
+            iconUrl: "/images/Cheap Dream.png",
+          },
+          {
+            name: "Budget Box",
+            slug: "budget-box",
+            price: 2.22,
+            iconUrl: "/images/Budget box.png",
+          },
+        ]);
+      }
+      
       
 
       else if (siteId === "mysteryboxbrand") {

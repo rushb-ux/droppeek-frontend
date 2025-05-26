@@ -25,7 +25,7 @@ export function getBlogPosts() {
         }) : "",
         category: data.category || "Uncategorized",
         readTime: data.readTime || "3 min read",
-        imageUrl: fixImagePath(data.image || "/images/default-blog.png"),
+        imageUrl: fixImagePath(data.imageUrl || "/media/placeholder.jpg"),
         slug,
         content,
       };      
@@ -51,6 +51,8 @@ export function getAllPostSlugs() {
 
     const imageMatch = content.match(/!\[[^\]]*\]\((.*?)\)/)
     const thumbnail = imageMatch ? imageMatch[1] : null
+    const imageUrl = imageMatch ? imageMatch[1] : "/media/placeholder.jpg";
+
 
     console.log(`[POST] ${folder}`);
     console.log(`  → thumbnail = ${thumbnail}`);
@@ -59,6 +61,7 @@ export function getAllPostSlugs() {
       slug: folder,
       title: data.title || "Untitled",
       thumbnail,
+      imageUrl: data.imageUrl || "/media/placeholder.jpg",
     }
   })
 

@@ -95,7 +95,7 @@ const sites = [
     rating: 2.5,
     rank: 3,
     category: "HypeLoot Mystery Boxes",
-    image: "/images/HypeLoot.png",
+    image: "/images/hypeloot.png",
     promoCodes: ["droppekk"], 
     promoText: "5% DEPOSIT BONUS",
     promoDescription: "Click to copy the promo code and use it on the website.",

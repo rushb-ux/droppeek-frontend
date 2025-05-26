@@ -3,6 +3,8 @@ import path from "path";
 import matter from "gray-matter";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm"
+
 import { Box } from "@chakra-ui/react";
 
 interface Props {
@@ -61,6 +63,8 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
         description: data.description || "",
         image: data.image || "/images/hero-bg.png",
         date: data.date ? data.date.toString() : "",
+        imageUrl: data.imageUrl || "/media/placeholder.jpg",
+
       },
       content,
     },
@@ -90,14 +94,20 @@ export default function ArticlePage({ frontmatter, content }: Props) {
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-poetsen text-left break-words whitespace-normal max-w-screen-md">
             {frontmatter.title}
           </h1>
-          <p className="mt-2 text-sm md:text-base text-gray-200">{frontmatter.date}</p>
+          <p className="mt-2 text-sm md:text-base text-gray-200">
+            {new Date(frontmatter.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </p>
           {frontmatter.description && (
             <p className="mt-4 max-w-xl text-lg text-gray-300">{frontmatter.description}</p>
           )}
         </Box>
       </Box>
 
-      {/* 正文内容 */}
+      {/* 正文内容 */} d
       <Box maxW="800px" mx="auto" py={10} px={{ base: 4, md: 6 }}>
         <Box
         maxW="800px"
@@ -106,7 +116,31 @@ export default function ArticlePage({ frontmatter, content }: Props) {
         px={{ base: 4, md: 6 }}
         className="prose prose-neutral dark:prose-invert max-w-none"
       >
-      <ReactMarkdown>{content}</ReactMarkdown>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          img: ({ node, ...props }) => {
+            const isExternal = props.src?.startsWith("http");
+            const fixedSrc = isExternal
+              ? props.src
+              : props.src?.startsWith("/media/")
+              ? props.src
+              : `/media/${props.src?.replace(/^media\//, "")}`;
+            return (
+              <img
+                {...props}
+                src={fixedSrc}
+                className="rounded-lg my-4 max-w-full mx-auto"
+                alt={props.alt || ""}
+              />
+            );
+          },
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+
+
     </Box>
       </Box>
     </div>

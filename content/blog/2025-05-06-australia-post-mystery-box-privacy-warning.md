@@ -1,10 +1,11 @@
 ---
-title: "Australia Post Issues Warning Over TikTok ‘Mystery Box’ Trend Containing Private Details"
-date: 2025-05-06
-categories: 
-  - "news"
-tags: 
-  - "mystery-box"
+title: Australia Post Issues Warning Over TikTok ‘Mystery Box’ Trend Containing Private Details
+date: 2025-05-06T00:00:00.000Z
+categories:
+  - news
+tags:
+  - mystery-box
+imageUrl: /media/australia-post-mystery-box-privacy-warning.png
 ---
 
 A growing TikTok trend featuring so-called “mystery boxes” is drawing criticism and concern from Australia Post, who warn the contents may pose serious privacy and security risks.
