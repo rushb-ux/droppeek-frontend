@@ -21,6 +21,9 @@ import {
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons"
 import sites from "../../src/data/sites"
+import EmojiReactions from "@/components/ui/EmojiReactions";
+
+
 
 import PromoCode from "@/components/ui/promoCode"
 import { AlternativesList } from "@/components/ui/AlternativesList" 
@@ -43,20 +46,6 @@ export default function SiteReviewPage() {
   const [salesData, setSalesData] = useState<SalesBox[]>([]);
   const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
   
-  
-  const [selected, setSelected] = useState<string | null>(null);
-  const [emojis, setEmojis] = useState([
-    { label: "superb", icon: <Flame className="w-5 h-5" />, color: "text-orange-500", count: 16 },
-    { label: "love", icon: <Heart className="w-5 h-5" />, color: "text-pink-500", count: 2 },
-    { label: "wow", icon: <Zap className="w-5 h-5" />, color: "text-yellow-500", count: 3 },
-    { label: "sad", icon: <Frown className="w-5 h-5" />, color: "text-blue-400", count: 2 },
-    { label: "laugh", icon: <Laugh className="w-5 h-5" />, color: "text-green-500", count: 10 },
-    { label: "angry", icon: <Angry className="w-5 h-5" />, color: "text-red-600", count: 3 },
-  ]);
-  
-  
-
-
   useEffect(() => {
     if (!id) return;
     fetch(`/api/fetchBoxes?siteId=${id}`)
@@ -291,37 +280,12 @@ export default function SiteReviewPage() {
                   )}
                 </Box>
                 {/* Emoji Reaction Feedback */}
-                <Box className="rounded-xl border p-4 shadow bg-white w-full">
-                  <h2 className="text-lg font-semibold text-center mb-4">What's your reaction?</h2>
-                  <div className="flex flex-wrap justify-center gap-4">
-                    {emojis.map(({ label, icon, color, count }) => {
-                      const isActive = selected === label
-                      return (
-                        <button
-                          key={label}
-                          onClick={() => {
-                            setSelected(label);
-                            setEmojis((prev) =>
-                              prev.map((item) =>
-                                item.label === label ? { ...item, count: item.count + 1 } : item
-                              )
-                            );
-                          }}                          
-                          className={`flex flex-col items-center px-3 py-2 rounded-xl transition-all duration-200 border 
-                            ${isActive ? "bg-neutral-900 text-white" : "hover:bg-neutral-100"}`}
-                        >
-                          <span className={isActive ? "text-white" : color}>{icon}</span>
-                          <span className="text-xs font-medium mt-1 capitalize">{label}</span>
-                          <span className="text-sm font-bold">{count}</span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </Box>
+                <EmojiReactions siteId={site.id} emojiCounts={site.emojiCounts} />
+
 
               </Box>  
 
-            {/* Alternatives - */}
+            {/* Alternatives - */}  
             <Box
             flex="1"
             p={6}
