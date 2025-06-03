@@ -1,4 +1,3 @@
-
 import {
   Box,
   Heading,
@@ -9,12 +8,11 @@ import {
   Image,
   Badge,
   HStack,
-  Stack
+  Stack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { getBlogPosts } from "../utils/posts";
 import { GetStaticProps } from "next";
-
 
 interface BlogPageProps {
   posts: {
@@ -30,9 +28,6 @@ interface BlogPageProps {
 }
 
 const BlogPage = ({ posts }: BlogPageProps) => {
-
-    
-
   return (
     <Box maxW="7xl" mx="auto" py={10} px={4}>
       <Heading as="h1" size="2xl" textAlign="center" mb={2}>
@@ -118,6 +113,10 @@ const BlogPage = ({ posts }: BlogPageProps) => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = getBlogPosts();
+
+  // 日期从新到旧
+  posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   console.log("📦 Blog posts fetched:", posts);
   return {
     props: { posts },
@@ -125,6 +124,3 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default BlogPage;
-
-
- 
