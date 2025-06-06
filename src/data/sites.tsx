@@ -24,14 +24,14 @@ const sites = [
     alternatives: "22222222",
     url: "https://hypedrop.com/r/droppeek",
 
-    emojiCounts: {
-      superb: 421,
-      love: 44,
-      wow: 8,
-      sad: 3,
-      laugh: 12,
-      angry: 4
-    },
+    // emojiCounts: {
+    //   superb: 421,
+    //   love: 44,
+    //   wow: 8,
+    //   sad: 3,
+    //   laugh: 12,
+    //   angry: 4
+    // },
     
     description: "In April 2025, we conducted a full review of HypeDrop's newly launched V2 system, covering everything from legitimacy concerns and pricing structure to the overall user experience. Don't risk wasting your money before reading this — get all the key insights here.",
     review: `HypeDrop Review
@@ -88,14 +88,14 @@ const sites = [
     ],
     url: "https://www.metadraw.com/r/oegnrbab",
 
-    emojiCounts: {
-      superb: 322,
-      love: 124,
-      wow: 22,
-      sad: 4,
-      laugh: 20,
-      angry: 10
-    },
+    // emojiCounts: {
+    //   superb: 322,
+    //   love: 124,
+    //   wow: 22,
+    //   sad: 4,
+    //   laugh: 20,
+    //   angry: 10
+    // },
     description:
       "MetaDraw offers a diverse range of mystery boxes with transparent odds and a provably fair system, providing an exciting unboxing experience.",
       review: `MetaDraw stands out in the mystery box market by offering a vast selection of boxes catering to various interests, including tech, gaming, fashion, and luxury items. Each box clearly displays potential prizes and their odds, ensuring users make informed choices. The platform's provably fair algorithm guarantees transparency in every unboxing experience.
@@ -144,14 +144,14 @@ const sites = [
     alternatives: "22222222",
     url: "https://hypeloot.com/r/droppekk",
 
-    emojiCounts: {
-      superb: 181,
-      love: 31,
-      wow: 12,
-      sad: 24,
-      laugh: 62,
-      angry: 22
-    },
+    // emojiCounts: {
+    //   superb: 181,
+    //   love: 31,
+    //   wow: 12,
+    //   sad: 24,
+    //   laugh: 62,
+    //   angry: 22
+    // },
     
     description: 
     "We reviewed HypeLoot in April 2025 and found widespread concerns about its legitimacy. Many users have reported sudden account bans and suspect the platform's fairness, raising serious trust issues within the community.",
@@ -194,14 +194,14 @@ const sites = [
     alternatives: "1",
     url: "https://jemlit.com/en/a/droppeek",
 
-    emojiCounts: {
-      superb: 231,
-      love: 12,
-      wow: 19,
-      sad: 12,
-      laugh: 27,
-      angry: 35
-    },
+    // emojiCounts: {
+    //   superb: 231,
+    //   love: 12,
+    //   wow: 19,
+    //   sad: 12,
+    //   laugh: 27,
+    //   angry: 35
+    // },
     
     description: 
     "Launched in April 2020, Jemlit offers themed mystery boxes featuring brands like Apple, Nike, and Samsung. Users deposit funds to acquire Gems, which can be used to open boxes or purchase items directly. While the platform boasts a user-friendly interface and transparent odds, some users have raised concerns about customer support and the fairness of game mechanics.",
@@ -228,14 +228,14 @@ const sites = [
       "Limited game features"
     ],
     url: "https://rillabox.com/",
-    emojiCounts: {
-      superb: 231,
-      love: 37,
-      wow: 22,
-      sad: 33,
-      laugh: 84,
-      angry: 22
-    },
+    // emojiCounts: {
+    //   superb: 231,
+    //   love: 37,
+    //   wow: 22,
+    //   sad: 33,
+    //   laugh: 84,
+    //   angry: 22
+    // },
     
     description:
       "RillaBox is a fast-growing mystery box site offering 150+ themed boxes and provably fair results. With crypto-only deposits and instant resale options, it’s become a top pick for blockchain-savvy users.",
@@ -268,14 +268,14 @@ const sites = [
       "Strict no returns policy"
     ],
     url: "https://www.mysteryboxbrand.com/",
-    emojiCounts: {
-      superb: 81,
-      love: 11,
-      wow: 9,
-      sad: 2,
-      laugh: 5,
-      angry: 12
-    },
+    // emojiCounts: {
+    //   superb: 81,
+    //   love: 11,
+    //   wow: 9,
+    //   sad: 2,
+    //   laugh: 5,
+    //   angry: 12
+    // },
     
     description:
       "MysteryBoxBrand offers unique mystery boxes with high-quality, non-duplicate items for a premium unboxing experience.",
@@ -319,14 +319,14 @@ const sites = [
     alternatives: "22222222",
     recommendation: "Lootie is one of our top picks thanks to its strong community presence, regular giveaways, and consistent shipping. Great for both beginners and box veterans.",
     url: "https://lootie.com/r/droppeek",
-    emojiCounts: {
-      superb: 31,
-      love: 11,
-      wow: 23,
-      sad: 4,
-      laugh: 19,
-      angry: 8
-    }
+    // emojiCounts: {
+    //   superb: 31,
+    //   love: 11,
+    //   wow: 23,
+    //   sad: 4,
+    //   laugh: 19,
+    //   angry: 8
+    // }
     
 
     
@@ -355,14 +355,14 @@ const sites = [
       "Hidden fees in some boxes"
     ],
     url: "https://www.hapabox.com/",
-    emojiCounts: {
-      superb: 63,
-      love: 21,
-      wow: 2,
-      sad: 9,
-      laugh: 12,
-      angry: 10
-    },
+    // emojiCounts: {
+    //   superb: 63,
+    //   love: 21,
+    //   wow: 2,
+    //   sad: 9,
+    //   laugh: 12,
+    //   angry: 10
+    // },
     
     description:
       "HapaBox offers diverse mystery box games with authentic items and a provably fair system, making unboxing both fun and trustworthy.",

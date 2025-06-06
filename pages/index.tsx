@@ -4,6 +4,7 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import { getAllPostSlugs } from "../utils/posts";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import DisqusThread from "@/components/ui/DisqusThread";
 
 
 import {
@@ -387,18 +388,59 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         <Box mt={4}>
           <Text fontWeight="bold">What is a mystery box platform?</Text>
           <Text mb={4} color="gray.600">
-            A mystery box platform lets users purchase digital boxes that
-            contain random prizes, often tied to gaming or fashion.
+            A mystery box platform is an online service where users can purchase digital boxes
+            that contain random items. These items may range from high-end fashion,
+            limited-edition collectibles, to gaming gear or tech gadgets. After opening the box,
+            users either receive the prize directly or can exchange it, depending on the platform’s policy.
+            Mystery box sites blend the excitement of surprise with the potential to win premium products.
           </Text>
-          <Text fontWeight="bold">
-            Is it legit to open mystery boxes online?
-          </Text>
+
+          <Text fontWeight="bold">Is it legit to open mystery boxes online?</Text>
           <Text mb={4} color="gray.600">
-            We only recommend platforms that are verified and widely trusted in
-            the community.
+            Yes — as long as you use a reputable platform. At Droppeek, we only feature platforms that are
+            verified, widely trusted, and have passed our internal review for fairness, transparency, and user safety.
+            While mystery boxes carry an element of chance, legitimate sites clearly state odds,
+            offer secure payments, and have strong community reputations. Always avoid sites that
+            lack transparency or user reviews.
+          </Text>
+
+          <Text fontWeight="bold">What is a mystery box comparison site like Droppeek?</Text>
+          <Text mb={4} color="gray.600">
+            Droppeek is a neutral comparison and navigation platform for mystery box websites.
+            We help users discover and evaluate different mystery box platforms by offering in-depth reviews,
+            platform ratings, bonus comparisons, and safety assessments — all in one place.
+            We do not sell boxes ourselves but guide users to the most reputable options.
+          </Text>
+
+          <Text fontWeight="bold">What kind of information does Droppeek provide?</Text>
+          <Text mb={4} color="gray.600">
+            We provide:
+            {'\n'}• Verified platform reviews and user feedback
+            {'\n'}• Bonus and promo code comparisons
+            {'\n'}• Security and fairness assessments
+            {'\n'}• Prize delivery time comparisons
+            {'\n'}• Resell/withdrawal options across platforms
+            {'\n'}• Daily updates on new events and changes
+          </Text>
+
+          <Text fontWeight="bold">How does Droppeek remain independent?</Text>
+          <Text mb={4} color="gray.600">
+            We strive to stay objective and unbiased. Some platforms may have affiliate partnerships with us,
+            but this does not influence our ratings or recommendations. All reviews and rankings are based on
+            a combination of user data, feature analysis, and real-world testing.
+          </Text>
+
+          <Text fontWeight="bold">Can I leave a review or rating?</Text>
+          <Text mb={4} color="gray.600">
+            Yes! We encourage real user feedback to keep the platform transparent and up-to-date.
+            You can submit your review on each platform's detail page — every voice helps improve
+            the experience for others.
           </Text>
         </Box>
+
       </Box>
+      
+
       <Box
         maxW="1000px" // 
         mx="auto"
@@ -410,7 +452,10 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         bg="transparent"
       >
         <div className="mt-10 border-t pt-6">
-          <h2 className="text-2xl font-bold mb-4">Leave a Comment</h2>
+        <Box mt={20}>
+          <DisqusThread identifier="homepage" title="Droppeek Homepage Comments" />
+        </Box>
+          {/* <h2 className="text-2xl font-bold mb-4">Leave a Comment</h2>
           <form onSubmit={(e) => { e.preventDefault(); alert('Comment submitted!'); }}>
             <textarea
               placeholder="Write your comment here..."
@@ -418,7 +463,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
               rows={4}
             ></textarea>
             <Button type="submit">Submit</Button>
-          </form>
+          </form> */}
         </div>
       </Box>  
 

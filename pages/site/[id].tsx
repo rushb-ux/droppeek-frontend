@@ -7,6 +7,8 @@ import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Flame, Laugh, Angry, Heart, Frown, Smile, Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
+import DisqusThread from '@/components/ui/DisqusThread'
+
 
 import {
   Box,
@@ -278,12 +280,19 @@ export default function SiteReviewPage() {
                       {site.review}
                     </Text>
                   )}
+
+                  {/* 评论区 */}
+                  <Box mt={10}>
+                    <DisqusThread identifier={`/site/${site.id}`} title={site.name} />
+                  </Box>
+                  
                 </Box>
                 {/* Emoji Reaction Feedback */}
                 <EmojiReactions siteId={site.id} emojiCounts={site.emojiCounts} />
 
 
               </Box>  
+              
 
             {/* Alternatives - */}  
             <Box
