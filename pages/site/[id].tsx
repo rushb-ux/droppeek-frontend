@@ -23,7 +23,7 @@ import {
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons"
 import sites from "../../src/data/sites"
-import EmojiReactions from "@/components/ui/EmojiReactions";
+// import EmojiReactions from "@/components/ui/EmojiReactions";
 
 
 
@@ -287,8 +287,9 @@ export default function SiteReviewPage() {
                   </Box>
                   
                 </Box>
-                {/* Emoji Reaction Feedback */}
-                <EmojiReactions siteId={site.id} emojiCounts={site.emojiCounts} />
+
+                {/* Emoji Reaction Feedback
+                <EmojiReactions siteId={site.id} emojiCounts={site.emojiCounts} /> */}
 
 
               </Box>  
