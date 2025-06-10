@@ -1,6 +1,8 @@
 ---
 title: "PackDraw Jackpot Box Review: Is the Gamble Worth It?"
 date: 2025-01-16
+platform: "PackDraw"
+
 ---
 
 The "Jackpot" box from PackDraw costs **$8.87** per spin and offers a mix of items, ranging from high-end luxury products like Louis Vuitton backpacks and Nike sneakers to low-value vouchers and accessories. Despite the allure of premium items, the probabilities heavily favor low-value outcomes, making this box a high-risk gamble.

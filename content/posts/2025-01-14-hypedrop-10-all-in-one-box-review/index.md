@@ -1,6 +1,7 @@
 ---
 title: "Hypedrop “10% All In One” Box Review"
 date: 2025-01-14
+platform: "HypeDrop"
 ---
 
 The **[10% All In One](https://www.hypedrop.com/en/boxes/view/na/10percent-all-in-one)** box from **[Hypedrop](https://www.hypedrop.com/en/)** offers a thrilling experience with a mix of high-end sneakers, electronics, and digital goods. While the high-value items are rare, this box gives slightly better chances compared to other similar offerings. Here’s an overview of the results from simulating 100 unboxings.

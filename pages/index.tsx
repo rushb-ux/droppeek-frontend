@@ -127,42 +127,9 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
     
 
   return (
-    <Box position="relative" minH="100vh" overflow="hidden">
-      {/* 最底层模糊背景图层 */}
-      <Box
-        position="absolute"
-        top={0}
-        left={0}
-        right={0}
-        height="1100px" 
-        zIndex={-2}
-        backgroundImage="url('/images/hero-bg.png')"
-        backgroundSize="cover"
-        backgroundPosition="center"
-        backgroundRepeat="no-repeat"
-        filter="blur(30px)"
-        _after={{
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          bgGradient: 'linear(to-b, rgba(0,0,0,0.7) 0%, white 100%)',
-        }}
-      />
-      <Box
-        position="fixed"
-        top={0}
-        left={0}
-        right={0}
-        bottom={0}
-        zIndex={-1}
-        pointerEvents="none"
-        bgGradient="linear(to-b, rgba(0,0,0,0.4), rgba(255,255,255,0.1))"
-      />
-      
+    <Box position="relative" minH="100vh" overflow="hidden"  bg="#F5F5F7">
 
+      
       {/* Hero 框 */}
       <Box position="relative" zIndex={1}>
         <Box
@@ -172,7 +139,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           px={{ base: 6, md: 60 }}
           py={{ base: 10, md: 40 }}
           borderRadius="xl"
-          backgroundImage="linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.25)),url('/images/hero-bg.png')"
+          backgroundImage="none"
           backgroundSize="cover"
           backgroundPosition="center"
           position="relative"
@@ -485,5 +452,6 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         </HStack>
       </Box>
     </Box>
+    
   );
 }

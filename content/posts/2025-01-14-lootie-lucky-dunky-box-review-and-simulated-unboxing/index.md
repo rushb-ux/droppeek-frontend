@@ -1,6 +1,7 @@
 ---
 title: "LOOTIE Lucky Dunky Box Review and Simulated Unboxing"
 date: 2025-01-14
+platform: "Lootie"
 ---
 
 #### The Looti “[Lucky Dunky](https://www.lootie.com/mysterybox/unbox/lucky-dunky-2WISpcPza)” box offers a mix of excitement and risk, perfect for sneaker enthusiasts looking to test their luck.

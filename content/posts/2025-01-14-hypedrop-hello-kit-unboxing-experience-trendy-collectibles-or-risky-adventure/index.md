@@ -3,6 +3,7 @@ title: "Hypedrop \"Hello Kit\" Unboxing Experience: Trendy Collectibles or Risky
 date: 2025-01-14
 tags: 
   - "hypedrop"
+platform: "HypeDrop"
 ---
 
 The Hypedrop "[Hello Kit](https://hypedrop.com/en/boxes/view/na/hello-kit)" box, priced at **$45.48**, features Hello Kitty-themed items and collaborations with popular brands. With its mix of high-value collectibles and everyday accessories, this box appeals to fans of Hello Kitty and pop culture enthusiasts. However, the results often fall short of expectations, as our analysis reveals.

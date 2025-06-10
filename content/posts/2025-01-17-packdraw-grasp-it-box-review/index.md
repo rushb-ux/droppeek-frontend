@@ -1,6 +1,8 @@
 ---
 title: "PackDraw Grasp It Box Review: A Risky Gamble for Luxury Rewards"
 date: 2025-01-17
+platform: "PackDraw"
+
 ---
 
 The "Grasp It" box from PackDraw is priced at **$223.39** per spin, promising a mix of high-end luxury items, mid-tier gadgets, and low-value collectibles. With high-value items such as the **Rolex GMT-Master II** and **Nike Air Yeezy 2 Pure Platinum**, it’s a tempting choice for thrill-seekers. However, the box’s low-value items dominate the probability, making it a risky gamble for most players.

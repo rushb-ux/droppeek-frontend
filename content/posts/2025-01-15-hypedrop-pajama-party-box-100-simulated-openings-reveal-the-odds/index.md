@@ -4,6 +4,8 @@ date: 2025-01-15
 tags: 
   - "100-simulated-openings"
   - "hypedrop"
+platform: "HypeDrop"
+
 ---
 
 The "[Pajama Party](https://www.hypedrop.com/en/boxes/view/na/pajama-party)" box from Hypedrop comes with a price tag of **$51.03** per box. This box promises a mix of mid-tier items like branded pajamas and accessories, alongside low-value items such as snacks and small collectibles. However, the allure lies in the rare high-value items like luxury robes and electronics, which are nearly impossible to obtain.

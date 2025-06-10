@@ -4,6 +4,7 @@ date: 2025-01-14
 tags: 
   - "jordan"
   - "lootie"
+platform: "Lootie"
 ---
 
 LOOTIE Unboxing Website “[Jordan Heaven](https://www.lootie.com/mysterybox/unbox/jordan-heaven)” $19.99 Case Review

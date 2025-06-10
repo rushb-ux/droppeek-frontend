@@ -61,6 +61,7 @@ export function getAllPostSlugs() {
       slug: folder,
       title: data.title || "Untitled",
       thumbnail,
+      platform: data.platform || null,
       imageUrl: data.imageUrl || "/media/placeholder.jpg",
     }
   })

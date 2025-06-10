@@ -5,6 +5,8 @@ categories:
   - "packdraw"
 tags: 
   - "100-simulated-openings"
+platform: "PackDraw"
+
 ---
 
 The **Packdraw ‘Sorry Bro’ box** offers a range of items with varying values, from **luxury bags** to **small accessories**. The box contains both **high-value** and **low-value items**, with the potential to win items like a **Louis Vuitton bag** or a **Rolls Royce**. In this review, we’ll analyze the box’s contents, probabilities, and overall cost-effectiveness based on 100 simulated unboxings.

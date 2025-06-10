@@ -5,6 +5,8 @@ tags:
   - "100-simulated-openings"
   - "hypedrop"
   - "small-juicer"
+platform: "HypeDrop"
+
 ---
 
 In this review, we analyzed the **Hypedrop "Small Juicer" box** through 100 simulated unboxings. The box offers a wide range of items, from collectible items to fashion accessories. In this article, we'll take a closer look at its value, the potential for rewards, and whether it’s worth the gamble.

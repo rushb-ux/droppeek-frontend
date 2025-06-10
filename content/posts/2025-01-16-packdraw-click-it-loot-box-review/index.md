@@ -1,6 +1,8 @@
 ---
 title: "PackDraw Click It Loot Box Review: Are the Odds Worth the Cost?"
 date: 2025-01-16
+platform: "PackDraw"
+
 ---
 
 The "**Click It**" loot box from **PackDraw** is a $12.68 gamble that promises a mix of gaming peripherals and low-value vouchers. Featuring keyboards from popular brands and rare high-value prizes like gaming desktop PCs and race car computer chairs, the box appeals to both budget-conscious gamers and thrill-seekers. However, with a staggering 74% probability of receiving $0.50 vouchers, is it truly worth the spin? We conducted 100 simulated openings to uncover the real odds and value behind this loot box.

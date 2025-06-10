@@ -5,6 +5,8 @@ categories:
   - "mrloot"
 tags: 
   - "100-simulated-openings"
+platform: "Mrloot"
+
 ---
 
 We tried out the ‘[In My Zone](https://mrloot.com/boxes/open/In-My-Zone)’ box from [Mrloot](https://mrloot.com/) to see what kind of value it offers and whether it’s worth a shot for unboxing enthusiasts.

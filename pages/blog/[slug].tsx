@@ -144,5 +144,6 @@ export default function ArticlePage({ frontmatter, content }: Props) {
     </Box>
       </Box>
     </div>
+    
   );
 }

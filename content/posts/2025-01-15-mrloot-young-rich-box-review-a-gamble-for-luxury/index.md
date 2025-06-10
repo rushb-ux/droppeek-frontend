@@ -5,6 +5,8 @@ categories:
   - "mrloot"
 tags: 
   - "100-simulated-openings"
+platform: "Mrloot"
+
 ---
 
 The Mrloot ‘[Young & Rich](https://mrloot.com/boxes/open/Young-%26-Rich)’ box, priced at $395.5, promises a mix of high-stakes luxury and surprising variety. With items ranging from small gadgets to a Lamborghini, we tested this premium box to see if it delivers on its lofty promises.

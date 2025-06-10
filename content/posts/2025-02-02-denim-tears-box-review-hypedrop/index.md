@@ -4,6 +4,8 @@ date: 2025-02-02
 tags: 
   - "100-simulated-openings"
   - "hypedrop"
+platform: "HypeDrop"
+
 ---
 
 The **Hypedrop "Denim Tears" box** offers a diverse range of items from **high-end fashion** to **gaming** accessories. With a mix of **luxury items**, **mid-value clothing**, and a substantial amount of **low-value items**, the box presents an intriguing gamble. In this review, we will break down the items included in this box, evaluate its value, and provide a detailed analysis based on 100 simulated unboxings.

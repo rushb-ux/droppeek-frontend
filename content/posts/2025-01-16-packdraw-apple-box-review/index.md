@@ -1,6 +1,8 @@
 ---
 title: "PackDraw Apple Box Review: Is It Worth the $22.40 Gamble?"
 date: 2025-01-16
+platform: "PackDraw"
+
 ---
 
 The "Apple Box" from PackDraw is priced at **$22.40** per spin, offering a wide range of Apple-branded products. From high-end devices like MacBook Pros and Apple Vision Pro to affordable accessories like chargers and screen protectors, this loot box caters to Apple fans. However, with a staggering **89.99% chance** of landing low-value items like $1 vouchers, is this box worth your investment? We tested it with 100 spins to find out.

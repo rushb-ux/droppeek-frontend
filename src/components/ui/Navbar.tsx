@@ -28,6 +28,7 @@ const Navbar = () => {
 
         {/* 桌面端导航菜单 */}
         <HStack spacing={6} display={{ base: "none", md: "flex" }}>
+          <Link href="/platforms">All Platforms</Link>
           <Link href="/reviews">Reviews</Link>
           <Link href="/blog">Blog</Link>
         </HStack>

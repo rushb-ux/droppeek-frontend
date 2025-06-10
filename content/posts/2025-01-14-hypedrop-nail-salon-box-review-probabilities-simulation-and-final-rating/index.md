@@ -1,6 +1,7 @@
 ---
 title: "Hypedrop Nail Salon Box Review: Probabilities, Simulation, and Final Rating"
 date: 2025-01-14
+platform: "HypeDrop"
 ---
 
 The Hypedrop [Nail Salon Box](https://www.hypedrop.com/en/boxes/view/na/hello-kit) offers an exciting unboxing experience for nail care enthusiasts, featuring a wide range of products from luxury items to everyday essentials.

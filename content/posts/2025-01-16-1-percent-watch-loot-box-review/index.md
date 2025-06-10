@@ -1,6 +1,8 @@
 ---
 title: "The 1% Watch Loot Box on PackDraw: A High-Stakes Gamble for Luxury Timepieces"
 date: 2025-01-16
+platform: "PackDraw"
+
 ---
 
 The "1% Watch" loot box on **PackDraw** is a high-risk, high-reward option priced at **$2.96** per spin. This box features an array of luxury and popular timepieces, from iconic brands like Rolex, Cartier, and Apple to accessible G-Shock models. With extremely low odds for high-value items and significant chances for low-value vouchers.

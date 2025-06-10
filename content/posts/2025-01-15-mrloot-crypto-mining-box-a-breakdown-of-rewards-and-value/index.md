@@ -5,6 +5,8 @@ categories:
   - "mrloot"
 tags: 
   - "100-simulated-openings"
+platform: "Mrloot"
+
 ---
 
 We conducted 100 simulated unboxings of the Mrloot ‘[Crypto Mining](https://mrloot.com/boxes/open/Crypto-Mining)’ box to evaluate its value, fairness, and potential returns. Here’s a detailed look at what you can expect from this popular mystery box.

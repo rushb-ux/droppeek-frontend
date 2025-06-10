@@ -4,6 +4,8 @@ date: 2025-01-22
 tags: 
   - "100-simulated-openings"
   - "hypedrop"
+platform: "HypeDrop"
+
 ---
 
 The **Hypedrop ****Black Ops******, priced at **$38.47 per spin**, offers a wide range of tactical and outdoor gear, collectibles, and premium items. From exclusive high-value watches and military apparel to low-value toys and accessories, the box promises a mix of thrill and utility.
