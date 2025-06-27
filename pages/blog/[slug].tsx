@@ -76,25 +76,16 @@ export default function ArticlePage({ frontmatter, content }: Props) {
     <div>
       {/* Hero 区 */}
       <Box
-        maxW="1200px"
+        maxW="800px"
         mx="auto"
-        mt={{ base: 20, md: 40 }}
-        px={{ base: 6, md: 60 }}
-        py={{ base: 10, md: 40 }}
-        borderRadius="xl"
-        backgroundImage={`linear-gradient(to bottom, rgba(0,0,0,0.75), rgba(0,0,0,0.25)),url('${frontmatter.image}')`}
-        backgroundSize="cover"
-        backgroundPosition="center"
-        position="relative"
-        boxShadow="lg"
-        overflow="hidden"
-        color="white"
+        mt={{ base: 20, md: 28 }}
+        px={{ base: 4, md: 6 }}
       >
-        <Box position="relative" zIndex={2} textAlign="left">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-poetsen text-left break-words whitespace-normal max-w-screen-md">
-            {frontmatter.title}
-          </h1>
-          <p className="mt-2 text-sm md:text-base text-gray-200">
+
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+              {frontmatter.title}
+            </h1>
+          <p className="mt-2 text-sm md:text-base text-gray-500">
             {new Date(frontmatter.date).toLocaleDateString("en-US", {
               year: "numeric",
               month: "short",
@@ -104,7 +95,6 @@ export default function ArticlePage({ frontmatter, content }: Props) {
           {frontmatter.description && (
             <p className="mt-4 max-w-xl text-lg text-gray-300">{frontmatter.description}</p>
           )}
-        </Box>
       </Box>
 
       {/* 正文内容 */} d

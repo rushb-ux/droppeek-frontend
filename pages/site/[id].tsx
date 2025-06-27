@@ -206,7 +206,8 @@ export default function SiteReviewPage() {
           direction={{ base: "column", md: "row" }}
           gap={6}
           align="flex-start"
-        >            {/* Top 5 Sales + Expert Review） */}
+        >            
+        {/* Top 5 Sales + Expert Review） */}
               <Box flex="2">
                 {/* Top 5 Sales (24H) */}
                 <Box p={6} borderWidth={1} borderRadius="xl" bg="white" boxShadow="md" mb={6}>
