@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { getTopReviews } from "../src/lib/api";
-import { FaStar, FaRegStar, FaChevronRight, FaChevronDown, FaChevronUp,FaShieldAlt, FaUsers  } from "react-icons/fa";
+import { FaStar, FaRegStar, FaChevronRight, FaChevronDown, FaChevronUp, FaShieldAlt, FaUsers, FaNewspaper, FaHome } from "react-icons/fa";
 import { getAllPostSlugs } from "../utils/posts";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DisqusThread from "@/components/ui/DisqusThread";
-
 
 import { 
   Box,
@@ -19,6 +18,7 @@ import {
   Icon,
   Badge,
   Flex,
+  Container,
 } from "@chakra-ui/react";
 import { Link as ChakraLink } from "@chakra-ui/next-js";
 
@@ -71,7 +71,6 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
   );
 };
 
-
 const websites = [
   {
     id: "hypedrop",
@@ -109,7 +108,6 @@ const websites = [
     rating: 3,
     image: "/images/lootie.png",
   },
-
   {
     id: "mysteryboxbrand",
     name: "MysteryBoxBrand",
@@ -119,7 +117,6 @@ const websites = [
     rating: 3,
     image: "/images/mysteryboxbrand.png"
   },
-  
   {
     id: "rillabox",
     name: "RillaBox",
@@ -147,7 +144,6 @@ const websites = [
     rating: 4,
     image: "/images/hapabox.png"
   },  
-
 ];
 
 type Review = {
@@ -167,565 +163,561 @@ type Review = {
 };
 
 export async function getStaticProps() {
-  const posts = getAllPostSlugs(); // 本地文章
+  const posts = getAllPostSlugs();
   return { props: { posts } };
 }
 
-
 export default function HomePage({ posts }: { posts: { slug: string; title: string; thumbnail?: string | null }[] }) {
-
   const [showAll, setShowAll] = useState(false);
   const displayedPosts = showAll ? posts : posts.slice(0, 10);
-    
 
   return (
-    <Box position="relative" minH="100vh" overflow="hidden"  bg="#F5F5F7">
-
-      
-{/* Hero Section */}
-<Box position="relative" zIndex={1}>
-  <Box
-    maxW="1200px"
-    mx="auto"
-    mt={{ base: 20, md: 40 }}
-    px={{ base: 6, md: 12 }}
-    py={{ base: 12, md: 16 }}
-    borderRadius="2xl"
-    bgGradient="linear(135deg, blue.600, purple.600, pink.500)"
-    position="relative"
-    boxShadow="2xl"
-    overflow="hidden"
-    zIndex={1}
-    border="1px solid"
-    borderColor="whiteAlpha.200"
-  >
-    {/* Animated Background Elements */}
-    <Box
-      position="absolute"
-      top="10%"
-      left="5%"
-      w="100px"
-      h="100px"
-      bg="whiteAlpha.100"
-      borderRadius="full"
-      animation="float 6s ease-in-out infinite"
-    />
-    <Box
-      position="absolute"
-      top="20%"
-      right="10%"
-      w="80px"
-      h="80px"
-      bg="whiteAlpha.100"
-      borderRadius="full"
-      animation="float 8s ease-in-out infinite reverse"
-    />
-    <Box
-      position="absolute"
-      bottom="20%"
-      left="15%"
-      w="60px"
-      h="60px"
-      bg="whiteAlpha.100"
-      borderRadius="full"
-      animation="float 10s ease-in-out infinite"
-    />
-
-    {/* Background Pattern */}
-    <Box
-      position="absolute"
-      top={0}
-      left={0}
-      right={0}
-      bottom={0}
-      bgImage="url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;><defs><pattern id=&quot;grain&quot; width=&quot;100&quot; height=&quot;100&quot; patternUnits=&quot;userSpaceOnUse&quot;><circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;80&quot; cy=&quot;40&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;40&quot; cy=&quot;60&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;90&quot; cy=&quot;80&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/></pattern></defs><rect width=&quot;100&quot; height=&quot;100&quot; fill=&quot;url(%23grain)&quot;/></svg>')"
-      opacity={0.3}
-    />
-
-    <VStack spacing={6} position="relative" zIndex={2} align={{ base: "center", md: "flex-start" }}>
-      {/* Trust Badge */}
-      <Badge
-        colorScheme="orange"
-        fontSize="sm"
-        px={4}
-        py={2}
-        borderRadius="full"
-        fontWeight="bold"
-        bg="orange.400"
-        color="white"
-        textTransform="uppercase"
-        letterSpacing="wide"
-      >
-        🏆 TRUSTED BY 50K+ USERS
-      </Badge>
-      
-      {/* Brand Name */}
-      <Text 
-        fontSize="lg" 
-        fontWeight="black" 
-        mb={2} 
-        color="whiteAlpha.900"
-        textTransform="uppercase"
-        letterSpacing="wider"
-      >
-        DROPPEEK
-      </Text>
-
-      {/* Main Heading */}
-      <Heading
-        size="3xl"
-        fontWeight="black"
-        textAlign={{ base: "center", md: "left" }}
-        lineHeight="shorter"
-        color="white"
-        textShadow="2px 2px 4px rgba(0,0,0,0.3)"
-        maxW="800px"
-      >
-        Top Mystery Box Sites
-        <br />
-        <Text as="span" bgGradient="linear(to-r, yellow.200, orange.200)" bgClip="text">
-          Reviewed in 2025
-        </Text>
-      </Heading>
-      
-      {/* Subtitle */}
-      <Text
-        fontSize={{ base: "lg", md: "xl" }}
-        maxW="600px"
-        textAlign={{ base: "center", md: "left" }}
-        color="whiteAlpha.900"
-        lineHeight="tall"
-        fontWeight="medium"
-      >
-        We test and review the most popular unboxing platforms to help you avoid scams and get the best experience. Find your perfect mystery box platform today!
-      </Text>
-
-      {/* Key Benefits */}
-      <HStack spacing={6} wrap="wrap" justify={{ base: "center", md: "flex-start" }}>
-        <HStack spacing={2}>
-          <Icon as={FaShieldAlt} color="green.300" boxSize={5} />
-          <Text color="white" fontSize="sm" fontWeight="semibold">Scam Protection</Text>
-        </HStack>
-        <HStack spacing={2}>
-          <Icon as={FaStar} color="yellow.300" boxSize={5} />
-          <Text color="white" fontSize="sm" fontWeight="semibold">Expert Reviews</Text>
-        </HStack>
-        <HStack spacing={2}>
-          <Icon as={FaUsers} color="blue.300" boxSize={5} />
-          <Text color="white" fontSize="sm" fontWeight="semibold">Community Trusted</Text>
-        </HStack>
-      </HStack>
-
-      {/* Social Proof */}
-      <HStack spacing={8} pt={4} wrap="wrap" justify={{ base: "center", md: "flex-start" }}>
-        <VStack spacing={1}>
-          <Text fontSize="2xl" fontWeight="bold" color="white">50K+</Text>
-          <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">Users Protected</Text>
-        </VStack>
-        <VStack spacing={1}>
-          <Text fontSize="2xl" fontWeight="bold" color="white">25+</Text>
-          <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">Platforms Reviewed</Text>
-        </VStack>
-        <VStack spacing={1}>
-          <Text fontSize="2xl" fontWeight="bold" color="white">1000+</Text>
-          <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">Scams Prevented</Text>
-        </VStack>
-      </HStack>
-    </VStack>
-  </Box>
-</Box>
-
-<style jsx>{`
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-`}</style>
-     
-                {/* Recommended Sites Section */}
-<Box
-  maxW="1000px"
-  mx="auto"
-  mt={{ base: 8, md: 12 }}
-  mb={12}
-  px={{ base: 4, md: 6 }}   
-  py={8}
-  bg="white"
-  borderRadius="2xl"
-  boxShadow="xl"
-  zIndex={2}
-  position="relative"
-  border="1px solid"
-  borderColor="gray.100"
->
-  <Flex justify="space-between" align="center" mb={6}>
-    <VStack align="flex-start" spacing={1}>
-      <Heading size="xl" color="gray.800">
-        🎯 Recommended Mystery Box Sites
-      </Heading>
-      <Text color="gray.600" fontSize="lg">
-        Our top-rated platforms for 2025
-      </Text>
-    </VStack>
-    <Badge colorScheme="green" fontSize="md" px={4} py={2} borderRadius="full" fontWeight="bold">
-      Updated Today
-    </Badge>
-  </Flex>
-
-  <Box
-    overflowX="auto"
-    css={{
-      '&::-webkit-scrollbar': {
-        height: '8px',
-      },
-      '&::-webkit-scrollbar-track': {
-        background: 'transparent',
-      },
-      '&::-webkit-scrollbar-thumb': {
-        background: '#CBD5E0',
-        borderRadius: '4px',
-      },
-      '&::-webkit-scrollbar-thumb:hover': {
-        background: '#A0AEC0',
-      },
-    }}
-  >
-    <HStack spacing={6} pb={4} minW="max-content">
-      {websites.slice(0, 6).map((site, index) => (
-        <Link
-          href={`/site/${site.id}`}
-          key={site.id}
-          style={{ textDecoration: "none" }}
+    <Box position="relative" minH="100vh" overflow="hidden" bg="#F5F5F7">
+      {/* Hero Section */}
+      <Box position="relative" zIndex={1}>
+        <Box
+          maxW="1200px"
+          mx="auto"
+          mt={{ base: 20, md: 40 }}
+          px={{ base: 6, md: 12 }}
+          py={{ base: 12, md: 16 }}
+          borderRadius="2xl"
+          bgGradient="linear(135deg, blue.600, purple.600, pink.500)"
+          position="relative"
+          boxShadow="2xl"
+          overflow="hidden"
+          zIndex={1}
+          border="1px solid"
+          borderColor="whiteAlpha.200"
         >
+          {/* Animated Background Elements */}
           <Box
-            w="320px"
-            bg="white"
-            border="2px solid"
-            borderColor="gray.100"
-            borderRadius="xl"
-            p={6}
-            transition="all 0.3s ease"
-            position="relative"
-            _hover={{
-              borderColor: "blue.300",
-              transform: "translateY(-8px)",
-              boxShadow: "2xl",
-            }}
-          >
-            {/* Rank Badge */}
+            position="absolute"
+            top="10%"
+            left="5%"
+            w="100px"
+            h="100px"
+            bg="whiteAlpha.100"
+            borderRadius="full"
+            animation="float 6s ease-in-out infinite"
+          />
+          <Box
+            position="absolute"
+            top="20%"
+            right="10%"
+            w="80px"
+            h="80px"
+            bg="whiteAlpha.100"
+            borderRadius="full"
+            animation="float 8s ease-in-out infinite reverse"
+          />
+          <Box
+            position="absolute"
+            bottom="20%"
+            left="15%"
+            w="60px"
+            h="60px"
+            bg="whiteAlpha.100"
+            borderRadius="full"
+            animation="float 10s ease-in-out infinite"
+          />
+
+          {/* Background Pattern */}
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            bgImage="url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;><defs><pattern id=&quot;grain&quot; width=&quot;100&quot; height=&quot;100&quot; patternUnits=&quot;userSpaceOnUse&quot;><circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;80&quot; cy=&quot;40&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;40&quot; cy=&quot;60&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;90&quot; cy=&quot;80&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/></pattern></defs><rect width=&quot;100&quot; height=&quot;100&quot; fill=&quot;url(%23grain)&quot;/></svg>')"
+            opacity={0.3}
+          />
+
+          <VStack spacing={6} position="relative" zIndex={2} align={{ base: "center", md: "flex-start" }}>
+            {/* Trust Badge */}
             <Badge
-              position="absolute"
-              top={-2}
-              left={4}
-              colorScheme={index === 0 ? "yellow" : index === 1 ? "gray" : "orange"}
+              colorScheme="orange"
               fontSize="sm"
-              px={3}
-              py={1}
+              px={4}
+              py={2}
               borderRadius="full"
               fontWeight="bold"
-            >
-              #{index + 1}
-            </Badge>
-
-            {/* Platform Badge */}
-            <Badge
-              position="absolute"
-              top={-2}
-              right={4}
-              colorScheme="blue"
-              fontSize="xs"
-              px={2}
-              py={1}
-              borderRadius="full"
-            >
-              Verified
-            </Badge>
-
-            <VStack spacing={4} align="stretch">
-              {/* Header with Logo and Name */}
-              <HStack>
-                <Image
-                  src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`}
-                  alt={`${site.name} logo`}
-                  boxSize="48px"
-                  borderRadius="lg"
-                />
-                <VStack align="flex-start" spacing={1} flex={1}>
-                  <Text fontSize="xl" fontWeight="bold" color="gray.800">
-                    {site.name}
-                  </Text>
-                  <Text fontSize="xs" color="gray.500" textTransform="uppercase" letterSpacing="wide">
-                    {site.domain}
-                  </Text>
-                </VStack>
-              </HStack>
-              {/* Rating and Trust Indicators */}
-              <VStack spacing={3} align="stretch">
-                <HStack justify="space-between">
-                  <HStack spacing={1}>
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Icon
-                        as={i < Math.floor(site.rating) ? FaStar : FaRegStar}
-                        key={i}
-                        color={i < site.rating ? "yellow.400" : "gray.300"}
-                        boxSize={4}
-                      />
-                    ))}
-                    <Text fontSize="sm" color="gray.600" ml={2}>
-                      {site.rating}/5
-                    </Text>
-                  </HStack>
-                  <Badge 
-                    colorScheme={site.rating >= 4 ? "green" : site.rating >= 3.5 ? "yellow" : "orange"}
-                    size="sm"
-                  >
-                    {site.rating >= 4 ? "Excellent" : site.rating >= 3.5 ? "Good" : "Fair"}
-                  </Badge>
-                </HStack>
-
-                <Text fontSize="sm" color="gray.600" noOfLines={3} lineHeight="tall">
-                  {site.description}
-                </Text>
-
-                {/* Trust and Safety Indicators */}
-                <HStack spacing={2} wrap="wrap">
-                  <Badge size="sm" colorScheme="green" variant="subtle">
-                    ✓ Verified
-                  </Badge>
-                  <Badge size="sm" colorScheme="blue" variant="subtle">
-                    🛡️ Secure
-                  </Badge>
-                  {site.rating >= 4 && (
-                    <Badge size="sm" colorScheme="purple" variant="subtle">
-                      ⭐ Top Rated
-                    </Badge>
-                  )}
-                </HStack>
-
-                {/* Quick Stats */}
-                <HStack justify="space-between" fontSize="xs" color="gray.500">
-                  <Text>Est. 2020+</Text>
-                  <Text>1M+ Users</Text>
-                  <Text>24/7 Support</Text>
-                </HStack>
-              </VStack>
-
-              <Button
-                colorScheme="blue"
-                size="sm"
-                rightIcon={<Icon as={FaChevronRight} />}
-                borderRadius="lg"
-                fontWeight="semibold"
-                _hover={{
-                  transform: "translateY(-1px)",
-                }}
-              >
-                View Details
-              </Button>
-            </VStack>
-          </Box>
-        </Link>
-      ))}
-    </HStack>
-  </Box>
-</Box>
-      {/* Latest Reviews + Ranking Section */}
-<SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} maxW="1000px" mx="auto" mb={12} alignItems="start">
-  {/* Latest Reviews */}
-  <Box
-    gridColumn={{ md: "span 2" }}
-    bg="white"
-    p={6}
-    borderRadius="xl"
-    boxShadow="lg"
-    border="1px solid"
-    borderColor="gray.200"
-  >
-    <Flex justify="space-between" align="center" mb={6}>
-      <VStack align="flex-start" spacing={1}>
-        <Heading size="lg" color="gray.800">Latest Reviews</Heading>
-        <Text color="gray.600" fontSize="sm">Fresh insights and platform updates</Text>
-      </VStack>
-      <Badge colorScheme="blue" fontSize="sm" px={3} py={1} borderRadius="full">
-        {posts.length} Reviews
-      </Badge>
-    </Flex>
-
-    <VStack spacing={3} align="stretch">
-      {displayedPosts.map((post, index) => (
-        <Link key={post.slug} href={`/blog/${post.slug}`} style={{ textDecoration: "none" }}>
-          <Box
-            p={4}
-            border="1px solid"
-            borderColor="gray.100"
-            borderRadius="lg"
-            transition="all 0.3s ease"
-            _hover={{
-              borderColor: "blue.200",
-              bg: "blue.50",
-              transform: "translateY(-2px)",
-              boxShadow: "md",
-            }}
-          >
-            <HStack spacing={4}>
-              <Box
-                w="60px"
-                h="60px"
-                borderRadius="lg"
-                overflow="hidden"
-                bg="gray.100"
-                flexShrink={0}
-              >
-                {post.thumbnail ? (
-                  <Image
-                    src={post.thumbnail}
-                    alt={post.title}
-                    w="full"
-                    h="full"
-                    objectFit="cover"
-                  />
-                ) : (
-                  <Box w="full" h="full" bg="gray.200" />
-                )}
-              </Box>
-              <VStack align="flex-start" spacing={1} flex={1}>
-                <Text fontSize="md" fontWeight="bold" color="gray.800" noOfLines={2}>
-                  {post.title}
-                </Text>
-                <HStack spacing={2}>
-                  <Badge colorScheme="green" size="sm">Latest Review</Badge>
-                  <Text fontSize="xs" color="gray.500">
-                    {index === 0 ? 'Today' : `${index + 1} days ago`}
-                  </Text>
-                </HStack>
-              </VStack>
-              <Icon as={FaChevronRight} color="gray.400" boxSize={4} />
-            </HStack>
-          </Box>
-        </Link>
-      ))}
-
-      <Flex justify="center" pt={2}>
-        {!showAll && posts.length > 10 && (
-          <Button
-            onClick={() => setShowAll(true)}
-            variant="outline"
-            colorScheme="blue"
-            size="sm"
-            borderRadius="full"
-            leftIcon={<Icon as={FaChevronDown} />}
-          >
-            Show More Reviews
-          </Button>
-        )}
-        {showAll && (
-          <Button
-            onClick={() => setShowAll(false)}
-            variant="outline"
-            colorScheme="gray"
-            size="sm"
-            borderRadius="full"
-            leftIcon={<Icon as={FaChevronUp} />}
-          >
-            Show Less
-          </Button>
-        )}
-      </Flex>
-    </VStack>
-  </Box>
-
-  {/* Top Sites Ranking */}
-  <Box
-    bg="white"
-    p={6}
-    borderRadius="xl"
-    boxShadow="lg"
-    border="1px solid"
-    borderColor="gray.200"
-  >
-    <VStack align="flex-start" spacing={1} mb={6}>
-      <Heading size="lg" color="gray.800">🏆 Top Sites Ranking</Heading>
-      <Text color="gray.600" fontSize="sm">Based on user reviews & testing</Text>
-    </VStack>
-
-    <VStack spacing={3} align="stretch">
-      {websites.map((site, i) => (
-        <Link
-          key={site.id}
-          href={`/site/${site.id}`}
-          style={{ textDecoration: "none" }}
-        >
-          <Box
-            position="relative"
-            overflow="hidden"
-            borderRadius="lg"
-            h="85px"
-            bgImage={`url('${site.image}')`}
-            bgSize="cover"
-            bgPosition="center"
-            transition="all 0.3s ease"
-            _hover={{
-              transform: "scale(1.02)",
-              boxShadow: "lg",
-            }}
-          >
-            <Box
-              position="absolute"
-              inset={0}
-              bg="blackAlpha.700"
-              _hover={{ bg: "blackAlpha.600" }}
-              transition="background 0.3s ease"
-            />
-            <Flex
-              position="relative"
-              h="full"
-              p={4}
+              bg="orange.400"
               color="white"
-              justify="space-between"
-              align="center"
+              textTransform="uppercase"
+              letterSpacing="wide"
             >
-              <VStack align="flex-start" spacing={1}>
-                <HStack spacing={2}>
-                  <Badge
-                    colorScheme={i < 3 ? "yellow" : "gray"}
-                    size="sm"
-                    borderRadius="md"
-                    fontWeight="bold"
-                  >
-                    #{i + 1}
-                  </Badge>
-                  <Text fontSize="lg" fontWeight="bold">
-                    {site.name}
-                  </Text>
-                </HStack>
-                <HStack spacing={1}>
-                  {Array.from({ length: 5 }).map((_, starIndex) => (
-                    <Icon
-                      as={starIndex < Math.floor(site.rating) ? FaStar : FaRegStar}
-                      key={starIndex}
-                      color={starIndex < site.rating ? "yellow.300" : "gray.400"}
-                      boxSize={3}
-                    />
-                  ))}
-                  <Text fontSize="xs" color="gray.300" ml={1}>
-                    {site.rating}/5
-                  </Text>
-                </HStack>
+              🏆 TRUSTED BY 50K+ USERS
+            </Badge>
+            
+            {/* Brand Name */}
+            <Text 
+              fontSize="lg" 
+              fontWeight="black" 
+              mb={2} 
+              color="whiteAlpha.900"
+              textTransform="uppercase"
+              letterSpacing="wider"
+            >
+              DROPPEEK
+            </Text>
+
+            {/* Main Heading */}
+            <Heading
+              size="3xl"
+              fontWeight="black"
+              textAlign={{ base: "center", md: "left" }}
+              lineHeight="shorter"
+              color="white"
+              textShadow="2px 2px 4px rgba(0,0,0,0.3)"
+              maxW="800px"
+            >
+              Top Mystery Box Sites
+              <br />
+              <Text as="span" bgGradient="linear(to-r, yellow.200, orange.200)" bgClip="text">
+                Reviewed in 2025
+              </Text>
+            </Heading>
+            
+            {/* Subtitle */}
+            <Text
+              fontSize={{ base: "lg", md: "xl" }}
+              maxW="600px"
+              textAlign={{ base: "center", md: "left" }}
+              color="whiteAlpha.900"
+              lineHeight="tall"
+              fontWeight="medium"
+            >
+              We test and review the most popular unboxing platforms to help you avoid scams and get the best experience. Find your perfect mystery box platform today!
+            </Text>
+
+            {/* Key Benefits */}
+            <HStack spacing={6} wrap="wrap" justify={{ base: "center", md: "flex-start" }}>
+              <HStack spacing={2}>
+                <Icon as={FaShieldAlt} color="green.300" boxSize={5} />
+                <Text color="white" fontSize="sm" fontWeight="semibold">Scam Protection</Text>
+              </HStack>
+              <HStack spacing={2}>
+                <Icon as={FaStar} color="yellow.300" boxSize={5} />
+                <Text color="white" fontSize="sm" fontWeight="semibold">Expert Reviews</Text>
+              </HStack>
+              <HStack spacing={2}>
+                <Icon as={FaUsers} color="blue.300" boxSize={5} />
+                <Text color="white" fontSize="sm" fontWeight="semibold">Community Trusted</Text>
+              </HStack>
+            </HStack>
+
+            {/* Social Proof */}
+            <HStack spacing={8} pt={4} wrap="wrap" justify={{ base: "center", md: "flex-start" }}>
+              <VStack spacing={1}>
+                <Text fontSize="2xl" fontWeight="bold" color="white">50K+</Text>
+                <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">Users Protected</Text>
               </VStack>
               <VStack spacing={1}>
-                <Icon as={FaChevronRight} boxSize={4} />
-                <Text fontSize="xs" color="gray.400">View</Text>
+                <Text fontSize="2xl" fontWeight="bold" color="white">25+</Text>
+                <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">Platforms Reviewed</Text>
               </VStack>
-            </Flex>
-          </Box>
-        </Link>
-      ))}
-    </VStack>
-  </Box>
-</SimpleGrid>
+              <VStack spacing={1}>
+                <Text fontSize="2xl" fontWeight="bold" color="white">1000+</Text>
+                <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">Scams Prevented</Text>
+              </VStack>
+            </HStack>
+          </VStack>
+        </Box>
+      </Box>
 
-         {/* FAQ Section */}
-         <Box maxW="1000px" mx="auto">
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+      `}</style>
+     
+      {/* Recommended Sites Section */}
+      <Box
+        maxW="1000px"
+        mx="auto"
+        mt={{ base: 8, md: 12 }}
+        mb={12}
+        px={{ base: 4, md: 6 }}   
+        py={8}
+        bg="white"
+        borderRadius="2xl"
+        boxShadow="xl"
+        zIndex={2}
+        position="relative"
+        border="1px solid"
+        borderColor="gray.100"
+      >
+        <Flex justify="space-between" align="center" mb={6}>
+          <VStack align="flex-start" spacing={1}>
+            <Heading size="xl" color="gray.800">
+              🎯 Recommended Mystery Box Sites
+            </Heading>
+            <Text color="gray.600" fontSize="lg">
+              Our top-rated platforms for 2025
+            </Text>
+          </VStack>
+          <Badge colorScheme="green" fontSize="md" px={4} py={2} borderRadius="full" fontWeight="bold">
+            Updated Today
+          </Badge>
+        </Flex>
+
+        <Box
+          overflowX="auto"
+          css={{
+            '&::-webkit-scrollbar': {
+              height: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: 'transparent',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: '#CBD5E0',
+              borderRadius: '4px',
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              background: '#A0AEC0',
+            },
+          }}
+        >
+          <HStack spacing={6} pb={4} minW="max-content">
+            {websites.slice(0, 6).map((site, index) => (
+              <Link
+                href={`/site/${site.id}`}
+                key={site.id}
+                style={{ textDecoration: "none" }}
+              >
+                <Box
+                  w="320px"
+                  bg="white"
+                  border="2px solid"
+                  borderColor="gray.100"
+                  borderRadius="xl"
+                  p={6}
+                  transition="all 0.3s ease"
+                  position="relative"
+                  _hover={{
+                    borderColor: "blue.300",
+                    transform: "translateY(-8px)",
+                    boxShadow: "2xl",
+                  }}
+                >
+                  {/* Rank Badge */}
+                  <Badge
+                    position="absolute"
+                    top={-2}
+                    left={4}
+                    colorScheme={index === 0 ? "yellow" : index === 1 ? "gray" : "orange"}
+                    fontSize="sm"
+                    px={3}
+                    py={1}
+                    borderRadius="full"
+                    fontWeight="bold"
+                  >
+                    #{index + 1}
+                  </Badge>
+
+                  {/* Platform Badge */}
+                  <Badge
+                    position="absolute"
+                    top={-2}
+                    right={4}
+                    colorScheme="blue"
+                    fontSize="xs"
+                    px={2}
+                    py={1}
+                    borderRadius="full"
+                  >
+                    Verified
+                  </Badge>
+
+                  <VStack spacing={4} align="stretch">
+                    {/* Header with Logo and Name */}
+                    <HStack>
+                      <Image
+                        src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`}
+                        alt={`${site.name} logo`}
+                        boxSize="48px"
+                        borderRadius="lg"
+                      />
+                      <VStack align="flex-start" spacing={1} flex={1}>
+                        <Text fontSize="xl" fontWeight="bold" color="gray.800">
+                          {site.name}
+                        </Text>
+                        <Text fontSize="xs" color="gray.500" textTransform="uppercase" letterSpacing="wide">
+                          {site.domain}
+                        </Text>
+                      </VStack>
+                    </HStack>
+                    {/* Rating and Trust Indicators */}
+                    <VStack spacing={3} align="stretch">
+                      <HStack justify="space-between">
+                        <HStack spacing={1}>
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Icon
+                              as={i < Math.floor(site.rating) ? FaStar : FaRegStar}
+                              key={i}
+                              color={i < site.rating ? "yellow.400" : "gray.300"}
+                              boxSize={4}
+                            />
+                          ))}
+                          <Text fontSize="sm" color="gray.600" ml={2}>
+                            {site.rating}/5
+                          </Text>
+                        </HStack>
+                        <Badge 
+                          colorScheme={site.rating >= 4 ? "green" : site.rating >= 3.5 ? "yellow" : "orange"}
+                          size="sm"
+                        >
+                          {site.rating >= 4 ? "Excellent" : site.rating >= 3.5 ? "Good" : "Fair"}
+                        </Badge>
+                      </HStack>
+
+                      <Text fontSize="sm" color="gray.600" noOfLines={3} lineHeight="tall">
+                        {site.description}
+                      </Text>
+
+                      {/* Trust and Safety Indicators */}
+                      <HStack spacing={2} wrap="wrap">
+                        <Badge size="sm" colorScheme="green" variant="subtle">
+                          ✓ Verified
+                        </Badge>
+                        <Badge size="sm" colorScheme="blue" variant="subtle">
+                          🛡️ Secure
+                        </Badge>
+                        {site.rating >= 4 && (
+                          <Badge size="sm" colorScheme="purple" variant="subtle">
+                            ⭐ Top Rated
+                          </Badge>
+                        )}
+                      </HStack>
+
+                      {/* Quick Stats */}
+                      <HStack justify="space-between" fontSize="xs" color="gray.500">
+                        <Text>Est. 2020+</Text>
+                        <Text>1M+ Users</Text>
+                        <Text>24/7 Support</Text>
+                      </HStack>
+                    </VStack>
+
+                    <Button
+                      colorScheme="blue"
+                      size="sm"
+                      rightIcon={<Icon as={FaChevronRight} />}
+                      borderRadius="lg"
+                      fontWeight="semibold"
+                      _hover={{
+                        transform: "translateY(-1px)",
+                      }}
+                    >
+                      View Details
+                    </Button>
+                  </VStack>
+                </Box>
+              </Link>
+            ))}
+          </HStack>
+        </Box>
+      </Box>
+
+      {/* Latest Reviews + Ranking Section */}
+      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} maxW="1000px" mx="auto" mb={12} alignItems="start">
+        {/* Latest Reviews */}
+        <Box
+          gridColumn={{ md: "span 2" }}
+          bg="white"
+          p={6}
+          borderRadius="xl"
+          boxShadow="lg"
+          border="1px solid"
+          borderColor="gray.200"
+        >
+          <Flex justify="space-between" align="center" mb={6}>
+            <VStack align="flex-start" spacing={1}>
+              <Heading size="lg" color="gray.800">📝 Latest Reviews</Heading>
+              <Text color="gray.600" fontSize="sm">Fresh insights and platform updates</Text>
+            </VStack>
+            <Badge colorScheme="blue" fontSize="sm" px={3} py={1} borderRadius="full">
+              {posts.length} Reviews
+            </Badge>
+          </Flex>
+
+          <VStack spacing={3} align="stretch">
+            {displayedPosts.map((post, index) => (
+              <Link key={post.slug} href={`/blog/${post.slug}`} style={{ textDecoration: "none" }}>
+                <Box
+                  p={4}
+                  border="1px solid"
+                  borderColor="gray.100"
+                  borderRadius="lg"
+                  transition="all 0.3s ease"
+                  _hover={{
+                    borderColor: "blue.200",
+                    bg: "blue.50",
+                    transform: "translateY(-2px)",
+                    boxShadow: "md",
+                  }}
+                >
+                  <HStack spacing={4}>
+                    <Box
+                      w="60px"
+                      h="60px"
+                      borderRadius="lg"
+                      overflow="hidden"
+                      bg="gray.100"
+                      flexShrink={0}
+                    >
+                      {post.thumbnail ? (
+                        <Image
+                          src={post.thumbnail}
+                          alt={post.title}
+                          w="full"
+                          h="full"
+                          objectFit="cover"
+                        />
+                      ) : (
+                        <Box w="full" h="full" bg="gray.200" />
+                      )}
+                    </Box>
+                    <VStack align="flex-start" spacing={1} flex={1}>
+                      <Text fontSize="md" fontWeight="bold" color="gray.800" noOfLines={2}>
+                        {post.title}
+                      </Text>
+                      <HStack spacing={2}>
+                        <Badge colorScheme="green" size="sm">Latest Review</Badge>
+                        <Text fontSize="xs" color="gray.500">
+                          {index === 0 ? 'Today' : `${index + 1} days ago`}
+                        </Text>
+                      </HStack>
+                    </VStack>
+                    <Icon as={FaChevronRight} color="gray.400" boxSize={4} />
+                  </HStack>
+                </Box>
+              </Link>
+            ))}
+
+            <Flex justify="center" pt={2}>
+              {!showAll && posts.length > 10 && (
+                <Button
+                  onClick={() => setShowAll(true)}
+                  variant="outline"
+                  colorScheme="blue"
+                  size="sm"
+                  borderRadius="full"
+                  leftIcon={<Icon as={FaChevronDown} />}
+                >
+                  Show More Reviews
+                </Button>
+              )}
+              {showAll && (
+                <Button
+                  onClick={() => setShowAll(false)}
+                  variant="outline"
+                  colorScheme="gray"
+                  size="sm"
+                  borderRadius="full"
+                  leftIcon={<Icon as={FaChevronUp} />}
+                >
+                  Show Less
+                </Button>
+              )}
+            </Flex>
+          </VStack>
+        </Box>
+
+        {/* Top Sites Ranking */}
+        <Box
+          bg="white"
+          p={6}
+          borderRadius="xl"
+          boxShadow="lg"
+          border="1px solid"
+          borderColor="gray.200"
+        >
+          <VStack align="flex-start" spacing={1} mb={6}>
+            <Heading size="lg" color="gray.800">🏆 Top Sites Ranking</Heading>
+            <Text color="gray.600" fontSize="sm">Based on user reviews & testing</Text>
+          </VStack>
+
+          <VStack spacing={3} align="stretch">
+            {websites.map((site, i) => (
+              <Link
+                key={site.id}
+                href={`/site/${site.id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <Box
+                  position="relative"
+                  overflow="hidden"
+                  borderRadius="lg"
+                  h="85px"
+                  bgImage={`url('${site.image}')`}
+                  bgSize="cover"
+                  bgPosition="center"
+                  transition="all 0.3s ease"
+                  _hover={{
+                    transform: "scale(1.02)",
+                    boxShadow: "lg",
+                  }}
+                >
+                  <Box
+                    position="absolute"
+                    inset={0}
+                    bg="blackAlpha.700"
+                    _hover={{ bg: "blackAlpha.600" }}
+                    transition="background 0.3s ease"
+                  />
+                  <Flex
+                    position="relative"
+                    h="full"
+                    p={4}
+                    color="white"
+                    justify="space-between"
+                    align="center"
+                  >
+                    <VStack align="flex-start" spacing={1}>
+                      <HStack spacing={2}>
+                        <Badge
+                          colorScheme={i < 3 ? "yellow" : "gray"}
+                          size="sm"
+                          borderRadius="md"
+                          fontWeight="bold"
+                        >
+                          #{i + 1}
+                        </Badge>
+                        <Text fontSize="lg" fontWeight="bold">
+                          {site.name}
+                        </Text>
+                      </HStack>
+                      <HStack spacing={1}>
+                        {Array.from({ length: 5 }).map((_, starIndex) => (
+                          <Icon
+                            as={starIndex < Math.floor(site.rating) ? FaStar : FaRegStar}
+                            key={starIndex}
+                            color={starIndex < site.rating ? "yellow.300" : "gray.400"}
+                            boxSize={3}
+                          />
+                        ))}
+                        <Text fontSize="xs" color="gray.300" ml={1}>
+                          {site.rating}/5
+                        </Text>
+                      </HStack>
+                    </VStack>
+                    <VStack spacing={1}>
+                      <Icon as={FaChevronRight} boxSize={4} />
+                      <Text fontSize="xs" color="gray.400">View</Text>
+                    </VStack>
+                  </Flex>
+                </Box>
+              </Link>
+            ))}
+          </VStack>
+        </Box>
+      </SimpleGrid>
+
+      {/* FAQ Section */}
+      <Box maxW="1000px" mx="auto" mb={12}>
         <Heading size="lg" mb={6} textAlign="center">FAQ</Heading>
         <VStack spacing={4} align="stretch">
           <FAQItem
@@ -746,12 +738,12 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           <FAQItem
             question="What kind of information does Droppeek provide?"
             answer="We provide:
-            • Verified platform reviews and user feedback
-            • Bonus and promo code comparisons
-            • Security and fairness assessments
-            • Prize delivery time comparisons
-            • Resell/withdrawal options across platforms
-            • Daily updates on new events and changes"
+• Verified platform reviews and user feedback
+• Bonus and promo code comparisons
+• Security and fairness assessments
+• Prize delivery time comparisons
+• Resell/withdrawal options across platforms
+• Daily updates on new events and changes"
           />
           
           <FAQItem
@@ -766,52 +758,289 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         </VStack>
       </Box>
       
-        {/* Comments Section */}
-
+      {/* Comments Section */}
       <Box
-        maxW="1000px" // 
+        maxW="1000px"
         mx="auto"
         mt={8}
+        mb={12}
         p={6}
         borderWidth={1}
         borderRadius="lg"
         borderColor="gray.200"
-        bg="transparent"
+        bg="white"
       >
-        <div className="mt-10 border-t pt-6">
-        <Box mt={20}>
-          <DisqusThread identifier="homepage" title="Droppeek Homepage Comments" />
-        </Box>
-          {/* <h2 className="text-2xl font-bold mb-4">Leave a Comment</h2>
-          <form onSubmit={(e) => { e.preventDefault(); alert('Comment submitted!'); }}>
-            <textarea
-              placeholder="Write your comment here..."
-              className="w-full border rounded p-2 mb-4"
-              rows={4}
-            ></textarea>
-            <Button type="submit">Submit</Button>
-          </form> */}
-        </div>
-      </Box>  
+        <VStack align="flex-start" spacing={1} mb={6}>
+          <Heading size="lg" color="gray.800">💬 Community Discussion</Heading>
+          <Text color="gray.600">Join the conversation with fellow mystery box enthusiasts</Text>
+        </VStack>
+        <DisqusThread identifier="homepage" title="Droppeek Homepage Comments" />
+      </Box>
 
-      {/* Footer */}
-      <Divider mt={16} />
+      {/* Enhanced Footer */}
       <Box
         as="footer"
-        textAlign="center"
-        py={8}
-        fontSize="sm"
-        color="gray.500"
+        bg="gray.900"
+        color="white"
+        mt={20}
+        position="relative"
+        overflow="hidden"
       >
-        <Text>© 2025 Droppeek. All rights reserved.</Text>
-        <HStack justify="center" spacing={4} mt={2}>
-          <ChakraLink href="/about">About</ChakraLink>
-          <ChakraLink href="/contact">Contact</ChakraLink>
-          <ChakraLink href="/terms">Terms</ChakraLink>
-          <ChakraLink href="/privacy">Privacy</ChakraLink>
-        </HStack>
+        {/* Background Pattern */}
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          bgImage="url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;><defs><pattern id=&quot;dots&quot; width=&quot;20&quot; height=&quot;20&quot; patternUnits=&quot;userSpaceOnUse&quot;><circle cx=&quot;10&quot; cy=&quot;10&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.05&quot;/></pattern></defs><rect width=&quot;100&quot; height=&quot;100&quot; fill=&quot;url(%23dots)&quot;/></svg>')"
+          opacity={0.3}
+        />
+        
+        <Box maxW="container.xl" mx="auto" px={4} position="relative" zIndex={2}>
+          {/* Main Footer Content */}
+          <SimpleGrid 
+            columns={{ base: 1, md: 2, lg: 4 }} 
+            spacing={8} 
+            py={12}
+          >
+            {/* Brand Section */}
+            <VStack align={{ base: "center", md: "flex-start" }} spacing={4}>
+              <Flex align="center" gap={3}>
+                <Box
+                  bg="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                  borderRadius="lg"
+                  p={3}
+                  color="white"
+                >
+                  <Icon as={FaStar} boxSize={6} />
+                </Box>
+                <VStack spacing={0} align="flex-start">
+                  <Text fontSize="2xl" fontWeight="black" color="white">
+                    DropPeek
+                  </Text>
+                  <Text fontSize="sm" color="gray.400" fontWeight="medium">
+                    Mystery Box Reviews
+                  </Text>
+                </VStack>
+              </Flex>
+              <Text 
+                fontSize="sm" 
+                color="gray.400" 
+                textAlign={{ base: "center", md: "left" }}
+                maxW="280px"
+                lineHeight="tall"
+              >
+                Your trusted source for mystery box platform reviews and comparisons. 
+                We help you make informed decisions and avoid scams.
+              </Text>
+              
+              {/* Trust Badges */}
+              <HStack spacing={3} wrap="wrap" justify={{ base: "center", md: "flex-start" }}>
+                <Badge colorScheme="green" variant="subtle" px={3} py={1} borderRadius="full">
+                  ✓ Verified Reviews
+                </Badge>
+                <Badge colorScheme="blue" variant="subtle" px={3} py={1} borderRadius="full">
+                  🛡️ Scam Protection
+                </Badge>
+              </HStack>
+            </VStack>
+
+            {/* Quick Links */}
+            <VStack align={{ base: "center", md: "flex-start" }} spacing={3}>
+              <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                Quick Links
+              </Text>
+              <VStack spacing={2} align={{ base: "center", md: "flex-start" }}>
+                <ChakraLink 
+                  href="/" 
+                  color="gray.400" 
+                  _hover={{ color: "white", textDecoration: "none" }}
+                  transition="color 0.2s"
+                >
+                  Home
+                </ChakraLink>
+                <ChakraLink 
+                  href="/platforms" 
+                  color="gray.400" 
+                  _hover={{ color: "white", textDecoration: "none" }}
+                  transition="color 0.2s"
+                >
+                  All Platforms
+                </ChakraLink>
+                <ChakraLink 
+                  href="/reviews" 
+                  color="gray.400" 
+                  _hover={{ color: "white", textDecoration: "none" }}
+                  transition="color 0.2s"
+                  display="flex"
+                  alignItems="center"
+                  gap={2}
+                >
+                  Reviews
+                  <Badge colorScheme="red" size="sm">New</Badge>
+                </ChakraLink>
+                <ChakraLink 
+                  href="/blog" 
+                  color="gray.400" 
+                  _hover={{ color: "white", textDecoration: "none" }}
+                  transition="color 0.2s"
+                >
+                  Blog
+                </ChakraLink>
+              </VStack>
+            </VStack>
+
+            {/* Platform Categories */}
+            <VStack align={{ base: "center", md: "flex-start" }} spacing={3}>
+              <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                Top Platforms
+              </Text>
+              <VStack spacing={2} align={{ base: "center", md: "flex-start" }}>
+                <ChakraLink 
+                  href="/site/hypedrop" 
+                  color="gray.400" 
+                  _hover={{ color: "white", textDecoration: "none" }}
+                  transition="color 0.2s"
+                  display="flex"
+                  alignItems="center"
+                  gap={2}
+                >
+                  HypeDrop
+                  <Badge colorScheme="yellow" size="xs">#1</Badge>
+                </ChakraLink>
+                <ChakraLink 
+                  href="/site/metadraw" 
+                  color="gray.400" 
+                  _hover={{ color: "white", textDecoration: "none" }}
+                  transition="color 0.2s"
+                >
+                  MetaDraw
+                </ChakraLink>
+                <ChakraLink 
+                  href="/site/hypeloot" 
+                  color="gray.400" 
+                  _hover={{ color: "white", textDecoration: "none" }}
+                  transition="color 0.2s"
+                >
+                  HypeLoot
+                </ChakraLink>
+                <ChakraLink 
+                  href="/platforms" 
+                  color="blue.400" 
+                  _hover={{ color: "blue.300", textDecoration: "none" }}
+                  transition="color 0.2s"
+                  fontSize="sm"
+                >
+                  View All Platforms →
+                </ChakraLink>
+              </VStack>
+            </VStack>
+
+            {/* Contact & Stats */}
+            <VStack align={{ base: "center", md: "flex-start" }} spacing={3}>
+              <Text fontSize="lg" fontWeight="bold" color="white" mb={2}>
+                Community
+              </Text>
+              
+              {/* Stats */}
+              <VStack spacing={3} align={{ base: "center", md: "flex-start" }}>
+                <HStack spacing={3}>
+                  <VStack spacing={0}>
+                    <Text fontSize="2xl" fontWeight="bold" color="white">50K+</Text>
+                    <Text fontSize="xs" color="gray.500">Users</Text>
+                  </VStack>
+                  <VStack spacing={0}>
+                    <Text fontSize="2xl" fontWeight="bold" color="white">25+</Text>
+                    <Text fontSize="xs" color="gray.500">Platforms</Text>
+                  </VStack>
+                  <VStack spacing={0}>
+                    <Text fontSize="2xl" fontWeight="bold" color="white">1K+</Text>
+                    <Text fontSize="xs" color="gray.500">Reviews</Text>
+                  </VStack>
+                </HStack>
+                
+                {/* Contact */}
+                <VStack spacing={2} align={{ base: "center", md: "flex-start" }}>
+                  <ChakraLink 
+                    href="/contact" 
+                    color="gray.400" 
+                    _hover={{ color: "white", textDecoration: "none" }}
+                    transition="color 0.2s"
+                  >
+                    📧 Contact Us
+                  </ChakraLink>
+                  <ChakraLink 
+                    href="mailto:info@droppeek.com" 
+                    color="gray.400" 
+                    _hover={{ color: "white", textDecoration: "none" }}
+                    transition="color 0.2s"
+                    fontSize="sm"
+                  >
+                    info@droppeek.com
+                  </ChakraLink>
+                </VStack>
+              </VStack>
+            </VStack>
+          </SimpleGrid>
+
+          {/* Bottom Bar */}
+          <Divider borderColor="gray.700" />
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            justify="space-between"
+            align="center"
+            py={6}
+            gap={4}
+          >
+            <Text fontSize="sm" color="gray.500" textAlign={{ base: "center", md: "left" }}>
+              © 2025 DropPeek. All rights reserved. | 
+              <Text as="span" color="gray.400" ml={1}>
+                Making mystery box shopping safer for everyone.
+              </Text>
+            </Text>
+            
+            <HStack spacing={6} wrap="wrap" justify={{ base: "center", md: "flex-end" }}>
+              <ChakraLink 
+                href="/about" 
+                fontSize="sm" 
+                color="gray.500" 
+                _hover={{ color: "white" }}
+                transition="color 0.2s"
+              >
+                About
+              </ChakraLink>
+              <ChakraLink 
+                href="/contact" 
+                fontSize="sm" 
+                color="gray.500" 
+                _hover={{ color: "white" }}
+                transition="color 0.2s"
+              >
+                Contact
+              </ChakraLink>
+              <ChakraLink 
+                href="/terms" 
+                fontSize="sm" 
+                color="gray.500" 
+                _hover={{ color: "white" }}
+                transition="color 0.2s"
+              >
+                Terms
+              </ChakraLink>
+              <ChakraLink 
+                href="/privacy" 
+                fontSize="sm" 
+                color="gray.500" 
+                _hover={{ color: "white" }}
+                transition="color 0.2s"
+              >
+                Privacy
+              </ChakraLink>
+            </HStack>
+          </Flex>
+        </Box>
       </Box>
     </Box>
-    
   );
 }
