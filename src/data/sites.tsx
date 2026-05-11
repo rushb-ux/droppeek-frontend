@@ -4,7 +4,7 @@ const sites = [
   {
     id: "hypedrop",
     name: "HypeDrop",
-    logo: "https:/www.google.com/s2/favicons?sz=64&domain=hypedrop.com",
+    logo: "https://www.google.com/s2/favicons?sz=64&domain=hypedrop.com",
     rating: 3.5,
     rank: 2,
     category: "HypeDrop Mystery Boxes",
@@ -157,7 +157,7 @@ const sites = [
     "We reviewed HypeLoot in April 2025 and found widespread concerns about its legitimacy. Many users have reported sudden account bans and suspect the platform's fairness, raising serious trust issues within the community.",
   },
   {
-    id: "JemLit",
+    id: "jemlit",
     name: "JemLit",
     logo: "https://www.google.com/s2/favicons?sz=64&domain=jemlit.com",
     rating: 3,

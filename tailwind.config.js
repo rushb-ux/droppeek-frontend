@@ -79,8 +79,9 @@ module.exports = {
       }
     }
   },
-  plugins: [require("tailwindcss-animate"), textShadow],
-  textShadow,
-  plugins: [require('@tailwindcss/typography')],
-
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+    textShadow,
+  ],
 }

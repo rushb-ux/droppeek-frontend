@@ -209,7 +209,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       
       
       
-      else if (siteId === "JemLit") {
+      else if (siteId === "jemlit") {
         return res.status(200).json([
           {
             name: "Apple Selection",
