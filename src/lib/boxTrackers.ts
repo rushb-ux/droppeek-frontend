@@ -85,6 +85,11 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
     { name: "Budget Shoes", slug: "budget-shoes", price: 0.51, iconUrl: "/images/Budget Shoes.png" },
     { name: "Cheap Dream", slug: "cheap-dream", price: 0.52, iconUrl: "/images/Cheap Dream.png" },
     { name: "Budget Box", slug: "budget-box", price: 2.22, iconUrl: "/images/Budget box.png" },
+    { name: "Streamer Box", slug: "streamer-box", price: 4.99, iconUrl: "/images/metadraw.png" },
+    { name: "GoPro Box", slug: "gopro-box", price: 7.99, iconUrl: "/images/metadraw.png" },
+    { name: "For Her Box", slug: "for-her-box", price: 9.99, iconUrl: "/images/metadraw.png" },
+    { name: "Tech Box", slug: "tech-box", price: 14.99, iconUrl: "/images/metadraw.png" },
+    { name: "Luxury Box", slug: "luxury-box", price: 49.00, iconUrl: "/images/metadraw.png" },
   ],
   mysteryboxbrand: [
     {
