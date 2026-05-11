@@ -1,4 +1,5 @@
 'use client'
+import type { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import RatingStars from "../../src/components/ui/RatingStars"
 import { useEffect, useState } from "react";
@@ -37,6 +38,10 @@ type SalesBox = {
     slug: string;
 };
 
+type SiteReviewPageProps = {
+  initialSiteId: string;
+};
+
 type BoxesResponse = {
   boxes: SalesBox[];
   topBoxes?: SalesBox[];
@@ -47,10 +52,10 @@ type BoxesResponse = {
 
 
 
-export default function SiteReviewPage() {
+export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
   const router = useRouter()
   const { id } = router.query
-  const siteId = typeof id === "string" ? id : "";
+  const siteId = typeof id === "string" ? id : initialSiteId;
   const site = sites.find((s) => s.id.toLowerCase() === siteId.toLowerCase())
   const [salesData, setSalesData] = useState<SalesBox[]>([]);
   const [topBoxes, setTopBoxes] = useState<SalesBox[]>([]);
@@ -433,3 +438,30 @@ export default function SiteReviewPage() {
     </>
   )
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: sites.map((site) => ({
+      params: { id: site.id },
+    })),
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<SiteReviewPageProps> = async ({ params }) => {
+  const siteId = typeof params?.id === "string" ? params.id : "";
+  const site = sites.find((item) => item.id.toLowerCase() === siteId.toLowerCase());
+
+  if (!site) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      initialSiteId: site.id,
+    },
+    revalidate: 86400,
+  };
+};
