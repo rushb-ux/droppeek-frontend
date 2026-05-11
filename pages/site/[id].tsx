@@ -1,12 +1,10 @@
-'use client'
+import Link from "next/link"
 import { useRouter } from "next/router"
 import RatingStars from "../../src/components/ui/RatingStars"
 import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Flame, Laugh, Angry, Heart, Frown, Smile, Zap } from "lucide-react"
-import { cn } from "@/lib/utils"
 import DisqusThread from '@/components/ui/DisqusThread'
 
 
@@ -19,8 +17,8 @@ import {
   Image,
   HStack,
   Flex,
+  SimpleGrid,
 } from "@chakra-ui/react"
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons"
 import sites from "../../src/data/sites"
 // import EmojiReactions from "@/components/ui/EmojiReactions";
@@ -29,6 +27,7 @@ import sites from "../../src/data/sites"
 
 import PromoCode from "@/components/ui/promoCode"
 import { AlternativesList } from "@/components/ui/AlternativesList" 
+import { getAllPostSlugs } from "../../utils/posts"
 type SalesBox = {
     name: string;
     price: number;
@@ -36,21 +35,61 @@ type SalesBox = {
     slug: string;
 };
 
+type RelatedReview = {
+  slug: string;
+  title: string;
+  thumbnail?: string | null;
+  imageUrl?: string;
+  platform?: string | null;
+};
+
+type SiteReviewPageProps = {
+  initialSiteId: string;
+  relatedReviews: RelatedReview[];
+};
+
+export async function getStaticPaths() {
+  return {
+    paths: sites.map((site) => ({ params: { id: site.id } })),
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({ params }: { params: { id: string } }) {
+  const site = sites.find((item) => item.id === params.id);
+
+  if (!site) {
+    return { notFound: true };
+  }
+
+  const relatedReviews = getAllPostSlugs()
+    .filter((post) => post.platform?.toLowerCase() === site.name.toLowerCase())
+    .slice(0, 3);
+
+  return {
+    props: {
+      initialSiteId: params.id,
+      relatedReviews,
+    },
+  };
+}
 
 
 
 
 
-export default function SiteReviewPage() {
+
+export default function SiteReviewPage({ initialSiteId, relatedReviews }: SiteReviewPageProps) {
   const router = useRouter()
-  const { id } = router.query
-  const site = sites.find((s) => s.id === id)
+  const routeId = router.query.id
+  const siteId = typeof routeId === "string" ? routeId : initialSiteId
+  const site = sites.find((s) => s.id === siteId)
   const [salesData, setSalesData] = useState<SalesBox[]>([]);
   const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
   
   useEffect(() => {
-    if (!id) return;
-    fetch(`/api/fetchBoxes?siteId=${id}`)
+    if (!siteId) return;
+    fetch(`/api/fetchBoxes?siteId=${siteId}`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -64,7 +103,7 @@ export default function SiteReviewPage() {
         console.error("Failed to fetch sales boxes", err);
         setSalesData([]);
       });
-  }, [id]);
+  }, [siteId]);
   
   
       
@@ -282,6 +321,74 @@ export default function SiteReviewPage() {
                     </Text>
                   )}
 
+                  {relatedReviews.length > 0 && (
+                    <Box mt={10}>
+                      <Flex
+                        align={{ base: "flex-start", md: "center" }}
+                        justify="space-between"
+                        direction={{ base: "column", md: "row" }}
+                        gap={2}
+                        mb={4}
+                      >
+                        <Box>
+                          <Text fontSize="xl" fontWeight="bold">
+                            Related Reviews
+                          </Text>
+                          <Text fontSize="sm" color="gray.500">
+                            More hands-on reviews connected to {site.name}.
+                          </Text>
+                        </Box>
+                        <Link href="/reviews">
+                          <Text fontSize="sm" fontWeight="semibold" color="blue.500">
+                            View all reviews →
+                          </Text>
+                        </Link>
+                      </Flex>
+
+                      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
+                        {relatedReviews.map((review) => (
+                          <Link key={review.slug} href={`/blog/${review.slug}`}>
+                            <Box
+                              h="100%"
+                              borderWidth={1}
+                              borderColor="gray.200"
+                              borderRadius="xl"
+                              overflow="hidden"
+                              bg="gray.50"
+                              transition="all 0.2s ease"
+                              _hover={{
+                                transform: "translateY(-2px)",
+                                boxShadow: "md",
+                                borderColor: "blue.200",
+                              }}
+                            >
+                              <Image
+                                src={review.thumbnail || review.imageUrl || "/media/placeholder.jpg"}
+                                alt={review.title}
+                                w="100%"
+                                h="120px"
+                                objectFit="cover"
+                              />
+                              <Box p={4}>
+                                <Text
+                                  fontSize="sm"
+                                  fontWeight="bold"
+                                  color="gray.800"
+                                  noOfLines={2}
+                                >
+                                  {review.title}
+                                </Text>
+                                <Text mt={3} fontSize="xs" fontWeight="semibold" color="blue.500">
+                                  Read review →
+                                </Text>
+                              </Box>
+                            </Box>
+                          </Link>
+                        ))}
+                      </SimpleGrid>
+                    </Box>
+                  )}
+
                   {/* 评论区 */}
                   <Box mt={10}>
                     <DisqusThread identifier={`/site/${site.id}`} title={site.name} />
@@ -307,7 +414,7 @@ export default function SiteReviewPage() {
             >
             <Text fontSize="xl" fontWeight="bold" mb={4}>Alternatives</Text>
             <AlternativesList
-                alternatives={sites.filter((s) => s.id !== id)}
+                alternatives={sites.filter((s) => s.id !== site.id)}
             />
             </Box>
         </Flex>

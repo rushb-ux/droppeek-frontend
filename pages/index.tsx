@@ -100,7 +100,7 @@ const websites = [
     image: "/images/hypeloot.png",
   },
   {
-    id: "JemLit",
+    id: "jemlit",
     name: "JemLit",
     description: "JemLit offers daily mystery box drops with hypebeast, gaming, and tech prizes.",
     url: "https://jemlit.com/en/a/droppeek",

@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm"
 
@@ -97,7 +96,7 @@ export default function ArticlePage({ frontmatter, content }: Props) {
           )}
       </Box>
 
-      {/* 正文内容 */} d
+      {/* 正文内容 */}
       <Box maxW="800px" mx="auto" py={10} px={{ base: 4, md: 6 }}>
         <Box
         maxW="800px"
