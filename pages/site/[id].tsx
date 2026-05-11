@@ -19,6 +19,7 @@ import {
   Image,
   HStack,
   Flex,
+  SimpleGrid,
 } from "@chakra-ui/react"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons"
@@ -36,35 +37,68 @@ type SalesBox = {
     slug: string;
 };
 
-
-
+type BoxesResponse = {
+  boxes: SalesBox[];
+  topBoxes?: SalesBox[];
+  source: "live" | "fallback";
+  generatedAt: string;
+  nextRefreshAt: string;
+};
 
 
 
 export default function SiteReviewPage() {
   const router = useRouter()
   const { id } = router.query
-  const site = sites.find((s) => s.id === id)
+  const siteId = typeof id === "string" ? id : "";
+  const site = sites.find((s) => s.id.toLowerCase() === siteId.toLowerCase())
   const [salesData, setSalesData] = useState<SalesBox[]>([]);
+  const [topBoxes, setTopBoxes] = useState<SalesBox[]>([]);
+  const [boxesMeta, setBoxesMeta] = useState<Pick<BoxesResponse, "source" | "generatedAt" | "nextRefreshAt"> | null>(null);
+  const [boxesError, setBoxesError] = useState<string | null>(null);
+  const [boxesLoading, setBoxesLoading] = useState(false);
   const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
   
   useEffect(() => {
-    if (!id) return;
-    fetch(`/api/fetchBoxes?siteId=${id}`)
+    if (!siteId) return;
+
+    setBoxesLoading(true);
+    setBoxesError(null);
+
+    fetch(`/api/fetchBoxes?siteId=${siteId}`)
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: BoxesResponse | SalesBox[]) => {
         if (Array.isArray(data)) {
           setSalesData(data);
+          setTopBoxes(data.slice(0, 5));
+          setBoxesMeta(null);
+        } else if (Array.isArray(data.boxes)) {
+          setSalesData(data.boxes);
+          setTopBoxes(Array.isArray(data.topBoxes) ? data.topBoxes : data.boxes.slice(0, 5));
+          setBoxesMeta({
+            source: data.source,
+            generatedAt: data.generatedAt,
+            nextRefreshAt: data.nextRefreshAt,
+          });
         } else {
           console.error("Invalid data format", data);
           setSalesData([]);
+          setTopBoxes([]);
+          setBoxesMeta(null);
+          setBoxesError("Latest box data is temporarily unavailable.");
         }
       })
       .catch((err) => {
         console.error("Failed to fetch sales boxes", err);
         setSalesData([]);
+        setTopBoxes([]);
+        setBoxesMeta(null);
+        setBoxesError("Latest box data is temporarily unavailable.");
+      })
+      .finally(() => {
+        setBoxesLoading(false);
       });
-  }, [id]);
+  }, [siteId]);
   
   
       
@@ -207,25 +241,42 @@ export default function SiteReviewPage() {
           gap={6}
           align="flex-start"
         >            
-        {/* Top 5 Sales + Expert Review） */}
+        {/* Latest Boxes + Expert Review */}
               <Box flex="2">
-                {/* Top 5 Sales (24H) */}
+                {/* Top Boxes */}
                 <Box p={6} borderWidth={1} borderRadius="xl" bg="white" boxShadow="md" mb={6}>
-                  <Text fontSize="xl" fontWeight="bold" mb={4}>
-                    Top 5 Sales (24H)
+                  <Text fontSize="xl" fontWeight="bold" mb={2}>
+                    Top Selling Boxes
                   </Text>
-                  <Box overflowX="auto" pb={2}>
-                    <HStack spacing={4} minW="max-content">
-                    {salesData.map((item, index) => (
+                  <Text fontSize="sm" color="gray.500" mb={3}>
+                    Highest-selling or platform-recommended boxes, refreshed daily when available.
+                    {boxesMeta?.source === "fallback" ? " Showing curated fallback data." : ""}
+                  </Text>
+                  {boxesMeta && (
+                    <Text fontSize="xs" color="gray.400" mb={4}>
+                      Last checked: {new Date(boxesMeta.generatedAt).toLocaleDateString()} · Next refresh:{" "}
+                      {new Date(boxesMeta.nextRefreshAt).toLocaleDateString()}
+                    </Text>
+                  )}
+                  {boxesLoading && (
+                    <Text fontSize="sm" color="gray.500" mb={3}>
+                      Loading latest boxes...
+                    </Text>
+                  )}
+                  {boxesError && (
+                    <Text fontSize="sm" color="red.500" mb={3}>
+                      {boxesError}
+                    </Text>
+                  )}
+                  <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacing={4}>
+                    {topBoxes.map((item, index) => (
                       <Box
                         key={index}
-                        minW="140px"
                         bg="white"
                         borderRadius="xl"
                         boxShadow="md"
                         p={3}
                         textAlign="center"
-                        flexShrink={0}
                         _hover={{ transform: "scale(1.05)", transition: "0.3s" }}
                       >
                         <Image
@@ -245,9 +296,47 @@ export default function SiteReviewPage() {
                         </Text>
                       </Box>
                     ))}
+                  </SimpleGrid>
+                </Box>
 
-                    </HStack>
-                  </Box>
+                {/* Latest Boxes */}
+                <Box p={6} borderWidth={1} borderRadius="xl" bg="white" boxShadow="md" mb={6}>
+                  <Text fontSize="xl" fontWeight="bold" mb={2}>
+                    Latest Mystery Boxes
+                  </Text>
+                  <Text fontSize="sm" color="gray.500" mb={3}>
+                    Latest 10 boxes from the platform when available.
+                    {boxesMeta?.source === "fallback" ? " Showing curated fallback data." : ""}
+                  </Text>
+                  <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacing={4}>
+                    {salesData.map((item, index) => (
+                      <Box
+                        key={index}
+                        bg="white"
+                        borderRadius="xl"
+                        boxShadow="md"
+                        p={3}
+                        textAlign="center"
+                        _hover={{ transform: "scale(1.05)", transition: "0.3s" }}
+                      >
+                        <Image
+                          src={item.iconUrl}
+                          alt={item.name}
+                          width="100%"
+                          height="100px"
+                          objectFit="cover"
+                          borderRadius="md"
+                          mb={2}
+                        />
+                        <Text fontWeight="bold" fontSize="sm" noOfLines={1}>
+                          {item.name}
+                        </Text>
+                        <Text fontSize="sm" color="gray.500">
+                          ${item.price}
+                        </Text>
+                      </Box>
+                    ))}
+                  </SimpleGrid>
                 </Box>
 
 
@@ -307,7 +396,7 @@ export default function SiteReviewPage() {
             >
             <Text fontSize="xl" fontWeight="bold" mb={4}>Alternatives</Text>
             <AlternativesList
-                alternatives={sites.filter((s) => s.id !== id)}
+                alternatives={sites.filter((s) => s.id.toLowerCase() !== siteId.toLowerCase())}
             />
             </Box>
         </Flex>

@@ -25,7 +25,7 @@ import { Link as ChakraLink } from "@chakra-ui/next-js";
 // FAQ Component
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  
   return (
     <Box
       bg="white"
@@ -178,50 +178,18 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         <Box
           maxW="1200px"
           mx="auto"
-          mt={{ base: 20, md: 40 }}
+          mt={{ base: 5, md: 10 }}
           px={{ base: 6, md: 12 }}
           py={{ base: 12, md: 16 }}
           borderRadius="2xl"
-          bgGradient="linear(135deg, blue.600, purple.600, pink.500)"
+          bgGradient="linear(135deg, blue.700, blue.600, purple.600)"
           position="relative"
-          boxShadow="2xl"
+          boxShadow="lg"
           overflow="hidden"
           zIndex={1}
           border="1px solid"
           borderColor="whiteAlpha.200"
         >
-          {/* Animated Background Elements */}
-          <Box
-            position="absolute"
-            top="10%"
-            left="5%"
-            w="100px"
-            h="100px"
-            bg="whiteAlpha.100"
-            borderRadius="full"
-            animation="float 6s ease-in-out infinite"
-          />
-          <Box
-            position="absolute"
-            top="20%"
-            right="10%"
-            w="80px"
-            h="80px"
-            bg="whiteAlpha.100"
-            borderRadius="full"
-            animation="float 8s ease-in-out infinite reverse"
-          />
-          <Box
-            position="absolute"
-            bottom="20%"
-            left="15%"
-            w="60px"
-            h="60px"
-            bg="whiteAlpha.100"
-            borderRadius="full"
-            animation="float 10s ease-in-out infinite"
-          />
-
           {/* Background Pattern */}
           <Box
             position="absolute"
@@ -247,7 +215,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
               textTransform="uppercase"
               letterSpacing="wide"
             >
-              🏆 TRUSTED BY 50K+ USERS
+              Trusted by 50K+ users
             </Badge>
             
             {/* Brand Name */}
@@ -275,7 +243,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
               Top Mystery Box Sites
               <br />
               <Text as="span" bgGradient="linear(to-r, yellow.200, orange.200)" bgClip="text">
-                Reviewed in 2025
+                Reviewed in 2026
               </Text>
             </Heading>
             
@@ -326,13 +294,6 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         </Box>
       </Box>
 
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-      `}</style>
-     
       {/* Recommended Sites Section */}
       <Box
         maxW="1000px"
@@ -342,8 +303,8 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         px={{ base: 4, md: 6 }}   
         py={8}
         bg="white"
-        borderRadius="2xl"
-        boxShadow="xl"
+        borderRadius="xl"
+        boxShadow="sm"
         zIndex={2}
         position="relative"
         border="1px solid"
@@ -352,14 +313,14 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         <Flex justify="space-between" align="center" mb={6}>
           <VStack align="flex-start" spacing={1}>
             <Heading size="xl" color="gray.800">
-              🎯 Recommended Mystery Box Sites
+              Recommended Mystery Box Sites
             </Heading>
             <Text color="gray.600" fontSize="lg">
-              Our top-rated platforms for 2025
+              Our top-rated platforms for 2026
             </Text>
           </VStack>
-          <Badge colorScheme="green" fontSize="md" px={4} py={2} borderRadius="full" fontWeight="bold">
-            Updated Today
+          <Badge colorScheme="green" fontSize="sm" px={3} py={1} borderRadius="full" fontWeight="semibold">
+            Updated for 2026
           </Badge>
         </Flex>
 
@@ -393,14 +354,14 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                   bg="white"
                   border="2px solid"
                   borderColor="gray.100"
-                  borderRadius="xl"
+                  borderRadius="lg"
                   p={6}
                   transition="all 0.3s ease"
                   position="relative"
                   _hover={{
                     borderColor: "blue.300",
                     transform: "translateY(-8px)",
-                    boxShadow: "2xl",
+                    boxShadow: "md",
                   }}
                 >
                   {/* Rank Badge */}
@@ -481,14 +442,14 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                       {/* Trust and Safety Indicators */}
                       <HStack spacing={2} wrap="wrap">
                         <Badge size="sm" colorScheme="green" variant="subtle">
-                          ✓ Verified
+                          Verified
                         </Badge>
                         <Badge size="sm" colorScheme="blue" variant="subtle">
-                          🛡️ Secure
+                          Secure
                         </Badge>
                         {site.rating >= 4 && (
                           <Badge size="sm" colorScheme="purple" variant="subtle">
-                            ⭐ Top Rated
+                            Top Rated
                           </Badge>
                         )}
                       </HStack>
@@ -529,13 +490,13 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           bg="white"
           p={6}
           borderRadius="xl"
-          boxShadow="lg"
+          boxShadow="sm"
           border="1px solid"
           borderColor="gray.200"
         >
           <Flex justify="space-between" align="center" mb={6}>
             <VStack align="flex-start" spacing={1}>
-              <Heading size="lg" color="gray.800">📝 Latest Reviews</Heading>
+              <Heading size="lg" color="gray.800">Latest Reviews</Heading>
               <Text color="gray.600" fontSize="sm">Fresh insights and platform updates</Text>
             </VStack>
             <Badge colorScheme="blue" fontSize="sm" px={3} py={1} borderRadius="full">
@@ -556,7 +517,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                     borderColor: "blue.200",
                     bg: "blue.50",
                     transform: "translateY(-2px)",
-                    boxShadow: "md",
+                    boxShadow: "sm",
                   }}
                 >
                   <HStack spacing={4}>
@@ -585,9 +546,9 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                         {post.title}
                       </Text>
                       <HStack spacing={2}>
-                        <Badge colorScheme="green" size="sm">Latest Review</Badge>
+                        <Badge colorScheme="green" size="sm">Review</Badge>
                         <Text fontSize="xs" color="gray.500">
-                          {index === 0 ? 'Today' : `${index + 1} days ago`}
+                          Recent
                         </Text>
                       </HStack>
                     </VStack>
@@ -631,12 +592,12 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           bg="white"
           p={6}
           borderRadius="xl"
-          boxShadow="lg"
+          boxShadow="sm"
           border="1px solid"
           borderColor="gray.200"
         >
           <VStack align="flex-start" spacing={1} mb={6}>
-            <Heading size="lg" color="gray.800">🏆 Top Sites Ranking</Heading>
+            <Heading size="lg" color="gray.800">Top Sites Ranking</Heading>
             <Text color="gray.600" fontSize="sm">Based on user reviews & testing</Text>
           </VStack>
 
@@ -771,7 +732,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
         bg="white"
       >
         <VStack align="flex-start" spacing={1} mb={6}>
-          <Heading size="lg" color="gray.800">💬 Community Discussion</Heading>
+          <Heading size="lg" color="gray.800">Community Discussion</Heading>
           <Text color="gray.600">Join the conversation with fellow mystery box enthusiasts</Text>
         </VStack>
         <DisqusThread identifier="homepage" title="Droppeek Homepage Comments" />
@@ -838,10 +799,10 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
               {/* Trust Badges */}
               <HStack spacing={3} wrap="wrap" justify={{ base: "center", md: "flex-start" }}>
                 <Badge colorScheme="green" variant="subtle" px={3} py={1} borderRadius="full">
-                  ✓ Verified Reviews
+                  Verified Reviews
                 </Badge>
                 <Badge colorScheme="blue" variant="subtle" px={3} py={1} borderRadius="full">
-                  🛡️ Scam Protection
+                  Scam Protection
                 </Badge>
               </HStack>
             </VStack>
@@ -994,7 +955,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
             gap={4}
           >
             <Text fontSize="sm" color="gray.500" textAlign={{ base: "center", md: "left" }}>
-              © 2025 DropPeek. All rights reserved. | 
+              © 2026 DropPeek. All rights reserved. | 
               <Text as="span" color="gray.400" ml={1}>
                 Making mystery box shopping safer for everyone.
               </Text>

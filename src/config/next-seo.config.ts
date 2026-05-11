@@ -2,7 +2,7 @@
 import { DefaultSeoProps } from "next-seo";
 
 const SEO_CONFIG: DefaultSeoProps = {
-  title: "Best Mystery Boxes in 2024 | Mystery Box Guide",
+  title: "Best Mystery Boxes in 2026 | Mystery Box Guide",
   description: "Find the best mystery box websites with verified reviews and exclusive bonuses.",
   canonical: "https://site1.com",
   openGraph: {
