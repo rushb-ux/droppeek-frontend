@@ -21,10 +21,10 @@ const platforms = [
     image: "/images/hypeloot.png",
   },
   {
-    id: "jemlit",
+    id: "JemLit",
     name: "JemLit",
     description: "Daily drops with hypebeast and tech prizes.",
-    image: "/images/lootie.png",
+    image: "/images/jemlit.png",
   },
   {
     id: "mysteryboxbrand",
@@ -42,7 +42,7 @@ const platforms = [
     id: "lootie",
     name: "Lootie",
     description: "Gaming and hypebeast mystery boxes.",
-    image: "/images/jemlit.png"
+    image: "/images/lootie.png"
   },
   {
     id: "hapabox",
@@ -71,7 +71,7 @@ export default function PlatformListPage() {
             >
               <VStack align="start" spacing={3}>
                 <Image
-                    src={`https://www.google.com/s2/favicons?sz=64&domain=${site.id}.com`}
+                    src={site.image}
                     alt={`${site.name} logo`}
                     boxSize="48px"
                     objectFit="contain"
