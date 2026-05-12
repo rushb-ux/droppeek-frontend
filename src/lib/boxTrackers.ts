@@ -16,7 +16,70 @@ const LATEST_BOX_LIMIT = 10;
 const TOP_BOX_LIMIT = 5;
 const ALL_BOX_LIMIT = 500;
 
-const fallbackBoxes: Record<string, BoxItem[]> = {};
+const fallbackBoxes: Record<string, BoxItem[]> = {
+  hypedrop: [
+    {
+      name: "Starbucks",
+      slug: "starbucks",
+      price: 12.02,
+      iconUrl: "https://static.hypedrop.com/HypeDrop_starbuck.png",
+    },
+    {
+      name: "McDonalds",
+      slug: "mcdonalds",
+      price: 6.66,
+      iconUrl: "https://static.hypedrop.com/HypeDrop_I'm%20lovin'%20it_Box_Design_Export.png",
+    },
+    {
+      name: "Battle for Jordans",
+      slug: "battle-for-jordans",
+      price: 21.45,
+      iconUrl: "https://imgix.hypedrop.com/images/HypeDrop_Battle%20for%20Jordans_Box_Design_Export.png",
+    },
+    {
+      name: "1 in 10",
+      slug: "1-in-10",
+      price: 107.01,
+      iconUrl: "https://static.hypedrop.com/HypeDrop_1in10.png",
+    },
+    {
+      name: "Great Eggspectations",
+      slug: "great-eggspectations",
+      price: 29.19,
+      iconUrl: "https://static.hypedrop.com/HypeDrop_GREAT-EGGSPECTATIONS.png",
+    },
+    {
+      name: "10 All In One",
+      slug: "10-all-in-one",
+      price: 10,
+      iconUrl: "/media/10allinonehypedrop.png",
+    },
+    {
+      name: "Pajama Party",
+      slug: "pajama-party",
+      price: 5,
+      iconUrl: "/media/pajamaparty.png",
+    },
+    {
+      name: "Nail Salon",
+      slug: "nail-salon",
+      price: 2.99,
+      iconUrl: "/media/nailsalon.png",
+    },
+    {
+      name: "Black Ops",
+      slug: "black-ops",
+      price: 14.99,
+      iconUrl: "/media/75155-hypedropblackops.png",
+    },
+    {
+      name: "Small Juicer",
+      slug: "small-juicer",
+      price: 6.99,
+      iconUrl: "/media/af4dc-hypedrop-small-juicer.png",
+    },
+  ],
+};
 
 export function normalizeSiteId(siteId: string) {
   return siteId.trim().toLowerCase();

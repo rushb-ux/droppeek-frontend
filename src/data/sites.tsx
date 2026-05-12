@@ -4,7 +4,7 @@ const sites = [
   {
     id: "hypedrop",
     name: "HypeDrop",
-    logo: "https:/www.google.com/s2/favicons?sz=64&domain=hypedrop.com",
+    logo: "https://www.google.com/s2/favicons?sz=64&domain=hypedrop.com",
     rating: 3.5,
     rank: 2,
     category: "HypeDrop Mystery Boxes",
