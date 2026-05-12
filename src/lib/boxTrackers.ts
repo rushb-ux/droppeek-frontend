@@ -170,11 +170,16 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
     { name: "Jordan Heaven", slug: "jordan-heaven", price: 19.99, iconUrl: "https://media.lootie.com/images/case-images/OFFCL_Box_jordan_1.png?quality=75&width=170" },
   ],
   hypeloot: [
-    { name: "Cheap Starter", slug: "cheap-starter", price: 0.59, iconUrl: "https://cdn.hypeloot.com/_prod_/storage/boxes/09a3ad7e-48b4-4548-9032-5f53a2020ba4.png?w=220" },
-    { name: "Dunk Low", slug: "dunk-low", price: 63.68, iconUrl: "https://cdn.hypeloot.com/_prod_/storage/boxes/bc9b066c-7604-4aa5-8af5-53995307c437.png?w=220" },
-    { name: "Mixed Designer", slug: "mixed-designer", price: 115.88, iconUrl: "https://cdn.hypeloot.com/_prod_/storage/boxes/e7df9a5f-dab8-4fd2-9d75-21d987d3e772.png?w=220" },
-    { name: "Nike Budget", slug: "nike-budget", price: 0.8, iconUrl: "https://cdn.hypeloot.com/_prod_/storage/boxes/80a8186b-1cd6-49f1-9b31-101d0ba65b60.png?w=220" },
-    { name: "GoPro Box", slug: "gopro-box", price: 18.68, iconUrl: "https://cdn.hypeloot.com/_prod_/storage/boxes/0f78f489-071e-41a7-b07f-5438e7c80a84.png?w=220" },
+    { name: "Cheap Starter", slug: "cheap-starter", price: 0.59, iconUrl: "/images/hypeloot.png" },
+    { name: "Nike Budget", slug: "nike-budget", price: 0.8, iconUrl: "/images/hypeloot.png" },
+    { name: "Dunk Low", slug: "dunk-low", price: 63.68, iconUrl: "/images/hypeloot.png" },
+    { name: "GoPro Box", slug: "gopro-box", price: 18.68, iconUrl: "/images/hypeloot.png" },
+    { name: "Mixed Designer", slug: "mixed-designer", price: 115.88, iconUrl: "/images/hypeloot.png" },
+    { name: "Sneaker Starter", slug: "sneaker-starter", price: 4.99, iconUrl: "/images/hypeloot.png" },
+    { name: "Streetwear Box", slug: "streetwear-box", price: 9.99, iconUrl: "/images/hypeloot.png" },
+    { name: "Gaming Gear", slug: "gaming-gear", price: 14.99, iconUrl: "/images/hypeloot.png" },
+    { name: "Apple Tech", slug: "apple-tech", price: 24.99, iconUrl: "/images/hypeloot.png" },
+    { name: "Luxury Watch", slug: "luxury-watch", price: 49.99, iconUrl: "/images/hypeloot.png" },
   ],
 };
 
