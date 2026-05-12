@@ -28,7 +28,7 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
       name: "McDonalds",
       slug: "mcdonalds",
       price: 6.66,
-      iconUrl: "https://static.hypedrop.com/HypeDrop_I'm%20lovin'%20it_Box_Design_Export.png",
+      iconUrl: "https://static.hypedrop.com/HypeDrop_I%27m%20lovin%27%20it_Box_Design_Export.png",
     },
     {
       name: "Battle for Jordans",
