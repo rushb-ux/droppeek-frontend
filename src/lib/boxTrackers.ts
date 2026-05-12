@@ -108,6 +108,11 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
       price: 5.81,
       iconUrl: "https://static.hapabox.com/upload/3455e1a9749c48cdb04db2795aa5164c_source.png?x-oss-process=image/auto-orient,1/resize,m_lfit,w_400,h_400/format,webp",
     },
+    { name: "1% Chance", slug: "one-percent-chance", price: 1.00, iconUrl: "/images/hapabox.png" },
+    { name: "10% Shock", slug: "ten-percent-shock", price: 10.00, iconUrl: "/images/hapabox.png" },
+    { name: "10% Victory", slug: "ten-percent-victory", price: 10.00, iconUrl: "/images/hapabox.png" },
+    { name: "Treasure Hunt", slug: "treasure-hunt", price: 12.99, iconUrl: "/images/hapabox.png" },
+    { name: "Bingo King", slug: "bingo-king", price: 15.99, iconUrl: "/images/hapabox.png" },
   ],
   metadraw: [
     { name: "Tight Budget", slug: "tight-budget", price: 0.16, iconUrl: "/images/Tight Budget.png" },
@@ -152,6 +157,11 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
       price: 6.99,
       iconUrl: "https://mysteryboxbrand.com/storage/box/PKzFcxopW3xVg8jthbXM6OGucwBK3TiajTZQLaT0.webp",
     },
+    { name: "iPhone 14", slug: "iphone-14", price: 14.99, iconUrl: "/images/mysteryboxbrand.png" },
+    { name: "Amazon Mystery", slug: "amazon-mystery", price: 9.99, iconUrl: "/images/mysteryboxbrand.png" },
+    { name: "Sneaker Box", slug: "sneaker-box", price: 19.99, iconUrl: "/images/mysteryboxbrand.png" },
+    { name: "Luxury Mystery", slug: "luxury-mystery", price: 49.99, iconUrl: "/images/mysteryboxbrand.png" },
+    { name: "Gaming Mystery", slug: "gaming-mystery", price: 24.99, iconUrl: "/images/mysteryboxbrand.png" },
   ],
   rillabox: [
     { name: "Adidas x BAPE", slug: "adidas-bape", price: 18.79, iconUrl: "https://cdn.rillabox.com/media/boxes/BAPE_X_ADIDAS-mock_box_1.png" },
@@ -159,6 +169,11 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
     { name: "Adin Ross", slug: "adin-ross", price: 12.89, iconUrl: "https://cdn.rillabox.com/media/boxes/Adin-Ross_1BsHVRx.png" },
     { name: "Alienware", slug: "alienware", price: 14.49, iconUrl: "https://cdn.rillabox.com/media/boxes/19-ALIENWARE-Box-mock_box_CQzoSjY.png" },
     { name: "Amazon", slug: "amazon", price: 8.89, iconUrl: "https://cdn.rillabox.com/media/boxes/Amazon_I2y4LL8.png" },
+    { name: "Apple Tech", slug: "apple-tech", price: 19.99, iconUrl: "/images/rillabox.png" },
+    { name: "Sneaker Vault", slug: "sneaker-vault", price: 24.99, iconUrl: "/images/rillabox.png" },
+    { name: "Streetwear Drop", slug: "streetwear-drop", price: 14.99, iconUrl: "/images/rillabox.png" },
+    { name: "Gaming Setup", slug: "gaming-setup", price: 29.99, iconUrl: "/images/rillabox.png" },
+    { name: "Luxury Picks", slug: "luxury-picks", price: 49.99, iconUrl: "/images/rillabox.png" },
   ],
   jemlit: [
     {
@@ -191,6 +206,11 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
       price: 23.94,
       iconUrl: "https://d3ht839xyrpcqw.cloudfront.net/196046/conversions/d9e046ebdfbf168d17b800f0a7f45a2c-default.png",
     },
+    { name: "Digital Discovery", slug: "digital-discovery", price: 9.99, iconUrl: "/images/jemlit.png" },
+    { name: "Galaxy Z Flip", slug: "galaxy-z-flip", price: 34.99, iconUrl: "/images/jemlit.png" },
+    { name: "Gaming Mystery", slug: "gaming-mystery", price: 19.99, iconUrl: "/images/jemlit.png" },
+    { name: "Luxury Tech", slug: "luxury-tech", price: 49.99, iconUrl: "/images/jemlit.png" },
+    { name: "Budget Finds", slug: "budget-finds", price: 2.99, iconUrl: "/images/jemlit.png" },
   ],
   lootie: [
     { name: "Hype x Tech", slug: "hype-x-tech", price: 2.99, iconUrl: "https://media.lootie.com/images/case-images/OFFCL_Hypebeast_2.png?quality=75&width=180" },
@@ -198,6 +218,11 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
     { name: "iPhone 15", slug: "iphone-box", price: 4.99, iconUrl: "https://media.lootie.com/images/case-images/OFFCL_Iphone_15.png?quality=75&width=170" },
     { name: "Off-White Lucky", slug: "off-white-lucky-zh1067om7", price: 4.99, iconUrl: "https://media.lootie.com/images/case-images/OFFCL_Box_offwhite_3.png?quality=75&width=170" },
     { name: "Jordan Heaven", slug: "jordan-heaven", price: 19.99, iconUrl: "https://media.lootie.com/images/case-images/OFFCL_Box_jordan_1.png?quality=75&width=170" },
+    { name: "Lucky Dunky", slug: "lucky-dunky", price: 9.99, iconUrl: "/images/lootie.png" },
+    { name: "Apple Starter", slug: "apple-starter", price: 4.99, iconUrl: "/images/lootie.png" },
+    { name: "Designer Finds", slug: "designer-finds", price: 14.99, iconUrl: "/images/lootie.png" },
+    { name: "Gaming Gear", slug: "gaming-gear", price: 19.99, iconUrl: "/images/lootie.png" },
+    { name: "Streetwear Mystery", slug: "streetwear-mystery", price: 24.99, iconUrl: "/images/lootie.png" },
   ],
   hypeloot: [
     { name: "Cheap Starter", slug: "cheap-starter", price: 0.59, iconUrl: "/images/hypeloot.png" },
@@ -272,6 +297,18 @@ function absolutizeStorageImage(path: string) {
   }
 
   return `https://mysteryboxbrand.com/storage/${path.replace(/^\/?storage\/?/, "")}`;
+}
+
+function normalizeHapaboxImage(url: string) {
+  if (!url || !url.startsWith("https://static.hapabox.com/")) {
+    return url;
+  }
+
+  if (url.includes("x-oss-process=")) {
+    return url;
+  }
+
+  return `${url}?x-oss-process=image/auto-orient,1/resize,m_lfit,w_400,h_400/format,webp`;
 }
 
 async function fetchHypedropBoxes(orderBy: "RECOMMENDED" | "NEWEST", first: number): Promise<BoxItem[]> {
@@ -353,7 +390,7 @@ function mapHapaboxRows(rows: any[]): BoxItem[] {
         name: item.name ?? item.item_short_title,
         slug: String(item.id ?? slugify(item.name ?? item.item_short_title ?? "")),
         price: parsePrice(item.lowest_price),
-        iconUrl: item.item_main_imgs,
+        iconUrl: normalizeHapaboxImage(item.item_main_imgs),
       })
     )
     .filter(isBoxItem);
