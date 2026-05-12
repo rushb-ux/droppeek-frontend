@@ -45,6 +45,7 @@ type SiteReviewPageProps = {
 type BoxesResponse = {
   boxes: SalesBox[];
   topBoxes?: SalesBox[];
+  allBoxes?: SalesBox[];
   source: "live" | "fallback";
   generatedAt: string;
   nextRefreshAt: string;
@@ -57,8 +58,8 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
   const { id } = router.query
   const siteId = typeof id === "string" ? id : initialSiteId;
   const site = sites.find((s) => s.id.toLowerCase() === siteId.toLowerCase())
-  const [salesData, setSalesData] = useState<SalesBox[]>([]);
   const [topBoxes, setTopBoxes] = useState<SalesBox[]>([]);
+  const [allBoxes, setAllBoxes] = useState<SalesBox[]>([]);
   const [boxesMeta, setBoxesMeta] = useState<Pick<BoxesResponse, "source" | "generatedAt" | "nextRefreshAt"> | null>(null);
   const [boxesError, setBoxesError] = useState<string | null>(null);
   const [boxesLoading, setBoxesLoading] = useState(false);
@@ -74,12 +75,12 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
       .then((res) => res.json())
       .then((data: BoxesResponse | SalesBox[]) => {
         if (Array.isArray(data)) {
-          setSalesData(data);
           setTopBoxes(data.slice(0, 5));
+          setAllBoxes(data);
           setBoxesMeta(null);
         } else if (Array.isArray(data.boxes)) {
-          setSalesData(data.boxes);
           setTopBoxes(Array.isArray(data.topBoxes) ? data.topBoxes : data.boxes.slice(0, 5));
+          setAllBoxes(Array.isArray(data.allBoxes) ? data.allBoxes : data.boxes);
           setBoxesMeta({
             source: data.source,
             generatedAt: data.generatedAt,
@@ -87,16 +88,16 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
           });
         } else {
           console.error("Invalid data format", data);
-          setSalesData([]);
           setTopBoxes([]);
+          setAllBoxes([]);
           setBoxesMeta(null);
           setBoxesError("Latest box data is temporarily unavailable.");
         }
       })
       .catch((err) => {
         console.error("Failed to fetch sales boxes", err);
-        setSalesData([]);
         setTopBoxes([]);
+        setAllBoxes([]);
         setBoxesMeta(null);
         setBoxesError("Latest box data is temporarily unavailable.");
       })
@@ -246,7 +247,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
           gap={6}
           align="flex-start"
         >            
-        {/* Latest Boxes + Expert Review */}
+        {/* Box Catalog + Expert Review */}
               <Box flex="2">
                 {/* Top Boxes */}
                 <Box p={6} borderWidth={1} borderRadius="xl" bg="white" boxShadow="md" mb={6}>
@@ -289,7 +290,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                           alt={item.name}
                           width="100%"
                           height="100px"
-                          objectFit="cover"
+                          objectFit="contain"
                           borderRadius="md"
                           mb={2}
                         />
@@ -304,19 +305,19 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                   </SimpleGrid>
                 </Box>
 
-                {/* Latest Boxes */}
+                {/* All Boxes */}
                 <Box p={6} borderWidth={1} borderRadius="xl" bg="white" boxShadow="md" mb={6}>
                   <Text fontSize="xl" fontWeight="bold" mb={2}>
-                    Latest Mystery Boxes
+                    All Mystery Boxes
                   </Text>
                   <Text fontSize="sm" color="gray.500" mb={3}>
-                    Latest 10 boxes from the platform when available.
+                    Full box catalog detected from the platform API when available.
                     {boxesMeta?.source === "fallback" ? " Showing curated fallback data." : ""}
                   </Text>
                   <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacing={4}>
-                    {salesData.map((item, index) => (
+                    {allBoxes.map((item, index) => (
                       <Box
-                        key={index}
+                        key={`${item.slug}-${index}`}
                         bg="white"
                         borderRadius="xl"
                         boxShadow="md"
@@ -329,7 +330,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                           alt={item.name}
                           width="100%"
                           height="100px"
-                          objectFit="cover"
+                          objectFit="contain"
                           borderRadius="md"
                           mb={2}
                         />

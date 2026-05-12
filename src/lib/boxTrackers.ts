@@ -8,11 +8,13 @@ export type BoxItem = {
 export type BoxTrackerResult = {
   boxes: BoxItem[];
   topBoxes: BoxItem[];
+  allBoxes: BoxItem[];
   source: "live" | "fallback";
 };
 
 const LATEST_BOX_LIMIT = 10;
 const TOP_BOX_LIMIT = 5;
+const ALL_BOX_LIMIT = 100;
 
 const fallbackBoxes: Record<string, BoxItem[]> = {
   hypedrop: [
@@ -120,11 +122,16 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
     { name: "Budget Shoes", slug: "budget-shoes", price: 0.51, iconUrl: "/images/Budget Shoes.png" },
     { name: "Cheap Dream", slug: "cheap-dream", price: 0.52, iconUrl: "/images/Cheap Dream.png" },
     { name: "Budget Box", slug: "budget-box", price: 2.22, iconUrl: "/images/Budget box.png" },
-    { name: "Streamer Box", slug: "streamer-box", price: 4.99, iconUrl: "/images/metadraw.png" },
-    { name: "GoPro Box", slug: "gopro-box", price: 7.99, iconUrl: "/images/metadraw.png" },
-    { name: "For Her Box", slug: "for-her-box", price: 9.99, iconUrl: "/images/metadraw.png" },
-    { name: "Tech Box", slug: "tech-box", price: 14.99, iconUrl: "/images/metadraw.png" },
-    { name: "Luxury Box", slug: "luxury-box", price: 49.00, iconUrl: "/images/metadraw.png" },
+    { name: "Streamer Box", slug: "streamer-box", price: 4.99, iconUrl: "/images/Tight Budget.png" },
+    { name: "GoPro Box", slug: "gopro-box", price: 7.99, iconUrl: "/images/Play The Card Right.png" },
+    { name: "For Her Box", slug: "for-her-box", price: 9.99, iconUrl: "/images/Budget Shoes.png" },
+    { name: "Tech Box", slug: "tech-box", price: 14.99, iconUrl: "/images/Cheap Dream.png" },
+    { name: "Luxury Box", slug: "luxury-box", price: 49.00, iconUrl: "/images/Budget box.png" },
+    { name: "Sneaker Starter", slug: "sneaker-starter", price: 3.49, iconUrl: "/images/Budget Shoes.png" },
+    { name: "Card Pull", slug: "card-pull", price: 1.99, iconUrl: "/images/Play The Card Right.png" },
+    { name: "Dream Drop", slug: "dream-drop", price: 5.49, iconUrl: "/images/Cheap Dream.png" },
+    { name: "Budget Tech", slug: "budget-tech", price: 6.99, iconUrl: "/images/Tight Budget.png" },
+    { name: "Daily Deal", slug: "daily-deal", price: 2.99, iconUrl: "/images/Budget box.png" },
   ],
   mysteryboxbrand: [
     {
@@ -259,6 +266,21 @@ function isBoxItem(box: BoxItem | null): box is BoxItem {
   return box !== null;
 }
 
+function uniqueBoxes(boxes: BoxItem[]) {
+  const seen = new Set<string>();
+
+  return boxes.filter((box) => {
+    const key = `${box.slug || slugify(box.name)}:${box.name.toLowerCase()}`;
+
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -338,22 +360,27 @@ async function fetchHypedropBoxes(orderBy: "RECOMMENDED" | "NEWEST", first: numb
     throw new Error("HypeDrop response did not include boxes");
   }
 
-  return boxes.slice(0, first);
+  return uniqueBoxes(boxes).slice(0, first);
 }
 
 async function fetchHypedropTracker(): Promise<BoxTrackerResult> {
   const topBoxes = await fetchHypedropBoxes("RECOMMENDED", TOP_BOX_LIMIT);
 
   try {
+    const allBoxes = await fetchHypedropBoxes("NEWEST", ALL_BOX_LIMIT);
+    const boxes = allBoxes.slice(0, LATEST_BOX_LIMIT);
+
     return {
-      boxes: await fetchHypedropBoxes("NEWEST", LATEST_BOX_LIMIT),
+      boxes,
       topBoxes,
+      allBoxes,
       source: "live",
     };
   } catch {
     return {
       boxes: topBoxes,
       topBoxes,
+      allBoxes: topBoxes,
       source: "live",
     };
   }
@@ -399,14 +426,15 @@ function mapHapaboxRows(rows: any[]): BoxItem[] {
 async function fetchHapaboxTracker(): Promise<BoxTrackerResult> {
   const rows = await fetchHapaboxRows();
   const latestRows = [...rows].sort((a: any, b: any) => Number(b?.firstUpTime ?? 0) - Number(a?.firstUpTime ?? 0));
-  const boxes = mapHapaboxRows(latestRows).slice(0, LATEST_BOX_LIMIT);
-  const topBoxes = mapHapaboxRows(rows).slice(0, TOP_BOX_LIMIT);
+  const allBoxes = uniqueBoxes(mapHapaboxRows(latestRows)).slice(0, ALL_BOX_LIMIT);
+  const boxes = allBoxes.slice(0, LATEST_BOX_LIMIT);
+  const topBoxes = uniqueBoxes(mapHapaboxRows(rows)).slice(0, TOP_BOX_LIMIT);
 
   if (boxes.length === 0) {
     throw new Error("HapaBox response did not include valid boxes");
   }
 
-  return { boxes, topBoxes, source: "live" };
+  return { boxes, topBoxes, allBoxes, source: "live" };
 }
 
 async function fetchJemlitTracker(): Promise<BoxTrackerResult> {
@@ -453,9 +481,12 @@ async function fetchJemlitTracker(): Promise<BoxTrackerResult> {
     throw new Error("JemLit page did not include valid boxes");
   }
 
+  const allBoxes = uniqueBoxes(boxes).slice(0, ALL_BOX_LIMIT);
+
   return {
-    boxes: boxes.slice(0, LATEST_BOX_LIMIT),
-    topBoxes: boxes.slice(0, TOP_BOX_LIMIT),
+    boxes: allBoxes.slice(0, LATEST_BOX_LIMIT),
+    topBoxes: allBoxes.slice(0, TOP_BOX_LIMIT),
+    allBoxes,
     source: "live",
   };
 }
@@ -525,9 +556,9 @@ async function fetchMysteryBoxBrandTopBoxes(rows: any[]): Promise<BoxItem[]> {
       (a: any, b: any) => (counts.get(b?.slug) ?? 0) - (counts.get(a?.slug) ?? 0)
     );
 
-    return mapMysteryBoxBrandRows(rankedRows).slice(0, TOP_BOX_LIMIT);
+    return uniqueBoxes(mapMysteryBoxBrandRows(rankedRows)).slice(0, TOP_BOX_LIMIT);
   } catch {
-    return mapMysteryBoxBrandRows(rows).slice(0, TOP_BOX_LIMIT);
+    return uniqueBoxes(mapMysteryBoxBrandRows(rows)).slice(0, TOP_BOX_LIMIT);
   }
 }
 
@@ -536,14 +567,15 @@ async function fetchMysteryBoxBrandTracker(): Promise<BoxTrackerResult> {
   const latestRows = [...rows].sort(
     (a: any, b: any) => new Date(b?.updated_at ?? 0).getTime() - new Date(a?.updated_at ?? 0).getTime()
   );
-  const boxes = mapMysteryBoxBrandRows(latestRows).slice(0, LATEST_BOX_LIMIT);
+  const allBoxes = uniqueBoxes(mapMysteryBoxBrandRows(latestRows)).slice(0, ALL_BOX_LIMIT);
+  const boxes = allBoxes.slice(0, LATEST_BOX_LIMIT);
   const topBoxes = await fetchMysteryBoxBrandTopBoxes(rows);
 
   if (boxes.length === 0) {
     throw new Error("MysteryBoxBrand response did not include valid boxes");
   }
 
-  return { boxes, topBoxes, source: "live" };
+  return { boxes, topBoxes, allBoxes, source: "live" };
 }
 
 const liveFetchers: Record<string, () => Promise<BoxTrackerResult>> = {
@@ -553,27 +585,32 @@ const liveFetchers: Record<string, () => Promise<BoxTrackerResult>> = {
   mysteryboxbrand: fetchMysteryBoxBrandTracker,
 };
 
+function fallbackResult(fallback: BoxItem[]): BoxTrackerResult {
+  const allBoxes = uniqueBoxes(fallback).slice(0, ALL_BOX_LIMIT);
+  const topBoxes = allBoxes.slice(0, TOP_BOX_LIMIT);
+  const latestStartIndex = allBoxes.length >= TOP_BOX_LIMIT + LATEST_BOX_LIMIT ? TOP_BOX_LIMIT : 0;
+
+  return {
+    boxes: allBoxes.slice(latestStartIndex, latestStartIndex + LATEST_BOX_LIMIT),
+    topBoxes,
+    allBoxes,
+    source: "fallback",
+  };
+}
+
 export async function fetchLatestBoxes(siteId: string): Promise<BoxTrackerResult> {
   const normalizedSiteId = normalizeSiteId(siteId);
   const fallback = fallbackBoxes[normalizedSiteId] ?? [];
   const liveFetcher = liveFetchers[normalizedSiteId];
 
   if (!liveFetcher) {
-    return {
-      boxes: fallback.slice(0, LATEST_BOX_LIMIT),
-      topBoxes: fallback.slice(0, TOP_BOX_LIMIT),
-      source: "fallback",
-    };
+    return fallbackResult(fallback);
   }
 
   try {
     return await liveFetcher();
   } catch (error) {
     console.error(`Failed to fetch live boxes for ${normalizedSiteId}:`, error);
-    return {
-      boxes: fallback.slice(0, LATEST_BOX_LIMIT),
-      topBoxes: fallback.slice(0, TOP_BOX_LIMIT),
-      source: "fallback",
-    };
+    return fallbackResult(fallback);
   }
 }

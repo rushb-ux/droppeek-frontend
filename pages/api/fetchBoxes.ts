@@ -27,6 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       siteId: normalizedSiteId,
       boxes: result.boxes,
       topBoxes: result.topBoxes,
+      allBoxes: result.allBoxes,
       source: result.source,
       generatedAt: generatedAt.toISOString(),
       nextRefreshAt: nextRefreshAt.toISOString(),
