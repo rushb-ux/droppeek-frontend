@@ -256,7 +256,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                   </Text>
                   <Text fontSize="sm" color="gray.500" mb={3}>
                     Highest-selling or platform-recommended boxes, refreshed daily when available.
-                    {boxesMeta?.source === "fallback" ? " Showing curated fallback data." : ""}
+                    {boxesMeta?.source === "fallback" && topBoxes.length > 0 ? " Showing curated fallback data." : ""}
                   </Text>
                   {boxesMeta && (
                     <Text fontSize="xs" color="gray.400" mb={4}>
@@ -274,35 +274,41 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                       {boxesError}
                     </Text>
                   )}
-                  <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacing={4}>
-                    {topBoxes.map((item, index) => (
-                      <Box
-                        key={index}
-                        bg="white"
-                        borderRadius="xl"
-                        boxShadow="md"
-                        p={3}
-                        textAlign="center"
-                        _hover={{ transform: "scale(1.05)", transition: "0.3s" }}
-                      >
-                        <Image
-                          src={item.iconUrl}
-                          alt={item.name}
-                          width="100%"
-                          height="100px"
-                          objectFit="contain"
-                          borderRadius="md"
-                          mb={2}
-                        />
-                        <Text fontWeight="bold" fontSize="sm" noOfLines={1}>
-                          {item.name}
-                        </Text>
-                        <Text fontSize="sm" color="gray.500">
-                          ${item.price}
-                        </Text>
-                      </Box>
-                    ))}
-                  </SimpleGrid>
+                  {topBoxes.length > 0 ? (
+                    <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacing={4}>
+                      {topBoxes.map((item, index) => (
+                        <Box
+                          key={index}
+                          bg="white"
+                          borderRadius="xl"
+                          boxShadow="md"
+                          p={3}
+                          textAlign="center"
+                          _hover={{ transform: "scale(1.05)", transition: "0.3s" }}
+                        >
+                          <Image
+                            src={item.iconUrl}
+                            alt={item.name}
+                            width="100%"
+                            height="100px"
+                            objectFit="contain"
+                            borderRadius="md"
+                            mb={2}
+                          />
+                          <Text fontWeight="bold" fontSize="sm" noOfLines={1}>
+                            {item.name}
+                          </Text>
+                          <Text fontSize="sm" color="gray.500">
+                            ${item.price}
+                          </Text>
+                        </Box>
+                      ))}
+                    </SimpleGrid>
+                  ) : (
+                    <Text fontSize="sm" color="gray.500">
+                      Live box data is temporarily unavailable for this platform.
+                    </Text>
+                  )}
                 </Box>
 
                 {/* All Boxes */}
@@ -312,37 +318,43 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                   </Text>
                   <Text fontSize="sm" color="gray.500" mb={3}>
                     Full box catalog detected from the platform API when available.
-                    {boxesMeta?.source === "fallback" ? " Showing curated fallback data." : ""}
+                    {boxesMeta?.source === "fallback" && allBoxes.length > 0 ? " Showing curated fallback data." : ""}
                   </Text>
-                  <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacing={4}>
-                    {allBoxes.map((item, index) => (
-                      <Box
-                        key={`${item.slug}-${index}`}
-                        bg="white"
-                        borderRadius="xl"
-                        boxShadow="md"
-                        p={3}
-                        textAlign="center"
-                        _hover={{ transform: "scale(1.05)", transition: "0.3s" }}
-                      >
-                        <Image
-                          src={item.iconUrl}
-                          alt={item.name}
-                          width="100%"
-                          height="100px"
-                          objectFit="contain"
-                          borderRadius="md"
-                          mb={2}
-                        />
-                        <Text fontWeight="bold" fontSize="sm" noOfLines={1}>
-                          {item.name}
-                        </Text>
-                        <Text fontSize="sm" color="gray.500">
-                          ${item.price}
-                        </Text>
-                      </Box>
-                    ))}
-                  </SimpleGrid>
+                  {allBoxes.length > 0 ? (
+                    <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacing={4}>
+                      {allBoxes.map((item, index) => (
+                        <Box
+                          key={`${item.slug}-${index}`}
+                          bg="white"
+                          borderRadius="xl"
+                          boxShadow="md"
+                          p={3}
+                          textAlign="center"
+                          _hover={{ transform: "scale(1.05)", transition: "0.3s" }}
+                        >
+                          <Image
+                            src={item.iconUrl}
+                            alt={item.name}
+                            width="100%"
+                            height="100px"
+                            objectFit="contain"
+                            borderRadius="md"
+                            mb={2}
+                          />
+                          <Text fontWeight="bold" fontSize="sm" noOfLines={1}>
+                            {item.name}
+                          </Text>
+                          <Text fontSize="sm" color="gray.500">
+                            ${item.price}
+                          </Text>
+                        </Box>
+                      ))}
+                    </SimpleGrid>
+                  ) : (
+                    <Text fontSize="sm" color="gray.500">
+                      Live box catalog is temporarily unavailable for this platform.
+                    </Text>
+                  )}
                 </Box>
 
 

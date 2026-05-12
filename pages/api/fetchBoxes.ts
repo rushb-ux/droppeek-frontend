@@ -4,7 +4,9 @@ import { fetchLatestBoxes, normalizeSiteId } from "@/lib/boxTrackers";
 
 const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
 const HALF_DAY_IN_SECONDS = 60 * 60 * 12;
+const ONE_HOUR_IN_SECONDS = 60 * 60;
 const ONE_DAY_IN_MS = ONE_DAY_IN_SECONDS * 1000;
+const ONE_HOUR_IN_MS = 60 * 60 * 1000;
 
 type BoxesApiResponse = {
   siteId: string;
@@ -34,10 +36,13 @@ const pendingFetches = droppeekGlobal.__droppeekBoxesPending ?? new Map<string, 
 droppeekGlobal.__droppeekBoxesCache = boxesCache;
 droppeekGlobal.__droppeekBoxesPending = pendingFetches;
 
-function setCacheHeaders(res: NextApiResponse) {
+function setCacheHeaders(res: NextApiResponse, source?: BoxTrackerResult["source"]) {
+  const maxAge = source === "fallback" ? ONE_HOUR_IN_SECONDS : ONE_DAY_IN_SECONDS;
+  const staleAge = source === "fallback" ? ONE_HOUR_IN_SECONDS : HALF_DAY_IN_SECONDS;
+
   res.setHeader(
     "Cache-Control",
-    `public, s-maxage=${ONE_DAY_IN_SECONDS}, stale-while-revalidate=${HALF_DAY_IN_SECONDS}`
+    `public, s-maxage=${maxAge}, stale-while-revalidate=${staleAge}`
   );
 }
 
@@ -51,7 +56,8 @@ async function getBoxesCacheEntry(siteId: string): Promise<CacheEntry> {
   const fetchPromise = fetchLatestBoxes(siteId)
     .then((result) => {
       const generatedAt = new Date();
-      const nextRefreshAt = new Date(generatedAt.getTime() + ONE_DAY_IN_MS);
+      const cacheDurationMs = result.source === "live" ? ONE_DAY_IN_MS : ONE_HOUR_IN_MS;
+      const nextRefreshAt = new Date(generatedAt.getTime() + cacheDurationMs);
       const entry: CacheEntry = {
         response: {
           siteId,
@@ -87,9 +93,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const normalizedSiteId = normalizeSiteId(siteId);
   const cached = boxesCache.get(normalizedSiteId);
 
-  setCacheHeaders(res);
-
   if (cached && cached.expiresAt > Date.now()) {
+    setCacheHeaders(res, cached.response.source);
+
     return res.status(200).json({
       ...cached.response,
       cacheStatus: "hit",
@@ -98,18 +104,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const entry = await getBoxesCacheEntry(normalizedSiteId);
+    setCacheHeaders(res, entry.response.source);
 
     return res.status(200).json(entry.response);
   } catch (error) {
     console.error(`Fetch boxes failed for ${normalizedSiteId}:`, error);
 
     if (cached) {
+      setCacheHeaders(res, cached.response.source);
+
       return res.status(200).json({
         ...cached.response,
         cacheStatus: "stale",
       });
     }
 
+    setCacheHeaders(res, "fallback");
     return res.status(500).json({ error: "Failed to fetch boxes" });
   }
 }

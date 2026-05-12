@@ -14,7 +14,7 @@ export type BoxTrackerResult = {
 
 const LATEST_BOX_LIMIT = 10;
 const TOP_BOX_LIMIT = 5;
-const ALL_BOX_LIMIT = 100;
+const ALL_BOX_LIMIT = 500;
 
 const fallbackBoxes: Record<string, BoxItem[]> = {
   hypedrop: [
@@ -116,23 +116,7 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
     { name: "Treasure Hunt", slug: "treasure-hunt", price: 12.99, iconUrl: "/images/hapabox.png" },
     { name: "Bingo King", slug: "bingo-king", price: 15.99, iconUrl: "/images/hapabox.png" },
   ],
-  metadraw: [
-    { name: "Tight Budget", slug: "tight-budget", price: 0.16, iconUrl: "/images/Tight Budget.png" },
-    { name: "Play The Card Right", slug: "play-the-card-right", price: 0.28, iconUrl: "/images/Play The Card Right.png" },
-    { name: "Budget Shoes", slug: "budget-shoes", price: 0.51, iconUrl: "/images/Budget Shoes.png" },
-    { name: "Cheap Dream", slug: "cheap-dream", price: 0.52, iconUrl: "/images/Cheap Dream.png" },
-    { name: "Budget Box", slug: "budget-box", price: 2.22, iconUrl: "/images/Budget box.png" },
-    { name: "Streamer Box", slug: "streamer-box", price: 4.99, iconUrl: "/images/Tight Budget.png" },
-    { name: "GoPro Box", slug: "gopro-box", price: 7.99, iconUrl: "/images/Play The Card Right.png" },
-    { name: "For Her Box", slug: "for-her-box", price: 9.99, iconUrl: "/images/Budget Shoes.png" },
-    { name: "Tech Box", slug: "tech-box", price: 14.99, iconUrl: "/images/Cheap Dream.png" },
-    { name: "Luxury Box", slug: "luxury-box", price: 49.00, iconUrl: "/images/Budget box.png" },
-    { name: "Sneaker Starter", slug: "sneaker-starter", price: 3.49, iconUrl: "/images/Budget Shoes.png" },
-    { name: "Card Pull", slug: "card-pull", price: 1.99, iconUrl: "/images/Play The Card Right.png" },
-    { name: "Dream Drop", slug: "dream-drop", price: 5.49, iconUrl: "/images/Cheap Dream.png" },
-    { name: "Budget Tech", slug: "budget-tech", price: 6.99, iconUrl: "/images/Tight Budget.png" },
-    { name: "Daily Deal", slug: "daily-deal", price: 2.99, iconUrl: "/images/Budget box.png" },
-  ],
+  metadraw: [],
   mysteryboxbrand: [
     {
       name: "Free Mystery Box",
@@ -333,6 +317,22 @@ function normalizeHapaboxImage(url: string) {
   return `${url}?x-oss-process=image/auto-orient,1/resize,m_lfit,w_400,h_400/format,webp`;
 }
 
+function normalizeMetadrawImage(url: string) {
+  if (!url) {
+    return "";
+  }
+
+  if (url.startsWith("http")) {
+    return url;
+  }
+
+  return `https://images.metadraw.com/${url.replace(/^\/+/, "")}`;
+}
+
+type MetadrawBoxRow = BoxItem & {
+  openTimes: number;
+};
+
 async function fetchHypedropBoxes(orderBy: "RECOMMENDED" | "NEWEST", first: number): Promise<BoxItem[]> {
   const response = await fetch("https://hypedrop.com/api/graphql", {
     method: "POST",
@@ -435,6 +435,74 @@ async function fetchHapaboxTracker(): Promise<BoxTrackerResult> {
   }
 
   return { boxes, topBoxes, allBoxes, source: "live" };
+}
+
+function extractMetadrawRows(payload: any): any[] {
+  const catalog = payload?.data?.data ?? payload?.data ?? payload;
+  const containers = Array.isArray(catalog) ? catalog : [catalog];
+  const rows: any[] = [];
+
+  for (const container of containers) {
+    if (Array.isArray(container?.boxes)) {
+      rows.push(...container.boxes);
+    } else if (Array.isArray(container)) {
+      rows.push(...container);
+    }
+  }
+
+  return rows;
+}
+
+function mapMetadrawRows(rows: any[]): MetadrawBoxRow[] {
+  return rows
+    .map((item: any) => {
+      const name = item?.name ?? item?.title;
+      const slug = String(item?.slug ?? item?.id ?? slugify(name ?? ""));
+      const price = parsePrice(item?.price);
+      const iconUrl = normalizeMetadrawImage(item?.image_url ?? item?.imageUrl ?? item?.image ?? "");
+      const box = normalizeBox({ name, slug, price, iconUrl });
+
+      if (!box) {
+        return null;
+      }
+
+      return {
+        ...box,
+        openTimes: Number(item?.open_times ?? item?.openTimes ?? 0),
+      };
+    })
+    .filter((box): box is MetadrawBoxRow => box !== null);
+}
+
+async function fetchMetadrawTracker(): Promise<BoxTrackerResult> {
+  const response = await fetch("https://api.metadraw.com/api/v1/boxes?preview=true", {
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Accept-Language": "en",
+      "User-Agent": "Mozilla/5.0",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`MetaDraw request failed: ${response.status}`);
+  }
+
+  const json = await response.json();
+  const mappedBoxes = mapMetadrawRows(extractMetadrawRows(json));
+  const allBoxes = uniqueBoxes(mappedBoxes).slice(0, ALL_BOX_LIMIT);
+
+  if (allBoxes.length === 0) {
+    throw new Error("MetaDraw response did not include valid boxes");
+  }
+
+  const topBoxes = uniqueBoxes([...mappedBoxes].sort((a, b) => b.openTimes - a.openTimes)).slice(0, TOP_BOX_LIMIT);
+
+  return {
+    boxes: allBoxes.slice(0, LATEST_BOX_LIMIT),
+    topBoxes: topBoxes.length > 0 ? topBoxes : allBoxes.slice(0, TOP_BOX_LIMIT),
+    allBoxes,
+    source: "live",
+  };
 }
 
 async function fetchJemlitTracker(): Promise<BoxTrackerResult> {
@@ -581,6 +649,7 @@ async function fetchMysteryBoxBrandTracker(): Promise<BoxTrackerResult> {
 const liveFetchers: Record<string, () => Promise<BoxTrackerResult>> = {
   hypedrop: fetchHypedropTracker,
   hapabox: fetchHapaboxTracker,
+  metadraw: fetchMetadrawTracker,
   jemlit: fetchJemlitTracker,
   mysteryboxbrand: fetchMysteryBoxBrandTracker,
 };
