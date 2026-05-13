@@ -37,8 +37,8 @@ droppeekGlobal.__droppeekBoxesCache = boxesCache;
 droppeekGlobal.__droppeekBoxesPending = pendingFetches;
 
 function setCacheHeaders(res: NextApiResponse, source?: BoxTrackerResult["source"]) {
-  const maxAge = source === "fallback" ? ONE_HOUR_IN_SECONDS : ONE_DAY_IN_SECONDS;
-  const staleAge = source === "fallback" ? ONE_HOUR_IN_SECONDS : HALF_DAY_IN_SECONDS;
+  const maxAge = source === "live" ? ONE_DAY_IN_SECONDS : ONE_HOUR_IN_SECONDS;
+  const staleAge = source === "live" ? HALF_DAY_IN_SECONDS : ONE_HOUR_IN_SECONDS;
 
   res.setHeader(
     "Cache-Control",

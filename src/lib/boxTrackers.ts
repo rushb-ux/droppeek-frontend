@@ -3,18 +3,53 @@ export type BoxItem = {
   slug: string;
   price: number;
   iconUrl: string;
+  platformId?: string;
+  boxId?: string;
+  category?: string;
+  status?: string;
+  sourceUrl?: string;
+  firstSeenAt?: string;
+  lastSeenAt?: string;
+  lastUpdatedAt?: string;
 };
 
 export type BoxTrackerResult = {
   boxes: BoxItem[];
   topBoxes: BoxItem[];
   allBoxes: BoxItem[];
-  source: "live" | "fallback";
+  source: "live" | "snapshot" | "fallback";
+  adapterStatus?: "ok" | "blocked" | "empty" | "fallback";
+  error?: string;
 };
 
 const LATEST_BOX_LIMIT = 10;
 const TOP_BOX_LIMIT = 5;
 const ALL_BOX_LIMIT = 500;
+const SNAPSHOT_TTL_MS = 1000 * 60 * 60 * 24 * 7;
+
+type CatalogStrategy = "api" | "page" | "browser" | "manual";
+
+type CatalogAdapter = {
+  siteId: string;
+  label: string;
+  strategy: CatalogStrategy;
+  fetch: () => Promise<BoxTrackerResult>;
+};
+
+type CatalogSnapshot = {
+  result: BoxTrackerResult;
+  generatedAt: string;
+  expiresAt: number;
+};
+
+type DroppeekGlobal = typeof globalThis & {
+  __droppeekCatalogSnapshots?: Map<string, CatalogSnapshot>;
+};
+
+const droppeekGlobal = globalThis as DroppeekGlobal;
+const catalogSnapshots = droppeekGlobal.__droppeekCatalogSnapshots ?? new Map<string, CatalogSnapshot>();
+
+droppeekGlobal.__droppeekCatalogSnapshots = catalogSnapshots;
 
 const fallbackBoxes: Record<string, BoxItem[]> = {
   hypedrop: [
@@ -95,6 +130,14 @@ function normalizeBox(box: Partial<BoxItem>): BoxItem | null {
     slug: box.slug,
     price: box.price,
     iconUrl: box.iconUrl,
+    platformId: box.platformId,
+    boxId: box.boxId,
+    category: box.category,
+    status: box.status,
+    sourceUrl: box.sourceUrl,
+    firstSeenAt: box.firstSeenAt,
+    lastSeenAt: box.lastSeenAt,
+    lastUpdatedAt: box.lastUpdatedAt,
   };
 }
 
@@ -498,12 +541,59 @@ async function fetchMysteryBoxBrandTracker(): Promise<BoxTrackerResult> {
   return { boxes, topBoxes, allBoxes, source: "live" };
 }
 
-const liveFetchers: Record<string, () => Promise<BoxTrackerResult>> = {
-  hypedrop: fetchHypedropTracker,
-  hapabox: fetchHapaboxTracker,
-  metadraw: fetchMetadrawTracker,
-  jemlit: fetchJemlitTracker,
-  mysteryboxbrand: fetchMysteryBoxBrandTracker,
+async function fetchUnavailableTracker(): Promise<BoxTrackerResult> {
+  return fallbackResult([]);
+}
+
+const catalogAdapters: Record<string, CatalogAdapter> = {
+  hypedrop: {
+    siteId: "hypedrop",
+    label: "HypeDrop",
+    strategy: "api",
+    fetch: fetchHypedropTracker,
+  },
+  hapabox: {
+    siteId: "hapabox",
+    label: "HapaBox",
+    strategy: "api",
+    fetch: fetchHapaboxTracker,
+  },
+  metadraw: {
+    siteId: "metadraw",
+    label: "MetaDraw",
+    strategy: "api",
+    fetch: fetchMetadrawTracker,
+  },
+  jemlit: {
+    siteId: "jemlit",
+    label: "JemLit",
+    strategy: "page",
+    fetch: fetchJemlitTracker,
+  },
+  mysteryboxbrand: {
+    siteId: "mysteryboxbrand",
+    label: "MysteryBoxBrand",
+    strategy: "api",
+    fetch: fetchMysteryBoxBrandTracker,
+  },
+  hypeloot: {
+    siteId: "hypeloot",
+    label: "HypeLoot",
+    strategy: "manual",
+    fetch: fetchUnavailableTracker,
+  },
+  rillabox: {
+    siteId: "rillabox",
+    label: "RillaBox",
+    strategy: "manual",
+    fetch: fetchUnavailableTracker,
+  },
+  lootie: {
+    siteId: "lootie",
+    label: "Lootie",
+    strategy: "manual",
+    fetch: fetchUnavailableTracker,
+  },
 };
 
 function fallbackResult(fallback: BoxItem[]): BoxTrackerResult {
@@ -516,22 +606,128 @@ function fallbackResult(fallback: BoxItem[]): BoxTrackerResult {
     topBoxes,
     allBoxes,
     source: "fallback",
+    adapterStatus: allBoxes.length > 0 ? "fallback" : "empty",
   };
+}
+
+function snapshotResult(snapshot: CatalogSnapshot, error: unknown): BoxTrackerResult {
+  return {
+    ...snapshot.result,
+    source: "snapshot",
+    adapterStatus: "blocked",
+    error: error instanceof Error ? error.message : "Catalog adapter failed",
+  };
+}
+
+function storeSnapshot(siteId: string, result: BoxTrackerResult) {
+  if (result.allBoxes.length === 0) {
+    return;
+  }
+
+  catalogSnapshots.set(siteId, {
+    result: {
+      ...result,
+      source: "live",
+      adapterStatus: "ok",
+    },
+    generatedAt: new Date().toISOString(),
+    expiresAt: Date.now() + SNAPSHOT_TTL_MS,
+  });
+}
+
+function getValidSnapshot(siteId: string) {
+  const snapshot = catalogSnapshots.get(siteId);
+
+  if (!snapshot || snapshot.expiresAt <= Date.now()) {
+    return null;
+  }
+
+  return snapshot;
 }
 
 export async function fetchLatestBoxes(siteId: string): Promise<BoxTrackerResult> {
   const normalizedSiteId = normalizeSiteId(siteId);
   const fallback = fallbackBoxes[normalizedSiteId] ?? [];
-  const liveFetcher = liveFetchers[normalizedSiteId];
+  const adapter = catalogAdapters[normalizedSiteId];
 
-  if (!liveFetcher) {
+  if (!adapter) {
     return fallbackResult(fallback);
   }
 
   try {
-    return await liveFetcher();
+    const result = await adapter.fetch();
+    storeSnapshot(normalizedSiteId, result);
+    return {
+      ...result,
+      source: "live",
+      adapterStatus: "ok",
+    };
   } catch (error) {
     console.error(`Failed to fetch live boxes for ${normalizedSiteId}:`, error);
-    return fallbackResult(fallback);
+    const snapshot = getValidSnapshot(normalizedSiteId);
+
+    if (snapshot) {
+      return snapshotResult(snapshot, error);
+    }
+
+    return {
+      ...fallbackResult(fallback),
+      error: error instanceof Error ? error.message : "Catalog adapter failed",
+    };
   }
+}
+
+export type CatalogSyncSummary = {
+  siteId: string;
+  label: string;
+  strategy: CatalogStrategy;
+  status: BoxTrackerResult["source"];
+  boxCount: number;
+  topBoxCount: number;
+  error?: string;
+};
+
+export async function syncBoxCatalog(siteIds = Object.keys(catalogAdapters)): Promise<CatalogSyncSummary[]> {
+  const summaries = await Promise.all(
+    siteIds.map(async (siteId) => {
+      const normalizedSiteId = normalizeSiteId(siteId);
+      const adapter = catalogAdapters[normalizedSiteId];
+
+      if (!adapter) {
+        const fallback = fallbackResult(fallbackBoxes[normalizedSiteId] ?? []);
+        return {
+          siteId: normalizedSiteId,
+          label: normalizedSiteId,
+          strategy: "manual" as CatalogStrategy,
+          status: fallback.source,
+          boxCount: fallback.allBoxes.length,
+          topBoxCount: fallback.topBoxes.length,
+          error: fallback.error,
+        };
+      }
+
+      const result = await fetchLatestBoxes(normalizedSiteId);
+
+      return {
+        siteId: normalizedSiteId,
+        label: adapter.label,
+        strategy: adapter.strategy,
+        status: result.source,
+        boxCount: result.allBoxes.length,
+        topBoxCount: result.topBoxes.length,
+        error: result.error,
+      };
+    })
+  );
+
+  return summaries;
+}
+
+export function listCatalogAdapters() {
+  return Object.values(catalogAdapters).map(({ siteId, label, strategy }) => ({
+    siteId,
+    label,
+    strategy,
+    hasSnapshot: catalogSnapshots.has(siteId),
+  }));
 }

@@ -46,7 +46,7 @@ type BoxesResponse = {
   boxes: SalesBox[];
   topBoxes?: SalesBox[];
   allBoxes?: SalesBox[];
-  source: "live" | "fallback";
+  source: "live" | "snapshot" | "fallback";
   generatedAt: string;
   nextRefreshAt: string;
 };
@@ -256,6 +256,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                   </Text>
                   <Text fontSize="sm" color="gray.500" mb={3}>
                     Highest-selling or platform-recommended boxes, refreshed daily when available.
+                    {boxesMeta?.source === "snapshot" && topBoxes.length > 0 ? " Showing the last successful catalog snapshot." : ""}
                     {boxesMeta?.source === "fallback" && topBoxes.length > 0 ? " Showing curated fallback data." : ""}
                   </Text>
                   {boxesMeta && (
@@ -317,7 +318,8 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                     All Mystery Boxes
                   </Text>
                   <Text fontSize="sm" color="gray.500" mb={3}>
-                    Full box catalog detected from the platform API when available.
+                    Full box catalog detected from the platform adapter when available.
+                    {boxesMeta?.source === "snapshot" && allBoxes.length > 0 ? " Showing the last successful catalog snapshot." : ""}
                     {boxesMeta?.source === "fallback" && allBoxes.length > 0 ? " Showing curated fallback data." : ""}
                   </Text>
                   {allBoxes.length > 0 ? (
