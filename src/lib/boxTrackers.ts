@@ -51,6 +51,10 @@ const catalogSnapshots = droppeekGlobal.__droppeekCatalogSnapshots ?? new Map<st
 
 droppeekGlobal.__droppeekCatalogSnapshots = catalogSnapshots;
 
+function generatedBoxImage(name: string, theme = "hype") {
+  return `/api/boxImage?siteId=hypedrop&theme=${encodeURIComponent(theme)}&name=${encodeURIComponent(name)}`;
+}
+
 const fallbackBoxes: Record<string, BoxItem[]> = {
   hypedrop: [
     {
@@ -86,13 +90,25 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
     {
       name: "10 All In One",
       slug: "10-all-in-one",
-      price: 10,
+      price: 3.06,
       iconUrl: "/media/10allinonehypedrop.png",
+    },
+    {
+      name: "Hello Kit",
+      slug: "hello-kit",
+      price: 45.48,
+      iconUrl: "/media/hypedrop-hello-kit.png",
+    },
+    {
+      name: "Denim Tears",
+      slug: "denim-tears",
+      price: 52.06,
+      iconUrl: "/media/be98d-hpyedropdenimtears.png",
     },
     {
       name: "Pajama Party",
       slug: "pajama-party",
-      price: 5,
+      price: 51.03,
       iconUrl: "/media/pajamaparty.png",
     },
     {
@@ -112,6 +128,102 @@ const fallbackBoxes: Record<string, BoxItem[]> = {
       slug: "small-juicer",
       price: 6.99,
       iconUrl: "/media/af4dc-hypedrop-small-juicer.png",
+    },
+    {
+      name: "Hype Box",
+      slug: "hype-box",
+      price: 1.15,
+      iconUrl: generatedBoxImage("Hype Box", "hype"),
+    },
+    {
+      name: "Cold Hearts",
+      slug: "cold-hearts",
+      price: 106.5,
+      iconUrl: generatedBoxImage("Cold Hearts", "luxury"),
+    },
+    {
+      name: "Half A Dunk",
+      slug: "half-a-dunk",
+      price: 102.9,
+      iconUrl: generatedBoxImage("Half A Dunk", "sneaker"),
+    },
+    {
+      name: "Pack Your Bag",
+      slug: "pack-your-bag",
+      price: 89.22,
+      iconUrl: generatedBoxImage("Pack Your Bag", "fashion"),
+    },
+    {
+      name: "Fancy Gaming",
+      slug: "fancy-gaming",
+      price: 9.05,
+      iconUrl: generatedBoxImage("Fancy Gaming", "gaming"),
+    },
+    {
+      name: "Budget Dream",
+      slug: "budget-dream",
+      price: 0.97,
+      iconUrl: generatedBoxImage("Budget Dream", "hype"),
+    },
+    {
+      name: "iPhone Hunter",
+      slug: "iphone-hunter",
+      price: 1.08,
+      iconUrl: generatedBoxImage("iPhone Hunter", "gaming"),
+    },
+    {
+      name: "Gaming Only",
+      slug: "gaming-only",
+      price: 1.73,
+      iconUrl: generatedBoxImage("Gaming Only", "gaming"),
+    },
+    {
+      name: "Feeling Lucky",
+      slug: "feeling-lucky",
+      price: 2.82,
+      iconUrl: generatedBoxImage("Feeling Lucky", "sneaker"),
+    },
+    {
+      name: "1% Yeezy",
+      slug: "1-percent-yeezy",
+      price: 4.97,
+      iconUrl: generatedBoxImage("1% Yeezy", "sneaker"),
+    },
+    {
+      name: "Comic Corner",
+      slug: "comic-corner",
+      price: 40.37,
+      iconUrl: generatedBoxImage("Comic Corner", "collectibles"),
+    },
+    {
+      name: "Regatta Dreams",
+      slug: "regatta-dreams",
+      price: 67.94,
+      iconUrl: generatedBoxImage("Regatta Dreams", "luxury"),
+    },
+    {
+      name: "In the Bag",
+      slug: "in-the-bag",
+      price: 3.38,
+      iconUrl: generatedBoxImage("In the Bag", "fashion"),
+    },
+    {
+      name: "Dunkin",
+      slug: "dunkin",
+      price: 7.92,
+      iconUrl: generatedBoxImage("Dunkin", "food"),
+    },
+    {
+      name: "Black Lotus",
+      slug: "black-lotus",
+      price: 127.15,
+      iconUrl: generatedBoxImage("Black Lotus", "collectibles"),
+    },
+    {
+      name: "Magic: The Gathering",
+      slug: "magic-the-gathering",
+      price: 123.46,
+      iconUrl: generatedBoxImage("Magic: The Gathering", "collectibles"),
     },
   ],
 };

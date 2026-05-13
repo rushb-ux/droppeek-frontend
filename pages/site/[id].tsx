@@ -2,7 +2,7 @@
 import type { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import RatingStars from "../../src/components/ui/RatingStars"
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -108,6 +108,18 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
   
   
       
+
+  const visibleAllBoxes = useMemo(() => {
+    if (allBoxes.length <= topBoxes.length) {
+      return allBoxes;
+    }
+
+    const topBoxKeys = new Set(topBoxes.map((item) => `${item.slug}:${item.name.toLowerCase()}`));
+    const nonTopBoxes = allBoxes.filter((item) => !topBoxKeys.has(`${item.slug}:${item.name.toLowerCase()}`));
+    const repeatedTopBoxes = allBoxes.filter((item) => topBoxKeys.has(`${item.slug}:${item.name.toLowerCase()}`));
+
+    return [...nonTopBoxes, ...repeatedTopBoxes];
+  }, [allBoxes, topBoxes]);
 
   if (!site) {
     return (
@@ -322,9 +334,9 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                     {boxesMeta?.source === "snapshot" && allBoxes.length > 0 ? " Showing the last successful catalog snapshot." : ""}
                     {boxesMeta?.source === "fallback" && allBoxes.length > 0 ? " Showing curated fallback data." : ""}
                   </Text>
-                  {allBoxes.length > 0 ? (
+                  {visibleAllBoxes.length > 0 ? (
                     <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacing={4}>
-                      {allBoxes.map((item, index) => (
+                      {visibleAllBoxes.map((item, index) => (
                         <Box
                           key={`${item.slug}-${index}`}
                           bg="white"
