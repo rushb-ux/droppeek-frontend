@@ -1,15 +1,12 @@
-import { chromium } from "playwright";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const START_URL = "https://www.hypedrop.com/en/boxes";
+const API_URL = "https://api.hypedrop.com/graphql";
+const SOURCE_URL = "https://www.hypedrop.com/boxes/na/list";
 const OUTPUT_PATH = path.join(process.cwd(), "src/data/generated/hypedropCatalog.json");
-const MAX_SCROLLS = 40;
-const SCROLL_DELAY_MS = 900;
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const PAGE_SIZE = 100;
+const MAX_BOXES = Number(process.env.HYPEDROP_MAX_BOXES ?? 1000);
+const ALLOW_SMALLER_OUTPUT = process.env.HYPEDROP_ALLOW_SMALLER === "true";
 
 function slugify(value) {
   return String(value ?? "")
@@ -40,6 +37,12 @@ function normalizeImage(url) {
   return `https://www.hypedrop.com/${url.replace(/^\/+/, "")}`;
 }
 
+function normalizeName(value) {
+  return String(value ?? "")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
 function normalizeBox(box) {
   const name = box?.name ?? box?.title ?? box?.label;
   const price = parsePrice(box?.price ?? box?.priceInUsd ?? box?.cost ?? box?.value);
@@ -58,56 +61,33 @@ function normalizeBox(box) {
     return null;
   }
 
-  return {
-    name: String(name).trim(),
+  const normalized = {
+    name: normalizeName(name),
     slug,
     price,
     iconUrl,
     boxId: box?.id ? String(box.id) : slug,
-    sourceUrl: `https://www.hypedrop.com/en/boxes/view/na/${slug}`,
+    sourceUrl: `https://www.hypedrop.com/boxes/na/open/${slug}`,
     status: "PUBLIC",
-    lastUpdatedAt: new Date().toISOString(),
+    firstSeenAt: box?.createdAt,
+    lastUpdatedAt: box?.updatedAt ?? new Date().toISOString(),
   };
-}
 
-function collectBoxesFromObject(value, boxes = []) {
-  if (!value || typeof value !== "object") {
-    return boxes;
-  }
-
-  if (Array.isArray(value)) {
-    for (const item of value) {
-      collectBoxesFromObject(item, boxes);
-    }
-    return boxes;
-  }
-
-  const normalized = normalizeBox(value);
-  if (normalized) {
-    boxes.push(normalized);
-  }
-
-  for (const nested of Object.values(value)) {
-    if (nested && typeof nested === "object") {
-      collectBoxesFromObject(nested, boxes);
-    }
-  }
-
-  return boxes;
+  return normalized;
 }
 
 function mergeBoxes(boxes) {
   const byKey = new Map();
 
   for (const box of boxes) {
-    const key = `${box.slug}:${box.name.toLowerCase()}`;
+    const key = box.name.toLowerCase();
 
     if (!byKey.has(key)) {
       byKey.set(key, box);
     }
   }
 
-  return [...byKey.values()].sort((a, b) => a.name.localeCompare(b.name));
+  return [...byKey.values()];
 }
 
 async function readExistingCatalog() {
@@ -119,102 +99,78 @@ async function readExistingCatalog() {
   }
 }
 
-async function collectDomBoxes(page) {
-  return page.evaluate(() => {
-    const parsePrice = (value) => {
-      const match = String(value || "").replace(/,/g, "").match(/\$\s*(\d+(?:\.\d+)?)/);
-      return match ? Number(match[1]) : null;
-    };
-    const slugify = (value) =>
-      String(value || "")
-        .toLowerCase()
-        .replace(/&amp;/g, "and")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+function buildBoxesQuery(after) {
+  const afterArg = after ? `, after: "${after}"` : "";
 
-    return [...document.querySelectorAll("a[href*='/boxes/view/'], a[href*='/boxes/']")]
-      .map((link) => {
-        const card = link.closest("article, li, div") || link;
-        const img = card.querySelector("img");
-        const text = card.textContent || "";
-        const href = link.href || "";
-        const name =
-          img?.alt ||
-          card.querySelector("h1,h2,h3,h4,[data-testid*='name'],[class*='name'],[class*='title']")?.textContent ||
-          text.split("\n").map((line) => line.trim()).filter(Boolean)[0];
-        const price = parsePrice(text);
-        const slug = href.split("/").filter(Boolean).pop() || slugify(name);
-        const iconUrl = img?.currentSrc || img?.src || "";
-
-        if (!name || price === null || !iconUrl) {
-          return null;
+  return `{
+    boxes(first: ${PAGE_SIZE}${afterArg}, tags: ["featured"], orderBy: [ID_DESC]) {
+      edges {
+        node {
+          id
+          name
+          price
+          iconUrl
+          slug
+          createdAt
+          updatedAt
         }
-
-        return {
-          name: name.trim(),
-          slug,
-          price,
-          iconUrl,
-          boxId: slug,
-          sourceUrl: href,
-          status: "PUBLIC",
-          lastUpdatedAt: new Date().toISOString(),
-        };
-      })
-      .filter(Boolean);
-  });
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }`;
 }
 
-async function main() {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage({
-    viewport: { width: 1440, height: 1200 },
-    userAgent:
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36",
-  });
+async function fetchFeaturedBoxes() {
   const foundBoxes = [];
+  let after = null;
 
-  page.on("response", async (response) => {
-    const url = response.url();
-    const contentType = response.headers()["content-type"] ?? "";
+  while (mergeBoxes(foundBoxes).length < MAX_BOXES) {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0",
+        Origin: "https://www.hypedrop.com",
+        Referer: SOURCE_URL,
+      },
+      body: JSON.stringify({ query: buildBoxesQuery(after) }),
+    });
 
-    if (!contentType.includes("json") && !url.includes("graphql") && !url.includes("api")) {
-      return;
+    if (!response.ok) {
+      throw new Error(`HypeDrop catalog request failed: ${response.status}`);
     }
 
-    try {
-      const json = await response.json();
-      foundBoxes.push(...collectBoxesFromObject(json));
-    } catch {
-      // Some GraphQL/API responses are streams or blocked payloads; DOM extraction covers those.
+    const json = await response.json();
+
+    if (json.errors?.length) {
+      throw new Error(`HypeDrop catalog request failed: ${json.errors[0].message}`);
     }
-  });
 
-  await page.goto(START_URL, { waitUntil: "domcontentloaded", timeout: 60_000 });
-  await page.waitForTimeout(5_000);
+    const edges = json.data?.boxes?.edges ?? [];
+    foundBoxes.push(...edges.map((edge) => normalizeBox(edge.node)).filter(Boolean));
 
-  let previousHeight = 0;
-  for (let index = 0; index < MAX_SCROLLS; index += 1) {
-    foundBoxes.push(...(await collectDomBoxes(page)));
-    const height = await page.evaluate(() => document.body.scrollHeight);
-
-    if (height === previousHeight && index > 4) {
+    if (!json.data?.boxes?.pageInfo?.hasNextPage) {
       break;
     }
 
-    previousHeight = height;
-    await page.mouse.wheel(0, 1600);
-    await sleep(SCROLL_DELAY_MS);
+    after = json.data.boxes.pageInfo.endCursor;
+    if (!after) {
+      break;
+    }
   }
 
-  foundBoxes.push(...(await collectDomBoxes(page)));
-  await browser.close();
+  return mergeBoxes(foundBoxes).slice(0, MAX_BOXES);
+}
 
-  const boxes = mergeBoxes(foundBoxes);
+async function main() {
+  const boxes = await fetchFeaturedBoxes();
   const existingCatalog = await readExistingCatalog();
   const existingCount = Number(existingCatalog?.count ?? 0);
 
-  if (boxes.length === 0 || boxes.length < existingCount) {
+  if (boxes.length === 0 || (!ALLOW_SMALLER_OUTPUT && boxes.length < existingCount)) {
     console.error(
       `Collected ${boxes.length} HypeDrop boxes; existing catalog has ${existingCount}. Keeping the existing catalog.`
     );
@@ -228,7 +184,8 @@ async function main() {
     `${JSON.stringify(
       {
         siteId: "hypedrop",
-        source: START_URL,
+        source: API_URL,
+        sourcePage: SOURCE_URL,
         generatedAt: new Date().toISOString(),
         count: boxes.length,
         boxes,

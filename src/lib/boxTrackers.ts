@@ -26,7 +26,8 @@ export type BoxTrackerResult = {
 
 const LATEST_BOX_LIMIT = 10;
 const TOP_BOX_LIMIT = 5;
-const ALL_BOX_LIMIT = 500;
+const ALL_BOX_LIMIT = 1000;
+const HYPEDROP_PAGE_SIZE = 100;
 const SNAPSHOT_TTL_MS = 1000 * 60 * 60 * 24 * 7;
 
 type CatalogStrategy = "api" | "page" | "browser" | "manual";
@@ -89,6 +90,21 @@ function uniqueBoxes(boxes: BoxItem[]) {
 
   return boxes.filter((box) => {
     const key = `${box.slug || slugify(box.name)}:${box.name.toLowerCase()}`;
+
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
+function uniqueBoxesByName(boxes: BoxItem[]) {
+  const seen = new Set<string>();
+
+  return boxes.filter((box) => {
+    const key = box.name.toLowerCase().replace(/\s+/g, " ").trim();
 
     if (seen.has(key)) {
       return false;
@@ -167,57 +183,100 @@ type MetadrawBoxRow = BoxItem & {
   openTimes: number;
 };
 
-async function fetchHypedropBoxes(orderBy: "RECOMMENDED" | "NEWEST", first: number): Promise<BoxItem[]> {
-  const response = await fetch("https://hypedrop.com/api/graphql", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "User-Agent": "Mozilla/5.0",
-    },
-    body: JSON.stringify({
-      operationName: "BoxesPage",
-      variables: { filters: {}, orderBy, first },
-      query: `query BoxesPage { boxes(orderBy: ${orderBy}, first: ${first}) { edges { node { name price iconUrl slug } } } }`,
-    }),
-  });
+function buildHypedropBoxesQuery(after: string | null) {
+  const afterArg = after ? `, after: "${after}"` : "";
 
-  if (!response.ok) {
-    throw new Error(`HypeDrop request failed: ${response.status}`);
+  return `{
+    boxes(first: ${HYPEDROP_PAGE_SIZE}${afterArg}, tags: ["featured"], orderBy: [ID_DESC]) {
+      edges {
+        node {
+          id
+          name
+          price
+          iconUrl
+          slug
+          createdAt
+          updatedAt
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }`;
+}
+
+async function fetchHypedropBoxes(limit = ALL_BOX_LIMIT): Promise<BoxItem[]> {
+  const collected: BoxItem[] = [];
+  let after: string | null = null;
+
+  while (uniqueBoxesByName(collected).length < limit) {
+    const response: Response = await fetch("https://api.hypedrop.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0",
+        Origin: "https://www.hypedrop.com",
+        Referer: "https://www.hypedrop.com/boxes/na/list",
+      },
+      body: JSON.stringify({ query: buildHypedropBoxesQuery(after) }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HypeDrop request failed: ${response.status}`);
+    }
+
+    const json: any = await response.json();
+
+    if (json?.errors?.length) {
+      throw new Error(`HypeDrop request failed: ${json.errors[0].message}`);
+    }
+
+    const boxes = json?.data?.boxes?.edges
+      ?.map((edge: any) =>
+        normalizeBox({
+          ...edge?.node,
+          boxId: edge?.node?.id,
+          sourceUrl: `https://www.hypedrop.com/boxes/na/open/${edge?.node?.slug}`,
+          firstSeenAt: edge?.node?.createdAt,
+          lastUpdatedAt: edge?.node?.updatedAt,
+        })
+      )
+      .filter(isBoxItem);
+
+    if (!Array.isArray(boxes) || boxes.length === 0) {
+      break;
+    }
+
+    collected.push(...boxes);
+
+    if (!json?.data?.boxes?.pageInfo?.hasNextPage) {
+      break;
+    }
+
+    after = json.data.boxes.pageInfo.endCursor;
+    if (!after) {
+      break;
+    }
   }
 
-  const json = await response.json();
-  const boxes = json?.data?.boxes?.edges
-    ?.map((edge: any) => normalizeBox(edge?.node))
-    .filter(isBoxItem);
-
-  if (!Array.isArray(boxes) || boxes.length === 0) {
-    throw new Error("HypeDrop response did not include boxes");
-  }
-
-  return uniqueBoxes(boxes).slice(0, first);
+  return uniqueBoxesByName(collected).slice(0, limit);
 }
 
 async function fetchHypedropTracker(): Promise<BoxTrackerResult> {
-  const topBoxes = await fetchHypedropBoxes("RECOMMENDED", TOP_BOX_LIMIT);
+  const allBoxes = await fetchHypedropBoxes(ALL_BOX_LIMIT);
 
-  try {
-    const allBoxes = await fetchHypedropBoxes("NEWEST", ALL_BOX_LIMIT);
-    const boxes = allBoxes.slice(0, LATEST_BOX_LIMIT);
-
-    return {
-      boxes,
-      topBoxes,
-      allBoxes,
-      source: "live",
-    };
-  } catch {
-    return {
-      boxes: topBoxes,
-      topBoxes,
-      allBoxes: topBoxes,
-      source: "live",
-    };
+  if (allBoxes.length === 0) {
+    throw new Error("HypeDrop response did not include boxes");
   }
+
+  return {
+    boxes: allBoxes.slice(0, LATEST_BOX_LIMIT),
+    topBoxes: allBoxes.slice(0, TOP_BOX_LIMIT),
+    allBoxes,
+    source: "live",
+  };
 }
 
 async function fetchHapaboxRows() {
