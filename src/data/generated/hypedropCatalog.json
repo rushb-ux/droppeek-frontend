@@ -1,0 +1,88 @@
+{
+  "siteId": "hypedrop",
+  "source": "https://www.hypedrop.com/en/boxes",
+  "generatedAt": "2026-05-14T00:44:13.127Z",
+  "count": 8,
+  "boxes": [
+    {
+      "name": "Billionaire",
+      "slug": "billionaire",
+      "price": 29383.77,
+      "iconUrl": "https://imgix.hypedrop.com/images/HypeDrop_Billionaire_Box_Design_Export%20(1).png?authuser=3",
+      "boxId": "Qm94OjE5MDMx",
+      "sourceUrl": "https://www.hypedrop.com/en/boxes/view/na/billionaire",
+      "status": "PUBLIC",
+      "lastUpdatedAt": "2026-05-14T00:44:04.111Z"
+    },
+    {
+      "name": "Dunk 1",
+      "slug": "dunk-1",
+      "price": 2.18,
+      "iconUrl": "https://imgix.hypedrop.com/images/HypeDrop_Dunk%201_Box_Design_Export.png",
+      "boxId": "Qm94OjIyNDE4",
+      "sourceUrl": "https://www.hypedrop.com/en/boxes/view/na/dunk-1",
+      "status": "PUBLIC",
+      "lastUpdatedAt": "2026-05-14T00:44:04.111Z"
+    },
+    {
+      "name": "Exclusive",
+      "slug": "exclusive",
+      "price": 73130.42,
+      "iconUrl": "https://imgix.hypedrop.com/images/HypeDrop_Exclusive_Box_Design_Export%20(1).png?authuser=3",
+      "boxId": "Qm94OjE5Nzcy",
+      "sourceUrl": "https://www.hypedrop.com/en/boxes/view/na/exclusive",
+      "status": "PUBLIC",
+      "lastUpdatedAt": "2026-05-14T00:44:04.110Z"
+    },
+    {
+      "name": "Fast Lane",
+      "slug": "fast-lane",
+      "price": 25928.68,
+      "iconUrl": "https://imgix.hypedrop.com/images/boxes/HypeDrop_FAST-LANE.png",
+      "boxId": "Qm94OjIzMzYx",
+      "sourceUrl": "https://www.hypedrop.com/en/boxes/view/na/fast-lane",
+      "status": "PUBLIC",
+      "lastUpdatedAt": "2026-05-14T00:44:04.111Z"
+    },
+    {
+      "name": "Heroine Hit",
+      "slug": "heroine-hit",
+      "price": 22.54,
+      "iconUrl": "https://static.hypedrop.com/images/boxes/HypeDrop_One-Piece-heroines.png",
+      "boxId": "Qm94OjI0MTg3",
+      "sourceUrl": "https://www.hypedrop.com/en/boxes/view/na/heroine-hit",
+      "status": "PUBLIC",
+      "lastUpdatedAt": "2026-05-14T00:44:04.111Z"
+    },
+    {
+      "name": "Journey Together",
+      "slug": "journey-together",
+      "price": 1.72,
+      "iconUrl": "https://imgix.hypedrop.com/images/boxes/HypeDrop_journey-together.png",
+      "boxId": "Qm94OjIxNjM3",
+      "sourceUrl": "https://www.hypedrop.com/en/boxes/view/na/journey-together",
+      "status": "PUBLIC",
+      "lastUpdatedAt": "2026-05-14T00:44:04.111Z"
+    },
+    {
+      "name": "Lucky Off",
+      "slug": "lucky-off",
+      "price": 10.08,
+      "iconUrl": "https://imgix.hypedrop.com/images/HypeDrop_Lucky%20off_Box_Design_Export.png",
+      "boxId": "Qm94OjIyMzUy",
+      "sourceUrl": "https://www.hypedrop.com/en/boxes/view/na/lucky-off",
+      "status": "PUBLIC",
+      "lastUpdatedAt": "2026-05-14T00:44:04.111Z"
+    },
+    {
+      "name": "Time is Money",
+      "slug": "time-is-money",
+      "price": 166.06,
+      "iconUrl": "https://imgix.hypedrop.com/images/HypeDrop_Time%20is%20money_Box_Design_Export.png?authuser=3",
+      "boxId": "Qm94OjIyNjM2",
+      "sourceUrl": "https://www.hypedrop.com/en/boxes/view/na/time-is-money",
+      "status": "PUBLIC",
+      "lastUpdatedAt": "2026-05-14T00:44:04.111Z"
+    }
+  ]
+}

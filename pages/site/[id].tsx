@@ -269,7 +269,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                   <Text fontSize="sm" color="gray.500" mb={3}>
                     Highest-selling or platform-recommended boxes, refreshed daily when available.
                     {boxesMeta?.source === "snapshot" && topBoxes.length > 0 ? " Showing the last successful catalog snapshot." : ""}
-                    {boxesMeta?.source === "fallback" && topBoxes.length > 0 ? " Showing curated fallback data." : ""}
+                    {boxesMeta?.source === "fallback" && topBoxes.length > 0 ? " Showing stored catalog data." : ""}
                   </Text>
                   {boxesMeta && (
                     <Text fontSize="xs" color="gray.400" mb={4}>
@@ -332,7 +332,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                   <Text fontSize="sm" color="gray.500" mb={3}>
                     Full box catalog detected from the platform adapter when available.
                     {boxesMeta?.source === "snapshot" && allBoxes.length > 0 ? " Showing the last successful catalog snapshot." : ""}
-                    {boxesMeta?.source === "fallback" && allBoxes.length > 0 ? " Showing curated fallback data." : ""}
+                    {boxesMeta?.source === "fallback" && allBoxes.length > 0 ? " Showing stored catalog data." : ""}
                   </Text>
                   {visibleAllBoxes.length > 0 ? (
                     <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacing={4}>
