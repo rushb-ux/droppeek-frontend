@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaStar, FaRegStar, FaChevronRight, FaChevronDown, FaChevronUp, FaShieldAlt, FaDatabase, FaChartLine } from "react-icons/fa";
+import { FaStar, FaChevronRight, FaChevronDown, FaChevronUp, FaShieldAlt, FaDatabase, FaChartLine } from "react-icons/fa";
 import { getAllPostSlugs } from "../utils/posts";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -195,210 +195,377 @@ export async function getStaticProps() {
 export default function HomePage({ posts }: { posts: { slug: string; title: string; thumbnail?: string | null }[] }) {
   const [showAll, setShowAll] = useState(false);
   const displayedPosts = showAll ? posts : posts.slice(0, 10);
+  const riskScore = { High: 3, Medium: 2, Low: 1 } as const;
+  const trendGroups = [
+    {
+      title: "Top Rated",
+      description: "Highest current Droppeek review scores.",
+      items: [...websites].sort((a, b) => b.rating - a.rating).slice(0, 5),
+      value: (site: (typeof websites)[number]) => `${site.rating}/5`,
+    },
+    {
+      title: "Catalog Coverage",
+      description: "Platforms with the strongest box catalog visibility.",
+      items: [websites[0], websites[6], websites[1], websites[3], websites[2]],
+      value: (site: (typeof websites)[number]) => site.trackedBoxes,
+    },
+    {
+      title: "Risk Watch",
+      description: "Platforms worth reading carefully before opening boxes.",
+      items: [...websites].sort((a, b) => riskScore[b.risk as keyof typeof riskScore] - riskScore[a.risk as keyof typeof riskScore]).slice(0, 5),
+      value: (site: (typeof websites)[number]) => `${site.risk} risk`,
+    },
+  ];
+  const categories = [
+    { label: "Gaming", count: "236 boxes" },
+    { label: "Sneakers", count: "118 boxes" },
+    { label: "Watches", count: "94 boxes" },
+    { label: "Tech", count: "88 boxes" },
+    { label: "TCG", count: "73 boxes" },
+    { label: "Luxury", count: "67 boxes" },
+    { label: "Crypto-friendly", count: "3 platforms" },
+    { label: "High Risk", count: "1 platform" },
+  ];
 
   return (
-    <Box position="relative" minH="100vh" overflow="hidden" bg="white">
+    <Box position="relative" minH="100vh" overflow="hidden" bg="#F3F6FA">
       {/* Hero Section */}
       <Box
         position="relative"
-        bg="white"
+        bg="#F8FAFD"
         borderBottom="1px solid"
-        borderColor="gray.200"
+        borderColor="blue.100"
       >
-        <Container maxW="1200px" pt={{ base: 12, md: 16 }} pb={{ base: 10, md: 12 }}>
-          <VStack spacing={7} align={{ base: "center", md: "flex-start" }} maxW="820px">
-            <Badge
-              bg="blue.50"
-              color="blue.700"
-              border="1px solid"
-              borderColor="blue.100"
-              borderRadius="md"
-              px={3}
-              py={1}
-              textTransform="uppercase"
-              fontSize="xs"
+        <Container maxW="1200px" pt={{ base: 12, md: 16 }} pb={{ base: 10, md: 14 }}>
+          <Flex direction={{ base: "column", lg: "row" }} gap={{ base: 8, lg: 14 }} align="center">
+            <VStack spacing={7} align={{ base: "center", lg: "flex-start" }} flex="1.1">
+              <Badge
+                bg="blue.50"
+                color="blue.700"
+                border="1px solid"
+                borderColor="blue.100"
+                borderRadius="md"
+                px={3}
+                py={1}
+                textTransform="uppercase"
+                fontSize="xs"
+              >
+                Mystery box radar for 2026
+              </Badge>
+
+              <Heading
+                as="h1"
+                fontSize={{ base: "4xl", md: "6xl" }}
+                lineHeight="1"
+                letterSpacing="0"
+                textAlign={{ base: "center", lg: "left" }}
+                maxW="760px"
+                color="gray.900"
+              >
+                Explore mystery box platforms and spot safer openings.
+              </Heading>
+
+              <Text
+                fontSize={{ base: "lg", md: "xl" }}
+                maxW="700px"
+                color="gray.600"
+                lineHeight="1.75"
+                textAlign={{ base: "center", lg: "left" }}
+              >
+                Track platform rankings, live box catalogs, promo offers, and risk signals in one place.
+                Droppeek is moving from static reviews into a searchable mystery box intelligence layer.
+              </Text>
+
+              <HStack spacing={3} wrap="wrap" justify={{ base: "center", lg: "flex-start" }}>
+                <Link href="/platforms" style={{ textDecoration: "none" }}>
+                  <Button colorScheme="blue" size="lg" borderRadius="md">
+                    View Rankings
+                  </Button>
+                </Link>
+                <Link href="/site/hypedrop" style={{ textDecoration: "none" }}>
+                  <Button
+                    size="lg"
+                    borderRadius="md"
+                    variant="outline"
+                    bg="white"
+                    borderColor="gray.300"
+                    color="gray.800"
+                    _hover={{ bg: "gray.50" }}
+                  >
+                    Inspect #1 Platform
+                  </Button>
+                </Link>
+              </HStack>
+            </VStack>
+
+            <SimpleGrid
+              columns={{ base: 2, sm: 4, lg: 2 }}
+              spacing={3}
+              flex="0.9"
+              w="full"
             >
-              Mystery box intelligence for 2026
-            </Badge>
-
-            <Heading
-              as="h1"
-              fontSize={{ base: "4xl", md: "6xl" }}
-              lineHeight="1"
-              letterSpacing="0"
-              textAlign={{ base: "center", md: "left" }}
-              maxW="860px"
-              color="gray.900"
-            >
-              Best Mystery Box Sites in 2026
-            </Heading>
-
-            <Text
-              fontSize={{ base: "lg", md: "xl" }}
-              maxW="680px"
-              color="gray.600"
-              lineHeight="1.75"
-              textAlign={{ base: "center", md: "left" }}
-            >
-              Compare platform ratings, live box catalogs, promo offers, and risk signals before you open.
-              Droppeek tracks the details that normal review pages miss.
-            </Text>
-
-            <HStack spacing={3} wrap="wrap" justify={{ base: "center", md: "flex-start" }}>
-              <Link href="/platforms" style={{ textDecoration: "none" }}>
-                <Button colorScheme="blue" size="lg" borderRadius="md">
-                  Compare Platforms
-                </Button>
-              </Link>
-              <Link href="/site/hypedrop" style={{ textDecoration: "none" }}>
-                <Button
-                  size="lg"
-                  borderRadius="md"
-                  variant="outline"
-                  borderColor="gray.300"
-                  color="gray.800"
-                  _hover={{ bg: "gray.50" }}
-                >
-                  View #1 Review
-                </Button>
-              </Link>
-            </HStack>
-
-            <SimpleGrid columns={{ base: 1, sm: 3 }} spacing={4} pt={6} w="full" maxW="720px">
               {[
-                { label: "Boxes tracked", value: "650+", icon: FaDatabase },
-                { label: "Reviewed platforms", value: "7", icon: FaShieldAlt },
-                { label: "Catalog refresh", value: "Daily", icon: FaChartLine },
+                { label: "Tracked Boxes", value: "650+", icon: FaDatabase },
+                { label: "Reviewed Platforms", value: "7", icon: FaShieldAlt },
+                { label: "Catalog Checks", value: "Daily", icon: FaChartLine },
+                { label: "Live/API Sources", value: "4", icon: FaStar },
               ].map((metric) => (
-                <HStack key={metric.label} spacing={3} borderTop="1px solid" borderColor="gray.200" pt={4}>
-                  <Icon as={metric.icon} color="blue.500" boxSize={5} />
-                  <Box>
-                    <Text fontSize="2xl" fontWeight="bold" lineHeight="1" color="gray.900">
-                      {metric.value}
-                    </Text>
-                    <Text fontSize="xs" color="gray.500" textTransform="uppercase">
-                      {metric.label}
-                    </Text>
-                  </Box>
-                </HStack>
+                <Box
+                  key={metric.label}
+                  bg="white"
+                  border="1px solid"
+                  borderColor="blue.100"
+                  borderRadius="md"
+                  p={5}
+                >
+                  <Icon as={metric.icon} color="blue.500" boxSize={5} mb={5} />
+                  <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold" lineHeight="1" color="gray.900">
+                    {metric.value}
+                  </Text>
+                  <Text fontSize="xs" color="gray.500" textTransform="uppercase" mt={2}>
+                    {metric.label}
+                  </Text>
+                </Box>
               ))}
             </SimpleGrid>
-          </VStack>
+          </Flex>
         </Container>
       </Box>
 
-      {/* Recommended Sites Section */}
-      <Box bg="white" pt={{ base: 8, md: 10 }} pb={12} position="relative" zIndex={2}>
-      <Container maxW="1200px">
-        <Flex justify="space-between" align={{ base: "flex-start", md: "center" }} mb={6} gap={4} direction={{ base: "column", md: "row" }}>
-          <VStack align="flex-start" spacing={1}>
-            <Heading size="lg" color="gray.900">
-              Platform Rankings
-            </Heading>
-            <Text color="gray.600">
-              A cleaner comparison view with catalog status, promo notes, and risk level.
-            </Text>
-          </VStack>
-          <Badge colorScheme="green" fontSize="sm" px={3} py={1} borderRadius="md" fontWeight="semibold">
-            Daily catalog checks
-          </Badge>
-        </Flex>
+      {/* Radar Overview Section */}
+      <Box bg="#F3F6FA" py={{ base: 8, md: 12 }} position="relative" zIndex={2}>
+        <Container maxW="1200px">
+          <Flex justify="space-between" align={{ base: "flex-start", md: "center" }} mb={6} gap={4} direction={{ base: "column", md: "row" }}>
+            <VStack align="flex-start" spacing={1}>
+              <Heading size="lg" color="gray.900">
+                Trending Platforms
+              </Heading>
+              <Text color="gray.600">
+                Fast scanning panels for ratings, catalog visibility, and risk.
+              </Text>
+            </VStack>
+            <Badge colorScheme="green" fontSize="sm" px={3} py={1} borderRadius="md" fontWeight="semibold">
+              Daily catalog checks
+            </Badge>
+          </Flex>
 
-        <VStack
-          spacing={0}
-          align="stretch"
-          borderTop="1px solid"
-          borderBottom="1px solid"
-          borderColor="gray.200"
-        >
-          {websites.slice(0, 6).map((site, index) => (
-            <Link href={`/site/${site.id}`} key={site.id} style={{ textDecoration: "none" }}>
-              <Flex
-                align={{ base: "stretch", lg: "center" }}
-                direction={{ base: "column", lg: "row" }}
-                gap={{ base: 4, lg: 6 }}
-                px={{ base: 4, md: 5 }}
-                py={4}
-                borderBottom={index === websites.slice(0, 6).length - 1 ? "0" : "1px solid"}
+          <SimpleGrid columns={{ base: 1, lg: 3 }} spacing={4} mb={8}>
+            {trendGroups.map((group) => (
+              <Box
+                key={group.title}
+                bg="white"
+                border="1px solid"
                 borderColor="gray.200"
-                transition="background 0.2s ease"
-                _hover={{ bg: "blue.50" }}
+                borderRadius="md"
+                overflow="hidden"
               >
-                <Flex flex="1.4" justify="space-between" gap={3} align="flex-start">
-                  <HStack spacing={3} align="flex-start">
-                      <Badge colorScheme={index === 0 ? "yellow" : "gray"} borderRadius="md">
-                        #{index + 1}
-                      </Badge>
-                      <VStack align="flex-start" spacing={1}>
-                        <HStack spacing={2}>
+                <Box px={5} py={4} borderBottom="1px solid" borderColor="gray.200">
+                  <Heading size="md" color="gray.900">
+                    {group.title}
+                  </Heading>
+                  <Text fontSize="sm" color="gray.500" mt={1}>
+                    {group.description}
+                  </Text>
+                </Box>
+                <VStack spacing={0} align="stretch">
+                  {group.items.map((site, index) => (
+                    <Link href={`/site/${site.id}`} key={`${group.title}-${site.id}`} style={{ textDecoration: "none" }}>
+                      <Flex
+                        align="center"
+                        justify="space-between"
+                        gap={3}
+                        px={5}
+                        py={3}
+                        borderBottom={index === group.items.length - 1 ? "0" : "1px solid"}
+                        borderColor="gray.100"
+                        _hover={{ bg: "blue.50" }}
+                      >
+                        <HStack spacing={3}>
+                          <Text w="18px" fontSize="sm" fontWeight="bold" color="gray.500">
+                            {index + 1}
+                          </Text>
                           <Image
                             src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`}
                             alt={`${site.name} logo`}
-                            boxSize="28px"
-                            borderRadius="md"
+                            boxSize="24px"
+                            borderRadius="sm"
                           />
-                          <Text fontSize="lg" fontWeight="bold" color="gray.900">
-                            {site.name}
-                          </Text>
+                          <Box>
+                            <Text fontSize="sm" fontWeight="bold" color="gray.900">
+                              {site.name}
+                            </Text>
+                            <Text fontSize="xs" color="gray.500">
+                              {site.bestFor}
+                            </Text>
+                          </Box>
                         </HStack>
+                        <Text
+                          fontSize="sm"
+                          fontWeight="bold"
+                          color={
+                            group.title === "Risk Watch"
+                              ? site.risk === "High"
+                                ? "red.600"
+                                : site.risk === "Medium"
+                                  ? "orange.600"
+                                  : "green.600"
+                              : "green.600"
+                          }
+                          whiteSpace="nowrap"
+                        >
+                          {group.value(site)}
+                        </Text>
+                      </Flex>
+                    </Link>
+                  ))}
+                </VStack>
+              </Box>
+            ))}
+          </SimpleGrid>
+
+          <Box bg="white" border="1px solid" borderColor="gray.200" borderRadius="md" p={{ base: 4, md: 5 }} mb={8}>
+            <Flex justify="space-between" align={{ base: "flex-start", md: "center" }} gap={4} direction={{ base: "column", md: "row" }} mb={4}>
+              <VStack align="flex-start" spacing={1}>
+                <Heading size="md" color="gray.900">
+                  Discover by Category
+                </Heading>
+                <Text fontSize="sm" color="gray.600">
+                  Browse box themes and platform signals without leaving the ranking flow.
+                </Text>
+              </VStack>
+              <Link href="/platforms" style={{ textDecoration: "none" }}>
+                <HStack color="blue.600" spacing={2}>
+                  <Text fontSize="sm" fontWeight="semibold">Show all</Text>
+                  <Icon as={FaChevronRight} boxSize={3} />
+                </HStack>
+              </Link>
+            </Flex>
+            <HStack spacing={3} wrap="wrap">
+              {categories.map((category) => (
+                <Badge
+                  key={category.label}
+                  bg="gray.50"
+                  color="gray.700"
+                  border="1px solid"
+                  borderColor="gray.200"
+                  borderRadius="md"
+                  px={3}
+                  py={2}
+                  textTransform="none"
+                  fontSize="sm"
+                >
+                  {category.label} <Text as="span" color="gray.400">/ {category.count}</Text>
+                </Badge>
+              ))}
+            </HStack>
+          </Box>
+
+          <Box bg="white" border="1px solid" borderColor="gray.200" borderRadius="md" overflow="hidden">
+            <Flex justify="space-between" align={{ base: "flex-start", md: "center" }} gap={4} direction={{ base: "column", md: "row" }} px={5} py={4} borderBottom="1px solid" borderColor="gray.200">
+              <VStack align="flex-start" spacing={1}>
+                <Heading size="lg" color="gray.900">
+                  Mystery Box Platform Rankings
+                </Heading>
+                <Text color="gray.600">
+                  A data-first ranking view with catalog status, tracked boxes, offers, and risk level.
+                </Text>
+              </VStack>
+              <Badge colorScheme="blue" fontSize="sm" px={3} py={1} borderRadius="md" fontWeight="semibold">
+                2026 radar
+              </Badge>
+            </Flex>
+
+            <Flex
+              display={{ base: "none", lg: "grid" }}
+              gridTemplateColumns="64px 1.5fr 0.8fr 1fr 0.8fr 1fr 0.9fr 90px"
+              gap={4}
+              px={5}
+              py={3}
+              bg="gray.50"
+              borderBottom="1px solid"
+              borderColor="gray.200"
+            >
+              {["#", "Platform", "Rating", "Catalog", "Boxes", "Offer", "Risk", "Review"].map((header) => (
+                <Text key={header} fontSize="xs" color="gray.500" fontWeight="bold" textTransform="uppercase">
+                  {header}
+                </Text>
+              ))}
+            </Flex>
+
+            <VStack spacing={0} align="stretch">
+              {websites.map((site, index) => (
+                <Link href={`/site/${site.id}`} key={site.id} style={{ textDecoration: "none" }}>
+                  <Flex
+                    display={{ base: "flex", lg: "grid" }}
+                    direction={{ base: "column", lg: "row" }}
+                    gridTemplateColumns="64px 1.5fr 0.8fr 1fr 0.8fr 1fr 0.9fr 90px"
+                    align={{ base: "stretch", lg: "center" }}
+                    gap={{ base: 3, lg: 4 }}
+                    px={5}
+                    py={4}
+                    borderBottom={index === websites.length - 1 ? "0" : "1px solid"}
+                    borderColor="gray.200"
+                    _hover={{ bg: "blue.50" }}
+                  >
+                    <Text fontSize="sm" color="gray.500" fontWeight="bold">
+                      #{index + 1}
+                    </Text>
+                    <HStack spacing={3}>
+                      <Image
+                        src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`}
+                        alt={`${site.name} logo`}
+                        boxSize="30px"
+                        borderRadius="md"
+                      />
+                      <Box>
+                        <Text fontSize="md" fontWeight="bold" color="gray.900">
+                          {site.name}
+                        </Text>
                         <Text fontSize="xs" color="gray.500">
                           {site.domain}
                         </Text>
-                      </VStack>
+                      </Box>
                     </HStack>
-                </Flex>
-
-                <Text flex="1.5" fontSize="sm" color="gray.600" noOfLines={2} lineHeight="tall">
-                  {site.description}
-                </Text>
-
-                <SimpleGrid flex="1.6" columns={{ base: 2, md: 4, lg: 4 }} spacing={3}>
-                  <Box>
-                    <Text fontSize="xs" color="gray.500" textTransform="uppercase">Rating</Text>
                     <HStack spacing={1}>
                       <Icon as={FaStar} color="yellow.400" boxSize={3} />
                       <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.rating}/5</Text>
                     </HStack>
-                  </Box>
-                  <Box>
-                    <Text fontSize="xs" color="gray.500" textTransform="uppercase">Catalog</Text>
-                    <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.catalogStatus}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontSize="xs" color="gray.500" textTransform="uppercase">Tracked</Text>
-                    <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.trackedBoxes}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontSize="xs" color="gray.500" textTransform="uppercase">Offer</Text>
-                    <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.bonus}</Text>
-                  </Box>
-                </SimpleGrid>
-
-                <Flex minW={{ lg: "160px" }} justify={{ base: "space-between", lg: "flex-end" }} align="center" gap={3}>
-                  <Badge colorScheme={site.risk === "Low" ? "green" : site.risk === "High" ? "red" : "orange"} borderRadius="md">
-                    {site.risk} risk
-                  </Badge>
-                  <HStack color="blue.600" spacing={2}>
-                    <Text fontSize="sm" fontWeight="semibold">Review</Text>
-                    <Icon as={FaChevronRight} boxSize={3} />
-                  </HStack>
-                </Flex>
-              </Flex>
-            </Link>
-          ))}
-        </VStack>
-      </Container>
+                    <Text fontSize="sm" fontWeight="semibold" color="gray.900">
+                      {site.catalogStatus}
+                    </Text>
+                    <Text fontSize="sm" fontWeight="semibold" color="gray.900">
+                      {site.trackedBoxes}
+                    </Text>
+                    <Text fontSize="sm" fontWeight="semibold" color="gray.900">
+                      {site.bonus}
+                    </Text>
+                    <Badge
+                      colorScheme={site.risk === "Low" ? "green" : site.risk === "High" ? "red" : "orange"}
+                      borderRadius="md"
+                      w="fit-content"
+                    >
+                      {site.risk}
+                    </Badge>
+                    <HStack color="blue.600" spacing={2}>
+                      <Text fontSize="sm" fontWeight="semibold">View</Text>
+                      <Icon as={FaChevronRight} boxSize={3} />
+                    </HStack>
+                  </Flex>
+                </Link>
+              ))}
+            </VStack>
+          </Box>
+        </Container>
       </Box>
 
-      {/* Latest Reviews + Ranking Section */}
-      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} maxW="1000px" mx="auto" mb={12} alignItems="start">
+      {/* Latest Reviews + Market Snapshot Section */}
+      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} maxW="1200px" mx="auto" mb={12} px={4} alignItems="start">
         {/* Latest Reviews */}
         <Box
           gridColumn={{ md: "span 2" }}
           bg="white"
           p={6}
-          borderRadius="xl"
-          boxShadow="sm"
+          borderRadius="md"
           border="1px solid"
           borderColor="gray.200"
         >
@@ -419,13 +586,11 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                   p={4}
                   border="1px solid"
                   borderColor="gray.100"
-                  borderRadius="lg"
+                  borderRadius="md"
                   transition="all 0.3s ease"
                   _hover={{
                     borderColor: "blue.200",
                     bg: "blue.50",
-                    transform: "translateY(-2px)",
-                    boxShadow: "sm",
                   }}
                 >
                   <HStack spacing={4}>
@@ -495,91 +660,42 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           </VStack>
         </Box>
 
-        {/* Top Sites Ranking */}
+        {/* Market Snapshot */}
         <Box
           bg="white"
           p={6}
-          borderRadius="xl"
-          boxShadow="sm"
+          borderRadius="md"
           border="1px solid"
           borderColor="gray.200"
         >
           <VStack align="flex-start" spacing={1} mb={6}>
-            <Heading size="lg" color="gray.800">Top Sites Ranking</Heading>
-            <Text color="gray.600" fontSize="sm">Based on user reviews & testing</Text>
+            <Heading size="lg" color="gray.800">Industry Overview</Heading>
+            <Text color="gray.600" fontSize="sm">Droppeek catalog and platform coverage</Text>
           </VStack>
 
-          <VStack spacing={3} align="stretch">
-            {websites.map((site, i) => (
-              <Link
-                key={site.id}
-                href={`/site/${site.id}`}
-                style={{ textDecoration: "none" }}
+          <VStack spacing={0} align="stretch" borderTop="1px solid" borderColor="gray.200">
+            {[
+              { label: "Total boxes tracked", value: "650+" },
+              { label: "Platforms reviewed", value: websites.length },
+              { label: "Live/API catalogs", value: "4" },
+              { label: "Unavailable catalogs", value: "1" },
+              { label: "Primary refresh cycle", value: "Daily" },
+            ].map((item) => (
+              <Flex
+                key={item.label}
+                justify="space-between"
+                align="center"
+                py={4}
+                borderBottom="1px solid"
+                borderColor="gray.200"
               >
-                <Box
-                  position="relative"
-                  overflow="hidden"
-                  borderRadius="lg"
-                  h="85px"
-                  bgImage={`url('${site.image}')`}
-                  bgSize="cover"
-                  bgPosition="center"
-                  transition="all 0.3s ease"
-                  _hover={{
-                    transform: "scale(1.02)",
-                    boxShadow: "lg",
-                  }}
-                >
-                  <Box
-                    position="absolute"
-                    inset={0}
-                    bg="blackAlpha.700"
-                    _hover={{ bg: "blackAlpha.600" }}
-                    transition="background 0.3s ease"
-                  />
-                  <Flex
-                    position="relative"
-                    h="full"
-                    p={4}
-                    color="white"
-                    justify="space-between"
-                    align="center"
-                  >
-                    <VStack align="flex-start" spacing={1}>
-                      <HStack spacing={2}>
-                        <Badge
-                          colorScheme={i < 3 ? "yellow" : "gray"}
-                          size="sm"
-                          borderRadius="md"
-                          fontWeight="bold"
-                        >
-                          #{i + 1}
-                        </Badge>
-                        <Text fontSize="lg" fontWeight="bold">
-                          {site.name}
-                        </Text>
-                      </HStack>
-                      <HStack spacing={1}>
-                        {Array.from({ length: 5 }).map((_, starIndex) => (
-                          <Icon
-                            as={starIndex < Math.floor(site.rating) ? FaStar : FaRegStar}
-                            key={starIndex}
-                            color={starIndex < site.rating ? "yellow.300" : "gray.400"}
-                            boxSize={3}
-                          />
-                        ))}
-                        <Text fontSize="xs" color="gray.300" ml={1}>
-                          {site.rating}/5
-                        </Text>
-                      </HStack>
-                    </VStack>
-                    <VStack spacing={1}>
-                      <Icon as={FaChevronRight} boxSize={4} />
-                      <Text fontSize="xs" color="gray.400">View</Text>
-                    </VStack>
-                  </Flex>
-                </Box>
-              </Link>
+                <Text fontSize="sm" color="gray.600">
+                  {item.label}
+                </Text>
+                <Text fontSize="lg" color="gray.900" fontWeight="bold">
+                  {item.value}
+                </Text>
+              </Flex>
             ))}
           </VStack>
         </Box>
