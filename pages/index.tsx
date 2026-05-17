@@ -197,25 +197,21 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
   const displayedPosts = showAll ? posts : posts.slice(0, 10);
 
   return (
-    <Box position="relative" minH="100vh" overflow="hidden" bg="#F5F5F7">
+    <Box position="relative" minH="100vh" overflow="hidden" bg="white">
       {/* Hero Section */}
       <Box
         position="relative"
-        minH={{ base: "560px", md: "600px" }}
-        bgImage="url('/images/hero-bg.png')"
-        bgSize="cover"
-        bgPosition="center"
-        color="white"
-        overflow="hidden"
+        bg="white"
+        borderBottom="1px solid"
+        borderColor="gray.200"
       >
-        <Box position="absolute" inset={0} bg="blackAlpha.700" />
-        <Container maxW="1200px" position="relative" zIndex={1} pt={{ base: 16, md: 24 }} pb={{ base: 24, md: 28 }}>
-          <VStack spacing={7} align={{ base: "center", md: "flex-start" }} maxW="780px">
+        <Container maxW="1200px" pt={{ base: 12, md: 16 }} pb={{ base: 10, md: 12 }}>
+          <VStack spacing={7} align={{ base: "center", md: "flex-start" }} maxW="820px">
             <Badge
-              bg="whiteAlpha.200"
-              color="white"
+              bg="blue.50"
+              color="blue.700"
               border="1px solid"
-              borderColor="whiteAlpha.300"
+              borderColor="blue.100"
               borderRadius="md"
               px={3}
               py={1}
@@ -232,6 +228,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
               letterSpacing="0"
               textAlign={{ base: "center", md: "left" }}
               maxW="860px"
+              color="gray.900"
             >
               Best Mystery Box Sites in 2026
             </Heading>
@@ -239,7 +236,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
             <Text
               fontSize={{ base: "lg", md: "xl" }}
               maxW="680px"
-              color="whiteAlpha.900"
+              color="gray.600"
               lineHeight="1.75"
               textAlign={{ base: "center", md: "left" }}
             >
@@ -257,9 +254,10 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                 <Button
                   size="lg"
                   borderRadius="md"
-                  bg="whiteAlpha.200"
-                  color="white"
-                  _hover={{ bg: "whiteAlpha.300" }}
+                  variant="outline"
+                  borderColor="gray.300"
+                  color="gray.800"
+                  _hover={{ bg: "gray.50" }}
                 >
                   View #1 Review
                 </Button>
@@ -272,13 +270,13 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                 { label: "Reviewed platforms", value: "7", icon: FaShieldAlt },
                 { label: "Catalog refresh", value: "Daily", icon: FaChartLine },
               ].map((metric) => (
-                <HStack key={metric.label} spacing={3} borderTop="1px solid" borderColor="whiteAlpha.300" pt={4}>
-                  <Icon as={metric.icon} color="blue.200" boxSize={5} />
+                <HStack key={metric.label} spacing={3} borderTop="1px solid" borderColor="gray.200" pt={4}>
+                  <Icon as={metric.icon} color="blue.500" boxSize={5} />
                   <Box>
-                    <Text fontSize="2xl" fontWeight="bold" lineHeight="1">
+                    <Text fontSize="2xl" fontWeight="bold" lineHeight="1" color="gray.900">
                       {metric.value}
                     </Text>
-                    <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">
+                    <Text fontSize="xs" color="gray.500" textTransform="uppercase">
                       {metric.label}
                     </Text>
                   </Box>
@@ -290,7 +288,7 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
       </Box>
 
       {/* Recommended Sites Section */}
-      <Box bg="#F5F5F7" pt={{ base: 8, md: 12 }} pb={12} position="relative" zIndex={2}>
+      <Box bg="white" pt={{ base: 8, md: 10 }} pb={12} position="relative" zIndex={2}>
       <Container maxW="1200px">
         <Flex justify="space-between" align={{ base: "flex-start", md: "center" }} mb={6} gap={4} direction={{ base: "column", md: "row" }}>
           <VStack align="flex-start" spacing={1}>
@@ -306,23 +304,28 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
           </Badge>
         </Flex>
 
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+        <VStack
+          spacing={0}
+          align="stretch"
+          borderTop="1px solid"
+          borderBottom="1px solid"
+          borderColor="gray.200"
+        >
           {websites.slice(0, 6).map((site, index) => (
             <Link href={`/site/${site.id}`} key={site.id} style={{ textDecoration: "none" }}>
-              <Box
-                bg="white"
-                border="1px solid"
+              <Flex
+                align={{ base: "stretch", lg: "center" }}
+                direction={{ base: "column", lg: "row" }}
+                gap={{ base: 4, lg: 6 }}
+                px={{ base: 4, md: 5 }}
+                py={4}
+                borderBottom={index === websites.slice(0, 6).length - 1 ? "0" : "1px solid"}
                 borderColor="gray.200"
-                borderRadius="md"
-                p={5}
-                minH="272px"
-                boxShadow="sm"
-                transition="all 0.2s ease"
-                _hover={{ borderColor: "blue.300", boxShadow: "md", transform: "translateY(-3px)" }}
+                transition="background 0.2s ease"
+                _hover={{ bg: "blue.50" }}
               >
-                <VStack align="stretch" spacing={4}>
-                  <Flex justify="space-between" gap={3}>
-                    <HStack spacing={3} align="flex-start">
+                <Flex flex="1.4" justify="space-between" gap={3} align="flex-start">
+                  <HStack spacing={3} align="flex-start">
                       <Badge colorScheme={index === 0 ? "yellow" : "gray"} borderRadius="md">
                         #{index + 1}
                       </Badge>
@@ -343,62 +346,47 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                         </Text>
                       </VStack>
                     </HStack>
-                    <Badge colorScheme={site.risk === "Low" ? "green" : site.risk === "High" ? "red" : "orange"} borderRadius="md">
-                      {site.risk} risk
-                    </Badge>
-                  </Flex>
+                </Flex>
 
-                  <HStack spacing={1}>
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Icon
-                        as={i < Math.floor(site.rating) ? FaStar : FaRegStar}
-                        key={i}
-                        color={i < site.rating ? "yellow.400" : "gray.300"}
-                        boxSize={4}
-                      />
-                    ))}
-                    <Text fontSize="sm" color="gray.600" ml={2}>
-                      {site.rating}/5
-                    </Text>
-                  </HStack>
+                <Text flex="1.5" fontSize="sm" color="gray.600" noOfLines={2} lineHeight="tall">
+                  {site.description}
+                </Text>
 
-                  <Text fontSize="sm" color="gray.600" noOfLines={2} lineHeight="tall">
-                    {site.description}
-                  </Text>
-
-                  <SimpleGrid columns={2} spacing={3}>
-                    <Box>
-                      <Text fontSize="xs" color="gray.500" textTransform="uppercase">Catalog</Text>
-                      <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.catalogStatus}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontSize="xs" color="gray.500" textTransform="uppercase">Tracked</Text>
-                      <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.trackedBoxes}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontSize="xs" color="gray.500" textTransform="uppercase">Offer</Text>
-                      <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.bonus}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontSize="xs" color="gray.500" textTransform="uppercase">Best For</Text>
-                      <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.bestFor}</Text>
-                    </Box>
-                  </SimpleGrid>
-
-                  <Flex justify="space-between" align="center" pt={2}>
-                    <Badge colorScheme="blue" variant="subtle" borderRadius="md">
-                      2026 review
-                    </Badge>
-                    <HStack color="blue.600" spacing={2}>
-                      <Text fontSize="sm" fontWeight="semibold">View Review</Text>
-                      <Icon as={FaChevronRight} boxSize={3} />
+                <SimpleGrid flex="1.6" columns={{ base: 2, md: 4, lg: 4 }} spacing={3}>
+                  <Box>
+                    <Text fontSize="xs" color="gray.500" textTransform="uppercase">Rating</Text>
+                    <HStack spacing={1}>
+                      <Icon as={FaStar} color="yellow.400" boxSize={3} />
+                      <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.rating}/5</Text>
                     </HStack>
-                  </Flex>
-                </VStack>
-              </Box>
+                  </Box>
+                  <Box>
+                    <Text fontSize="xs" color="gray.500" textTransform="uppercase">Catalog</Text>
+                    <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.catalogStatus}</Text>
+                  </Box>
+                  <Box>
+                    <Text fontSize="xs" color="gray.500" textTransform="uppercase">Tracked</Text>
+                    <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.trackedBoxes}</Text>
+                  </Box>
+                  <Box>
+                    <Text fontSize="xs" color="gray.500" textTransform="uppercase">Offer</Text>
+                    <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.bonus}</Text>
+                  </Box>
+                </SimpleGrid>
+
+                <Flex minW={{ lg: "160px" }} justify={{ base: "space-between", lg: "flex-end" }} align="center" gap={3}>
+                  <Badge colorScheme={site.risk === "Low" ? "green" : site.risk === "High" ? "red" : "orange"} borderRadius="md">
+                    {site.risk} risk
+                  </Badge>
+                  <HStack color="blue.600" spacing={2}>
+                    <Text fontSize="sm" fontWeight="semibold">Review</Text>
+                    <Icon as={FaChevronRight} boxSize={3} />
+                  </HStack>
+                </Flex>
+              </Flex>
             </Link>
           ))}
-        </SimpleGrid>
+        </VStack>
       </Container>
       </Box>
 
