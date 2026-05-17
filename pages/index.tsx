@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { getTopReviews } from "../src/lib/api";
-import { FaStar, FaRegStar, FaChevronRight, FaChevronDown, FaChevronUp, FaShieldAlt, FaUsers, FaNewspaper, FaHome } from "react-icons/fa";
+import { useState } from "react";
+import { FaStar, FaRegStar, FaChevronRight, FaChevronDown, FaChevronUp, FaShieldAlt, FaDatabase, FaChartLine } from "react-icons/fa";
 import { getAllPostSlugs } from "../utils/posts";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -80,6 +79,11 @@ const websites = [
     domain: "hypedrop.com",
     rating: 4,
     image: "/images/hypedrop.png",
+    trackedBoxes: "652",
+    catalogStatus: "Live + snapshot",
+    bonus: "20% deposit",
+    risk: "Medium",
+    bestFor: "Largest tracked catalog",
   },
   {
     id: "metadraw",
@@ -88,7 +92,12 @@ const websites = [
     url: "https://www.metadraw.com/r/droppeek",
     domain: "metadraw.com",
     rating: 4,
-    image: "/images/metadraw.png"
+    image: "/images/metadraw.png",
+    trackedBoxes: "Live",
+    catalogStatus: "API detected",
+    bonus: "Review bonus",
+    risk: "Low",
+    bestFor: "Provably fair boxes",
   },  
   {
     id: "JemLit",
@@ -97,7 +106,12 @@ const websites = [
     url: "https://jemlit.com/en/a/droppeek",
     domain: "jemlit.com",
     rating: 3,
-    image: "/images/lootie.png",
+    image: "/images/jemlit.png",
+    trackedBoxes: "Page scan",
+    catalogStatus: "Page adapter",
+    bonus: "Referral offer",
+    risk: "Medium",
+    bestFor: "Hypebeast drops",
   },
   {
     id: "mysteryboxbrand",
@@ -106,7 +120,12 @@ const websites = [
     url: "https://mysteryboxbrand.com/r/droppeek",
     domain: "mysteryboxbrand.com",
     rating: 3,
-    image: "/images/mysteryboxbrand.png"
+    image: "/images/mysteryboxbrand.png",
+    trackedBoxes: "Live",
+    catalogStatus: "API detected",
+    bonus: "Promo available",
+    risk: "Medium",
+    bestFor: "Premium boxes",
   },
   {
     id: "rillabox",
@@ -115,7 +134,12 @@ const websites = [
     url: "https://rillabox.com/",
     domain: "rillabox.com",
     rating: 3,
-    image: "/images/rillabox.png"
+    image: "/images/rillabox.png",
+    trackedBoxes: "Manual",
+    catalogStatus: "Needs adapter",
+    bonus: "Crypto-friendly",
+    risk: "Medium",
+    bestFor: "Crypto deposits",
   },
   {
     id: "lootie",
@@ -124,7 +148,12 @@ const websites = [
     url: "https://lootie.com/r/droppeek",
     domain: "lootie.com",
     rating: 2.5,
-    image: "/images/jemlit.png",
+    image: "/images/lootie.png",
+    trackedBoxes: "Unavailable",
+    catalogStatus: "No live catalog",
+    bonus: "40% deposit",
+    risk: "High",
+    bestFor: "Risk research",
   },
   {
     id: "hapabox",
@@ -133,7 +162,12 @@ const websites = [
     url: "https://www.hapabox.com/r/droppeek",
     domain: "hapabox.com",
     rating: 4,
-    image: "/images/hapabox.png"
+    image: "/images/hapabox.png",
+    trackedBoxes: "Live",
+    catalogStatus: "API detected",
+    bonus: "$50 box",
+    risk: "Low",
+    bestFor: "Game modes",
   },  
 ];
 
@@ -165,312 +199,207 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
   return (
     <Box position="relative" minH="100vh" overflow="hidden" bg="#F5F5F7">
       {/* Hero Section */}
-      <Box position="relative" zIndex={1}>
-        <Box
-          maxW="1200px"
-          mx="auto"
-          mt={{ base: 5, md: 10 }}
-          px={{ base: 6, md: 12 }}
-          py={{ base: 12, md: 16 }}
-          borderRadius="2xl"
-          bgGradient="linear(135deg, blue.700, blue.600, purple.600)"
-          position="relative"
-          boxShadow="lg"
-          overflow="hidden"
-          zIndex={1}
-          border="1px solid"
-          borderColor="whiteAlpha.200"
-        >
-          {/* Background Pattern */}
-          <Box
-            position="absolute"
-            top={0}
-            left={0}
-            right={0}
-            bottom={0}
-            bgImage="url('data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;><defs><pattern id=&quot;grain&quot; width=&quot;100&quot; height=&quot;100&quot; patternUnits=&quot;userSpaceOnUse&quot;><circle cx=&quot;20&quot; cy=&quot;20&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;80&quot; cy=&quot;40&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;40&quot; cy=&quot;60&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/><circle cx=&quot;90&quot; cy=&quot;80&quot; r=&quot;1&quot; fill=&quot;white&quot; opacity=&quot;0.1&quot;/></pattern></defs><rect width=&quot;100&quot; height=&quot;100&quot; fill=&quot;url(%23grain)&quot;/></svg>')"
-            opacity={0.3}
-          />
-
-          <VStack spacing={6} position="relative" zIndex={2} align={{ base: "center", md: "flex-start" }}>
-            {/* Trust Badge */}
+      <Box
+        position="relative"
+        minH={{ base: "560px", md: "600px" }}
+        bgImage="url('/images/hero-bg.png')"
+        bgSize="cover"
+        bgPosition="center"
+        color="white"
+        overflow="hidden"
+      >
+        <Box position="absolute" inset={0} bg="blackAlpha.700" />
+        <Container maxW="1200px" position="relative" zIndex={1} pt={{ base: 16, md: 24 }} pb={{ base: 24, md: 28 }}>
+          <VStack spacing={7} align={{ base: "center", md: "flex-start" }} maxW="780px">
             <Badge
-              colorScheme="orange"
-              fontSize="sm"
-              px={4}
-              py={2}
-              borderRadius="full"
-              fontWeight="bold"
-              bg="orange.400"
+              bg="whiteAlpha.200"
               color="white"
+              border="1px solid"
+              borderColor="whiteAlpha.300"
+              borderRadius="md"
+              px={3}
+              py={1}
               textTransform="uppercase"
-              letterSpacing="wide"
+              fontSize="xs"
             >
-              Trusted by 50K+ users
+              Mystery box intelligence for 2026
             </Badge>
-            
-            {/* Brand Name */}
-            <Text 
-              fontSize="lg" 
-              fontWeight="black" 
-              mb={2} 
-              color="whiteAlpha.900"
-              textTransform="uppercase"
-              letterSpacing="wider"
-            >
-              DROPPEEK
-            </Text>
 
-            {/* Main Heading */}
             <Heading
-              size="3xl"
-              fontWeight="black"
+              as="h1"
+              fontSize={{ base: "4xl", md: "6xl" }}
+              lineHeight="1"
+              letterSpacing="0"
               textAlign={{ base: "center", md: "left" }}
-              lineHeight="shorter"
-              color="white"
-              textShadow="2px 2px 4px rgba(0,0,0,0.3)"
-              maxW="800px"
+              maxW="860px"
             >
-              Top Mystery Box Sites
-              <br />
-              <Text as="span" bgGradient="linear(to-r, yellow.200, orange.200)" bgClip="text">
-                Reviewed in 2026
-              </Text>
+              Best Mystery Box Sites in 2026
             </Heading>
-            
-            {/* Subtitle */}
+
             <Text
               fontSize={{ base: "lg", md: "xl" }}
-              maxW="600px"
-              textAlign={{ base: "center", md: "left" }}
+              maxW="680px"
               color="whiteAlpha.900"
-              lineHeight="tall"
-              fontWeight="medium"
+              lineHeight="1.75"
+              textAlign={{ base: "center", md: "left" }}
             >
-              We test and review the most popular unboxing platforms to help you avoid scams and get the best experience. Find your perfect mystery box platform today!
+              Compare platform ratings, live box catalogs, promo offers, and risk signals before you open.
+              Droppeek tracks the details that normal review pages miss.
             </Text>
 
-            {/* Key Benefits */}
-            <HStack spacing={6} wrap="wrap" justify={{ base: "center", md: "flex-start" }}>
-              <HStack spacing={2}>
-                <Icon as={FaShieldAlt} color="green.300" boxSize={5} />
-                <Text color="white" fontSize="sm" fontWeight="semibold">Scam Protection</Text>
-              </HStack>
-              <HStack spacing={2}>
-                <Icon as={FaStar} color="yellow.300" boxSize={5} />
-                <Text color="white" fontSize="sm" fontWeight="semibold">Expert Reviews</Text>
-              </HStack>
-              <HStack spacing={2}>
-                <Icon as={FaUsers} color="blue.300" boxSize={5} />
-                <Text color="white" fontSize="sm" fontWeight="semibold">Community Trusted</Text>
-              </HStack>
+            <HStack spacing={3} wrap="wrap" justify={{ base: "center", md: "flex-start" }}>
+              <Link href="/platforms" style={{ textDecoration: "none" }}>
+                <Button colorScheme="blue" size="lg" borderRadius="md">
+                  Compare Platforms
+                </Button>
+              </Link>
+              <Link href="/site/hypedrop" style={{ textDecoration: "none" }}>
+                <Button
+                  size="lg"
+                  borderRadius="md"
+                  bg="whiteAlpha.200"
+                  color="white"
+                  _hover={{ bg: "whiteAlpha.300" }}
+                >
+                  View #1 Review
+                </Button>
+              </Link>
             </HStack>
 
-            {/* Social Proof */}
-            <HStack spacing={8} pt={4} wrap="wrap" justify={{ base: "center", md: "flex-start" }}>
-              <VStack spacing={1}>
-                <Text fontSize="2xl" fontWeight="bold" color="white">50K+</Text>
-                <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">Users Protected</Text>
-              </VStack>
-              <VStack spacing={1}>
-                <Text fontSize="2xl" fontWeight="bold" color="white">25+</Text>
-                <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">Platforms Reviewed</Text>
-              </VStack>
-              <VStack spacing={1}>
-                <Text fontSize="2xl" fontWeight="bold" color="white">1000+</Text>
-                <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">Scams Prevented</Text>
-              </VStack>
-            </HStack>
+            <SimpleGrid columns={{ base: 1, sm: 3 }} spacing={4} pt={6} w="full" maxW="720px">
+              {[
+                { label: "Boxes tracked", value: "650+", icon: FaDatabase },
+                { label: "Reviewed platforms", value: "7", icon: FaShieldAlt },
+                { label: "Catalog refresh", value: "Daily", icon: FaChartLine },
+              ].map((metric) => (
+                <HStack key={metric.label} spacing={3} borderTop="1px solid" borderColor="whiteAlpha.300" pt={4}>
+                  <Icon as={metric.icon} color="blue.200" boxSize={5} />
+                  <Box>
+                    <Text fontSize="2xl" fontWeight="bold" lineHeight="1">
+                      {metric.value}
+                    </Text>
+                    <Text fontSize="xs" color="whiteAlpha.700" textTransform="uppercase">
+                      {metric.label}
+                    </Text>
+                  </Box>
+                </HStack>
+              ))}
+            </SimpleGrid>
           </VStack>
-        </Box>
+        </Container>
       </Box>
 
       {/* Recommended Sites Section */}
-      <Box
-        maxW="1000px"
-        mx="auto"
-        mt={{ base: 8, md: 12 }}
-        mb={12}
-        px={{ base: 4, md: 6 }}   
-        py={8}
-        bg="white"
-        borderRadius="xl"
-        boxShadow="sm"
-        zIndex={2}
-        position="relative"
-        border="1px solid"
-        borderColor="gray.100"
-      >
-        <Flex justify="space-between" align="center" mb={6}>
+      <Box bg="#F5F5F7" pt={{ base: 8, md: 12 }} pb={12} position="relative" zIndex={2}>
+      <Container maxW="1200px">
+        <Flex justify="space-between" align={{ base: "flex-start", md: "center" }} mb={6} gap={4} direction={{ base: "column", md: "row" }}>
           <VStack align="flex-start" spacing={1}>
-            <Heading size="xl" color="gray.800">
-              Recommended Mystery Box Sites
+            <Heading size="lg" color="gray.900">
+              Platform Rankings
             </Heading>
-            <Text color="gray.600" fontSize="lg">
-              Our top-rated platforms for 2026
+            <Text color="gray.600">
+              A cleaner comparison view with catalog status, promo notes, and risk level.
             </Text>
           </VStack>
-          <Badge colorScheme="green" fontSize="sm" px={3} py={1} borderRadius="full" fontWeight="semibold">
-            Updated for 2026
+          <Badge colorScheme="green" fontSize="sm" px={3} py={1} borderRadius="md" fontWeight="semibold">
+            Daily catalog checks
           </Badge>
         </Flex>
 
-        <Box
-          overflowX="auto"
-          css={{
-            '&::-webkit-scrollbar': {
-              height: '8px',
-            },
-            '&::-webkit-scrollbar-track': {
-              background: 'transparent',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              background: '#CBD5E0',
-              borderRadius: '4px',
-            },
-            '&::-webkit-scrollbar-thumb:hover': {
-              background: '#A0AEC0',
-            },
-          }}
-        >
-          <HStack spacing={6} pb={4} minW="max-content">
-            {websites.slice(0, 6).map((site, index) => (
-              <Link
-                href={`/site/${site.id}`}
-                key={site.id}
-                style={{ textDecoration: "none" }}
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+          {websites.slice(0, 6).map((site, index) => (
+            <Link href={`/site/${site.id}`} key={site.id} style={{ textDecoration: "none" }}>
+              <Box
+                bg="white"
+                border="1px solid"
+                borderColor="gray.200"
+                borderRadius="md"
+                p={5}
+                minH="272px"
+                boxShadow="sm"
+                transition="all 0.2s ease"
+                _hover={{ borderColor: "blue.300", boxShadow: "md", transform: "translateY(-3px)" }}
               >
-                <Box
-                  w="320px"
-                  bg="white"
-                  border="2px solid"
-                  borderColor="gray.100"
-                  borderRadius="lg"
-                  p={6}
-                  transition="all 0.3s ease"
-                  position="relative"
-                  _hover={{
-                    borderColor: "blue.300",
-                    transform: "translateY(-8px)",
-                    boxShadow: "md",
-                  }}
-                >
-                  {/* Rank Badge */}
-                  <Badge
-                    position="absolute"
-                    top={-2}
-                    left={4}
-                    colorScheme={index === 0 ? "yellow" : index === 1 ? "gray" : "orange"}
-                    fontSize="sm"
-                    px={3}
-                    py={1}
-                    borderRadius="full"
-                    fontWeight="bold"
-                  >
-                    #{index + 1}
-                  </Badge>
-
-                  {/* Platform Badge */}
-                  <Badge
-                    position="absolute"
-                    top={-2}
-                    right={4}
-                    colorScheme="blue"
-                    fontSize="xs"
-                    px={2}
-                    py={1}
-                    borderRadius="full"
-                  >
-                    Verified
-                  </Badge>
-
-                  <VStack spacing={4} align="stretch">
-                    {/* Header with Logo and Name */}
-                    <HStack>
-                      <Image
-                        src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`}
-                        alt={`${site.name} logo`}
-                        boxSize="48px"
-                        borderRadius="lg"
-                      />
-                      <VStack align="flex-start" spacing={1} flex={1}>
-                        <Text fontSize="xl" fontWeight="bold" color="gray.800">
-                          {site.name}
-                        </Text>
-                        <Text fontSize="xs" color="gray.500" textTransform="uppercase" letterSpacing="wide">
+                <VStack align="stretch" spacing={4}>
+                  <Flex justify="space-between" gap={3}>
+                    <HStack spacing={3} align="flex-start">
+                      <Badge colorScheme={index === 0 ? "yellow" : "gray"} borderRadius="md">
+                        #{index + 1}
+                      </Badge>
+                      <VStack align="flex-start" spacing={1}>
+                        <HStack spacing={2}>
+                          <Image
+                            src={`https://www.google.com/s2/favicons?sz=64&domain=${site.domain}`}
+                            alt={`${site.name} logo`}
+                            boxSize="28px"
+                            borderRadius="md"
+                          />
+                          <Text fontSize="lg" fontWeight="bold" color="gray.900">
+                            {site.name}
+                          </Text>
+                        </HStack>
+                        <Text fontSize="xs" color="gray.500">
                           {site.domain}
                         </Text>
                       </VStack>
                     </HStack>
-                    {/* Rating and Trust Indicators */}
-                    <VStack spacing={3} align="stretch">
-                      <HStack justify="space-between">
-                        <HStack spacing={1}>
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Icon
-                              as={i < Math.floor(site.rating) ? FaStar : FaRegStar}
-                              key={i}
-                              color={i < site.rating ? "yellow.400" : "gray.300"}
-                              boxSize={4}
-                            />
-                          ))}
-                          <Text fontSize="sm" color="gray.600" ml={2}>
-                            {site.rating}/5
-                          </Text>
-                        </HStack>
-                        <Badge 
-                          colorScheme={site.rating >= 4 ? "green" : site.rating >= 3.5 ? "yellow" : "orange"}
-                          size="sm"
-                        >
-                          {site.rating >= 4 ? "Excellent" : site.rating >= 3.5 ? "Good" : "Fair"}
-                        </Badge>
-                      </HStack>
+                    <Badge colorScheme={site.risk === "Low" ? "green" : site.risk === "High" ? "red" : "orange"} borderRadius="md">
+                      {site.risk} risk
+                    </Badge>
+                  </Flex>
 
-                      <Text fontSize="sm" color="gray.600" noOfLines={3} lineHeight="tall">
-                        {site.description}
-                      </Text>
+                  <HStack spacing={1}>
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Icon
+                        as={i < Math.floor(site.rating) ? FaStar : FaRegStar}
+                        key={i}
+                        color={i < site.rating ? "yellow.400" : "gray.300"}
+                        boxSize={4}
+                      />
+                    ))}
+                    <Text fontSize="sm" color="gray.600" ml={2}>
+                      {site.rating}/5
+                    </Text>
+                  </HStack>
 
-                      {/* Trust and Safety Indicators */}
-                      <HStack spacing={2} wrap="wrap">
-                        <Badge size="sm" colorScheme="green" variant="subtle">
-                          Verified
-                        </Badge>
-                        <Badge size="sm" colorScheme="blue" variant="subtle">
-                          Secure
-                        </Badge>
-                        {site.rating >= 4 && (
-                          <Badge size="sm" colorScheme="purple" variant="subtle">
-                            Top Rated
-                          </Badge>
-                        )}
-                      </HStack>
+                  <Text fontSize="sm" color="gray.600" noOfLines={2} lineHeight="tall">
+                    {site.description}
+                  </Text>
 
-                      {/* Quick Stats */}
-                      <HStack justify="space-between" fontSize="xs" color="gray.500">
-                        <Text>Est. 2020+</Text>
-                        <Text>1M+ Users</Text>
-                        <Text>24/7 Support</Text>
-                      </HStack>
-                    </VStack>
+                  <SimpleGrid columns={2} spacing={3}>
+                    <Box>
+                      <Text fontSize="xs" color="gray.500" textTransform="uppercase">Catalog</Text>
+                      <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.catalogStatus}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontSize="xs" color="gray.500" textTransform="uppercase">Tracked</Text>
+                      <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.trackedBoxes}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontSize="xs" color="gray.500" textTransform="uppercase">Offer</Text>
+                      <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.bonus}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontSize="xs" color="gray.500" textTransform="uppercase">Best For</Text>
+                      <Text fontSize="sm" fontWeight="semibold" color="gray.900">{site.bestFor}</Text>
+                    </Box>
+                  </SimpleGrid>
 
-                    <Button
-                      colorScheme="blue"
-                      size="sm"
-                      rightIcon={<Icon as={FaChevronRight} />}
-                      borderRadius="lg"
-                      fontWeight="semibold"
-                      _hover={{
-                        transform: "translateY(-1px)",
-                      }}
-                    >
-                      View Details
-                    </Button>
-                  </VStack>
-                </Box>
-              </Link>
-            ))}
-          </HStack>
-        </Box>
+                  <Flex justify="space-between" align="center" pt={2}>
+                    <Badge colorScheme="blue" variant="subtle" borderRadius="md">
+                      2026 review
+                    </Badge>
+                    <HStack color="blue.600" spacing={2}>
+                      <Text fontSize="sm" fontWeight="semibold">View Review</Text>
+                      <Icon as={FaChevronRight} boxSize={3} />
+                    </HStack>
+                  </Flex>
+                </VStack>
+              </Box>
+            </Link>
+          ))}
+        </SimpleGrid>
+      </Container>
       </Box>
 
       {/* Latest Reviews + Ranking Section */}
