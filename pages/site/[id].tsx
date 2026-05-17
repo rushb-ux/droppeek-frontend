@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Flame, Laugh, Angry, Heart, Frown, Smile, Zap } from "lucide-react"
+import { Flame, Laugh, Angry, Heart, Frown, Smile, Zap, Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import DisqusThread from '@/components/ui/DisqusThread'
 
@@ -21,6 +21,11 @@ import {
   HStack,
   Flex,
   SimpleGrid,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  IconButton,
 } from "@chakra-ui/react"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons"
@@ -36,6 +41,7 @@ type SalesBox = {
     price: number;
     iconUrl: string;
     slug: string;
+    category?: string;
 };
 
 type SiteReviewPageProps = {
@@ -63,6 +69,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
   const [boxesMeta, setBoxesMeta] = useState<Pick<BoxesResponse, "source" | "generatedAt" | "nextRefreshAt"> | null>(null);
   const [boxesError, setBoxesError] = useState<string | null>(null);
   const [boxesLoading, setBoxesLoading] = useState(false);
+  const [boxSearchQuery, setBoxSearchQuery] = useState("");
   const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
   
   useEffect(() => {
@@ -70,6 +77,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
 
     setBoxesLoading(true);
     setBoxesError(null);
+    setBoxSearchQuery("");
 
     fetch(`/api/fetchBoxes?siteId=${siteId}`)
       .then((res) => res.json())
@@ -120,6 +128,27 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
 
     return [...nonTopBoxes, ...repeatedTopBoxes];
   }, [allBoxes, topBoxes]);
+
+  const filteredAllBoxes = useMemo(() => {
+    const query = boxSearchQuery.trim().toLowerCase();
+
+    if (!query) {
+      return visibleAllBoxes;
+    }
+
+    return visibleAllBoxes.filter((item) => {
+      const searchableText = [
+        item.name,
+        item.slug,
+        item.category,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return searchableText.includes(query);
+    });
+  }, [boxSearchQuery, visibleAllBoxes]);
 
   if (!site) {
     return (
@@ -334,9 +363,43 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                     {boxesMeta?.source === "snapshot" && allBoxes.length > 0 ? " Showing the last successful catalog snapshot." : ""}
                     {boxesMeta?.source === "fallback" && allBoxes.length > 0 ? " Showing stored catalog data." : ""}
                   </Text>
-                  {visibleAllBoxes.length > 0 ? (
+                  {visibleAllBoxes.length > 0 && (
+                    <Box mb={4}>
+                      <InputGroup>
+                        <InputLeftElement pointerEvents="none" color="gray.400">
+                          <Search size={16} />
+                        </InputLeftElement>
+                        <Input
+                          value={boxSearchQuery}
+                          onChange={(event) => setBoxSearchQuery(event.target.value)}
+                          placeholder={`Search ${site.name} boxes`}
+                          bg="gray.50"
+                          borderColor="gray.200"
+                          _focus={{ bg: "white", borderColor: "blue.400", boxShadow: "0 0 0 1px var(--chakra-colors-blue-400)" }}
+                        />
+                        {boxSearchQuery && (
+                          <InputRightElement>
+                            <IconButton
+                              aria-label="Clear box search"
+                              icon={<X size={16} />}
+                              size="sm"
+                              variant="ghost"
+                              color="gray.500"
+                              onClick={() => setBoxSearchQuery("")}
+                            />
+                          </InputRightElement>
+                        )}
+                      </InputGroup>
+                      <Text fontSize="xs" color="gray.400" mt={2}>
+                        {boxSearchQuery.trim()
+                          ? `${filteredAllBoxes.length} of ${visibleAllBoxes.length} boxes matched`
+                          : `${visibleAllBoxes.length} boxes available`}
+                      </Text>
+                    </Box>
+                  )}
+                  {visibleAllBoxes.length > 0 && filteredAllBoxes.length > 0 ? (
                     <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacing={4}>
-                      {visibleAllBoxes.map((item, index) => (
+                      {filteredAllBoxes.map((item, index) => (
                         <Box
                           key={`${item.slug}-${index}`}
                           bg="white"
@@ -364,6 +427,10 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                         </Box>
                       ))}
                     </SimpleGrid>
+                  ) : visibleAllBoxes.length > 0 && boxSearchQuery.trim() ? (
+                    <Text fontSize="sm" color="gray.500">
+                      No boxes found for "{boxSearchQuery.trim()}".
+                    </Text>
                   ) : (
                     <Text fontSize="sm" color="gray.500">
                       Live box catalog is temporarily unavailable for this platform.
