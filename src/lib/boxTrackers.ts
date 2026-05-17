@@ -648,11 +648,14 @@ export async function fetchLatestBoxes(siteId: string): Promise<BoxTrackerResult
 
   try {
     const result = await adapter.fetch();
-    storeSnapshot(normalizedSiteId, result);
+
+    if (result.source === "live" && result.allBoxes.length > 0) {
+      storeSnapshot(normalizedSiteId, result);
+    }
+
     return {
       ...result,
-      source: "live",
-      adapterStatus: "ok",
+      adapterStatus: result.adapterStatus ?? (result.allBoxes.length > 0 ? "ok" : "empty"),
     };
   } catch (error) {
     console.error(`Failed to fetch live boxes for ${normalizedSiteId}:`, error);
@@ -667,6 +670,11 @@ export async function fetchLatestBoxes(siteId: string): Promise<BoxTrackerResult
       error: error instanceof Error ? error.message : "Catalog adapter failed",
     };
   }
+}
+
+export function getFallbackBoxTracker(siteId: string): BoxTrackerResult {
+  const normalizedSiteId = normalizeSiteId(siteId);
+  return fallbackResult(fallbackBoxes[normalizedSiteId] ?? []);
 }
 
 export type CatalogSyncSummary = {

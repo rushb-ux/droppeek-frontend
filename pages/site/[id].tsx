@@ -74,44 +74,71 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
   
   useEffect(() => {
     if (!siteId) return;
+    let cancelled = false;
 
     setBoxesLoading(true);
     setBoxesError(null);
     setBoxSearchQuery("");
+    setTopBoxes([]);
+    setAllBoxes([]);
+    setBoxesMeta(null);
 
-    fetch(`/api/fetchBoxes?siteId=${siteId}`)
-      .then((res) => res.json())
-      .then((data: BoxesResponse | SalesBox[]) => {
-        if (Array.isArray(data)) {
-          setTopBoxes(data.slice(0, 5));
-          setAllBoxes(data);
-          setBoxesMeta(null);
-        } else if (Array.isArray(data.boxes)) {
-          setTopBoxes(Array.isArray(data.topBoxes) ? data.topBoxes : data.boxes.slice(0, 5));
-          setAllBoxes(Array.isArray(data.allBoxes) ? data.allBoxes : data.boxes);
-          setBoxesMeta({
-            source: data.source,
-            generatedAt: data.generatedAt,
-            nextRefreshAt: data.nextRefreshAt,
-          });
-        } else {
-          console.error("Invalid data format", data);
-          setTopBoxes([]);
-          setAllBoxes([]);
-          setBoxesMeta(null);
-          setBoxesError("Latest box data is temporarily unavailable.");
-        }
-      })
-      .catch((err) => {
-        console.error("Failed to fetch sales boxes", err);
-        setTopBoxes([]);
-        setAllBoxes([]);
+    const applyBoxesData = (data: BoxesResponse | SalesBox[]) => {
+      if (cancelled) {
+        return;
+      }
+
+      if (Array.isArray(data)) {
+        setTopBoxes(data.slice(0, 5));
+        setAllBoxes(data);
         setBoxesMeta(null);
+      } else if (Array.isArray(data.boxes)) {
+        setTopBoxes(Array.isArray(data.topBoxes) ? data.topBoxes : data.boxes.slice(0, 5));
+        setAllBoxes(Array.isArray(data.allBoxes) ? data.allBoxes : data.boxes);
+        setBoxesMeta({
+          source: data.source,
+          generatedAt: data.generatedAt,
+          nextRefreshAt: data.nextRefreshAt,
+        });
+      } else {
+        console.error("Invalid data format", data);
         setBoxesError("Latest box data is temporarily unavailable.");
-      })
-      .finally(() => {
-        setBoxesLoading(false);
-      });
+      }
+    };
+
+    const loadBoxes = async () => {
+      try {
+        const cachedResponse = await fetch(`/api/fetchBoxes?siteId=${siteId}&preferCached=1`);
+        const cachedData: BoxesResponse | SalesBox[] = await cachedResponse.json();
+        applyBoxesData(cachedData);
+
+        const shouldRefreshLive =
+          !Array.isArray(cachedData) &&
+          cachedData.source !== "live" &&
+          Array.isArray(cachedData.allBoxes) &&
+          cachedData.allBoxes.length > 0;
+
+        if (shouldRefreshLive) {
+          setBoxesLoading(false);
+          const liveResponse = await fetch(`/api/fetchBoxes?siteId=${siteId}`);
+          const liveData: BoxesResponse | SalesBox[] = await liveResponse.json();
+          applyBoxesData(liveData);
+        }
+      } catch (err) {
+        console.error("Failed to fetch sales boxes", err);
+        setBoxesError("Latest box data is temporarily unavailable.");
+      } finally {
+        if (!cancelled) {
+          setBoxesLoading(false);
+        }
+      }
+    };
+
+    loadBoxes();
+
+    return () => {
+      cancelled = true;
+    };
   }, [siteId]);
   
   
@@ -347,7 +374,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                       ))}
                     </SimpleGrid>
                   ) : (
-                    <Text fontSize="sm" color="gray.500">
+                    <Text fontSize="sm" color="gray.500" display={boxesLoading ? "none" : "block"}>
                       Live box data is temporarily unavailable for this platform.
                     </Text>
                   )}
@@ -432,7 +459,7 @@ export default function SiteReviewPage({ initialSiteId }: SiteReviewPageProps) {
                       No boxes found for "{boxSearchQuery.trim()}".
                     </Text>
                   ) : (
-                    <Text fontSize="sm" color="gray.500">
+                    <Text fontSize="sm" color="gray.500" display={boxesLoading ? "none" : "block"}>
                       Live box catalog is temporarily unavailable for this platform.
                     </Text>
                   )}

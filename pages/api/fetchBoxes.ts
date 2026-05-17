@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import type { BoxTrackerResult } from "@/lib/boxTrackers";
-import { fetchLatestBoxes, normalizeSiteId } from "@/lib/boxTrackers";
+import { fetchLatestBoxes, getFallbackBoxTracker, normalizeSiteId } from "@/lib/boxTrackers";
 
 const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
 const HALF_DAY_IN_SECONDS = 60 * 60 * 12;
@@ -46,6 +46,26 @@ function setCacheHeaders(res: NextApiResponse, source?: BoxTrackerResult["source
   );
 }
 
+function createCacheEntry(siteId: string, result: BoxTrackerResult, cacheStatus: BoxesApiResponse["cacheStatus"]): CacheEntry {
+  const generatedAt = new Date();
+  const cacheDurationMs = result.source === "live" ? ONE_DAY_IN_MS : ONE_HOUR_IN_MS;
+  const nextRefreshAt = new Date(generatedAt.getTime() + cacheDurationMs);
+
+  return {
+    response: {
+      siteId,
+      boxes: result.boxes,
+      topBoxes: result.topBoxes,
+      allBoxes: result.allBoxes,
+      source: result.source,
+      generatedAt: generatedAt.toISOString(),
+      nextRefreshAt: nextRefreshAt.toISOString(),
+      cacheStatus,
+    },
+    expiresAt: nextRefreshAt.getTime(),
+  };
+}
+
 async function getBoxesCacheEntry(siteId: string): Promise<CacheEntry> {
   const pendingFetch = pendingFetches.get(siteId);
 
@@ -55,22 +75,7 @@ async function getBoxesCacheEntry(siteId: string): Promise<CacheEntry> {
 
   const fetchPromise = fetchLatestBoxes(siteId)
     .then((result) => {
-      const generatedAt = new Date();
-      const cacheDurationMs = result.source === "live" ? ONE_DAY_IN_MS : ONE_HOUR_IN_MS;
-      const nextRefreshAt = new Date(generatedAt.getTime() + cacheDurationMs);
-      const entry: CacheEntry = {
-        response: {
-          siteId,
-          boxes: result.boxes,
-          topBoxes: result.topBoxes,
-          allBoxes: result.allBoxes,
-          source: result.source,
-          generatedAt: generatedAt.toISOString(),
-          nextRefreshAt: nextRefreshAt.toISOString(),
-          cacheStatus: "miss",
-        },
-        expiresAt: nextRefreshAt.getTime(),
-      };
+      const entry = createCacheEntry(siteId, result, "miss");
 
       boxesCache.set(siteId, entry);
       return entry;
@@ -92,6 +97,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const normalizedSiteId = normalizeSiteId(siteId);
   const cached = boxesCache.get(normalizedSiteId);
+  const preferCached = req.query.preferCached === "1" || req.query.preferCached === "true";
 
   if (cached && cached.expiresAt > Date.now()) {
     setCacheHeaders(res, cached.response.source);
@@ -100,6 +106,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ...cached.response,
       cacheStatus: "hit",
     });
+  }
+
+  if (preferCached) {
+    const fallback = getFallbackBoxTracker(normalizedSiteId);
+
+    if (fallback.allBoxes.length > 0) {
+      const entry = createCacheEntry(normalizedSiteId, fallback, "miss");
+      setCacheHeaders(res, entry.response.source);
+
+      return res.status(200).json(entry.response);
+    }
   }
 
   try {
