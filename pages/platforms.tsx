@@ -15,12 +15,6 @@ const platforms = [
     image: "/images/metadraw.png"
   },
   {
-    id: "hypeloot",
-    name: "HypeLoot",
-    description: "Luxury-themed mystery box unboxings.",
-    image: "/images/hypeloot.png",
-  },
-  {
     id: "JemLit",
     name: "JemLit",
     description: "Daily drops with hypebeast and tech prizes.",

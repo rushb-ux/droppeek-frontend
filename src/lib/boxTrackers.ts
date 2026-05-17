@@ -574,12 +574,6 @@ const catalogAdapters: Record<string, CatalogAdapter> = {
     strategy: "api",
     fetch: fetchMysteryBoxBrandTracker,
   },
-  hypeloot: {
-    siteId: "hypeloot",
-    label: "HypeLoot",
-    strategy: "manual",
-    fetch: fetchUnavailableTracker,
-  },
   rillabox: {
     siteId: "rillabox",
     label: "RillaBox",

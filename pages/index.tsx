@@ -91,15 +91,6 @@ const websites = [
     image: "/images/metadraw.png"
   },  
   {
-    id: "hypeloot",
-    name: "HypeLoot",
-    description: "Luxury-themed mystery box unboxings.",
-    url: "https://hypeloot.com/r/droppekk",
-    domain: "hypeloot.com",
-    rating: 3.5,
-    image: "/images/hypeloot.png",
-  },
-  {
     id: "JemLit",
     name: "JemLit",
     description: "JemLit offers daily mystery box drops with hypebeast, gaming, and tech prizes.",
@@ -877,14 +868,6 @@ export default function HomePage({ posts }: { posts: { slug: string; title: stri
                   transition="color 0.2s"
                 >
                   MetaDraw
-                </ChakraLink>
-                <ChakraLink 
-                  href="/site/hypeloot" 
-                  color="gray.400" 
-                  _hover={{ color: "white", textDecoration: "none" }}
-                  transition="color 0.2s"
-                >
-                  HypeLoot
                 </ChakraLink>
                 <ChakraLink 
                   href="/platforms" 

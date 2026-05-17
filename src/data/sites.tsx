@@ -106,56 +106,6 @@ const sites = [
       
     alternatives: "jemlit,rillabox,hapabox"
   },
-  
-  {
-    id: "hypeloot",
-    name: "HypeLoot",
-    logo: "https://www.google.com/s2/favicons?sz=64&domain=hypeloot.com",
-    rating: 2.5,
-    rank: 3,
-    category: "HypeLoot Mystery Boxes",
-    image: "/images/hypeloot.png",
-    promoCodes: ["droppekk"], 
-    promoText: "5% DEPOSIT BONUS",
-    promoDescription: "Click to copy the promo code and use it on the website.",
-    
-    pros: [
-      "Customizable mystery boxes",
-      "Multiple interactive game modes",
-    ],
-    cons: [
-      "Widespread scam allegations",
-      "Poor customer service",
-      "Lack of transparency in operations",
-      "$HLPT token reportedly not distributed as promised",
-      "Fake or misleading Trustpilot reviews reported",
-
-    ],
-    review: `HypeLoot has faced growing criticism from its user base, reflected in a modest satisfaction rating of 2.5 out of 5. A significant number of users have expressed frustration over unexpected fees, delayed cashouts, sudden account restrictions, and unmet expectations regarding high-value prizes.
-
-    Numerous reports highlight concerns about the fairness of the platform's drop rates. Despite large investments—sometimes in the thousands—many users claim they rarely receive valuable rewards such as gaming consoles or gift cards.
-    
-    Customer feedback on platforms like Trustpilot also paints a concerning picture: one in four reviews is a 1-star rating, with recurring themes of unexplained charges, prolonged withdrawal processing times, and a lack of responsive support.
-    
-    Further skepticism surrounds the legitimacy of HypeLoot's operations. Some users allege that advertised “winning odds” may be manipulated and that overly positive reviews could be artificially inflated to counterbalance negative publicity.
-    
-    In addition, the platform's presale token, $HPLT, has stirred controversy. Despite being marketed to investors, the token's distribution has reportedly remained stagnant at 97% for over six months, prompting a wave of investor complaints and concerns about transparency.`
-,
-    alternatives: "22222222",
-    url: "https://hypeloot.com/r/droppekk",
-
-    // emojiCounts: {
-    //   superb: 181,
-    //   love: 31,
-    //   wow: 12,
-    //   sad: 24,
-    //   laugh: 62,
-    //   angry: 22
-    // },
-    
-    description: 
-    "We reviewed HypeLoot in April 2025 and found widespread concerns about its legitimacy. Many users have reported sudden account bans and suspect the platform's fairness, raising serious trust issues within the community.",
-  },
   {
     id: "JemLit",
     name: "JemLit",
@@ -242,7 +192,7 @@ const sites = [
     review: `RillaBox, launched in 2024, has rapidly gained popularity in the mystery box space due to its wide selection, provably fair system, and cryptocurrency support. The platform allows users to deposit via BTC, ETH, or USDT, and provides over 150 boxes themed around fashion, electronics, gaming, and collectibles.
   
   Users praise RillaBox for its transparency and resale mechanics, which let them cash out unwanted items instantly. Though still new, RillaBox already boasts over 2.3 million openings and 700,000 users. Free boxes are available to new users, and a leaderboard with weekly rewards keeps the community engaged.`,
-    alternatives: "jemlit,hypedrop,hypeloot"
+    alternatives: "jemlit,hypedrop,hapabox"
   },  
 
   {
@@ -369,7 +319,7 @@ const sites = [
     review: `HapaBox stands out with its variety of engaging game modes, including Battle Mode, Treasure Hunt, Bingo King, and Lucky Wheel. Each mode offers a unique unboxing experience, combining luck and strategy. The platform ensures fairness through a provably fair algorithm and guarantees authentic products by collaborating with verified partners.
   
   However, users have reported occasional delays in account top-ups and a somewhat confusing interface, especially for newcomers. The return process can also be slow, and some boxes may have hidden fees. Despite these issues, HapaBox remains a popular choice for mystery box enthusiasts seeking diverse gameplay and genuine rewards.`,
-    alternatives: "jemlit,hypedrop,hypeloot"
+    alternatives: "jemlit,hypedrop,metadraw"
   },  
 
   
